@@ -231,176 +231,35 @@
             <rect id="startButton" onclick="print('It works.');" />
             <text id="startText" onclick="print('It works.');"></text>
 
-            <rect id="lRCSButton" onclick="click('lRCS1', 3);print('Hi.');" />
-            <text id="lRCSText" onclick="click('lRCS1', 3);print('Hi.');"></text>
+            <rect id="lRCButton" onclick="setTempButtons(lrcValues, autoCargoShipSuccess, 0, autoCargoShipSuccess, 1, autoCargoShipSuccess, 2, autoCargoRocketsFail, 0, autoCargoRocketsFail, 1, autoCargoRocketsFail, 2);" />
+            <text id="lRCText" onclick="setTempButtons(lrcValues, autoCargoShipSuccess, 0, autoCargoShipSuccess, 1, autoCargoShipSuccess, 2, autoCargoRocketsFail, 0, autoCargoRocketsFail, 1, autoCargoRocketsFail, 2);"></text>
 
-            <rect id="lRCFButton" onclick="print('Hi.');" />
-            <text id="lRCFText" onclick="print('Hi.');"></text>
+            <rect id="lRHButton" onclick="print('Hi.');" />
+            <text id="lRHText" onclick="print('Hi.');"></text>
 
-            <rect id="lRHSButton" onclick="print('Hi.');" />
-            <text id="lRHSText" onclick="print('Hi.');"></text>
+            <rect id="temp1Button" onclick="print('Hi.');" />
+            <text id="temp1Text" onclick="print('Hi.');"></text>
 
-            <rect id="lRHFButton" onclick="print('Hi.');" />
-            <text id="lRHFText" onclick="print('Hi.');"></text>
+            <rect id="temp2Button" onclick="print('Hi.');" />
+            <text id="temp2Text" onclick="print('Hi.');"></text>
 
-            <rect id="lRCF2Button" onclick="print('Hi.');" />
-            <text id="lRCF2Text" onclick="print('Hi.');"></text>
+            <rect id="temp3Button" onclick="print('Hi.');" />
+            <text id="temp3Text" onclick="print('Hi.');"></text>
 
-            <rect id="lRCF3Button" onclick="print('Hi.');" />
-            <text id="lRCF3Text" onclick="print('Hi.');"></text>
+            <rect id="temp4Button" onclick="print('Hi.');" />
+            <text id="temp4Text" onclick="print('Hi.');"></text>
 
-            <rect id="matchNumberButton" onclick="print('Hi.');" />
-            <text id="matchNumberText" onclick="print('Hi.');"></text>
+            <rect id="temp5Button" onclick="print('Hi.');" />
+            <text id="temp5Text" onclick="print('Hi.');"></text>
 
-            <rect id="matchNumberButton" onclick="print('Hi.');" />
-            <text id="matchNumberText" onclick="print('Hi.');"></text>
+            <rect id="temp6Button" onclick="print('Hi.');" />
+            <text id="temp6Text" onclick="print('Hi.');"></text>
 
-            <rect id="matchNumberButton" onclick="print('Hi.');" />
-            <text id="matchNumberText" onclick="print('Hi.');"></text>
+            <rect id="temp7Button" onclick="print('Hi.');" />
+            <text id="temp7Text" onclick="print('Hi.');"></text>
 
-            <rect id="matchNumberButton" onclick="print('Hi.');" />
-            <text id="matchNumberText" onclick="print('Hi.');"></text>
-
-            <rect id="matchNumberButton" onclick="print('Hi.');" />
-            <text id="matchNumberText" onclick="print('Hi.');"></text>
-
-            <rect id="matchNumberButton" onclick="print('Hi.');" />
-            <text id="matchNumberText" onclick="print('Hi.');"></text>
-
-            <rect id="matchNumberButton" onclick="print('Hi.');" />
-            <text id="matchNumberText" onclick="print('Hi.');"></text>
-
-            <rect id="matchNumberButton" onclick="print('Hi.');" />
-            <text id="matchNumberText" onclick="print('Hi.');"></text>
-
-            <rect id="matchNumberButton" onclick="print('Hi.');" />
-            <text id="matchNumberText" onclick="print('Hi.');"></text>
-
-            <rect id="matchNumberButton" onclick="print('Hi.');" />
-            <text id="matchNumberText" onclick="print('Hi.');"></text>
-
-            <rect id="matchNumberButton" onclick="print('Hi.');" />
-            <text id="matchNumberText" onclick="print('Hi.');"></text>
-
-            <rect id="matchNumberButton" onclick="print('Hi.');" />
-            <text id="matchNumberText" onclick="print('Hi.');"></text>
-
-            <rect id="matchNumberButton" onclick="print('Hi.');" />
-            <text id="matchNumberText" onclick="print('Hi.');"></text>
-
-            <rect id="matchNumberButton" onclick="print('Hi.');" />
-            <text id="matchNumberText" onclick="print('Hi.');"></text>
-
-            <rect id="matchNumberButton" onclick="print('Hi.');" />
-            <text id="matchNumberText" onclick="print('Hi.');"></text>
-
-            <rect id="matchNumberButton" onclick="print('Hi.');" />
-            <text id="matchNumberText" onclick="print('Hi.');"></text>
-
-            <rect id="matchNumberButton" onclick="print('Hi.');" />
-            <text id="matchNumberText" onclick="print('Hi.');"></text>
-
-            <rect id="matchNumberButton" onclick="print('Hi.');" />
-            <text id="matchNumberText" onclick="print('Hi.');"></text>
-
-            <rect id="matchNumberButton" onclick="print('Hi.');" />
-            <text id="matchNumberText" onclick="print('Hi.');"></text>
-
-            <rect id="matchNumberButton" onclick="print('Hi.');" />
-            <text id="matchNumberText" onclick="print('Hi.');"></text>
-
-            <rect id="matchNumberButton" onclick="print('Hi.');" />
-            <text id="matchNumberText" onclick="print('Hi.');"></text>
-
-            <rect id="matchNumberButton" onclick="print('Hi.');" />
-            <text id="matchNumberText" onclick="print('Hi.');"></text>
-
-            <rect id="matchNumberButton" onclick="print('Hi.');" />
-            <text id="matchNumberText" onclick="print('Hi.');"></text>
-
-            <rect id="matchNumberButton" onclick="print('Hi.');" />
-            <text id="matchNumberText" onclick="print('Hi.');"></text>
-
-            <rect id="matchNumberButton" onclick="print('Hi.');" />
-            <text id="matchNumberText" onclick="print('Hi.');"></text>
-
-            <rect id="matchNumberButton" onclick="print('Hi.');" />
-            <text id="matchNumberText" onclick="print('Hi.');"></text>
-
-            <rect id="matchNumberButton" onclick="print('Hi.');" />
-            <text id="matchNumberText" onclick="print('Hi.');"></text>
-
-            <rect id="matchNumberButton" onclick="print('Hi.');" />
-            <text id="matchNumberText" onclick="print('Hi.');"></text>
-
-            <rect id="matchNumberButton" onclick="print('Hi.');" />
-            <text id="matchNumberText" onclick="print('Hi.');"></text>
-
-            <rect id="matchNumberButton" onclick="print('Hi.');" />
-            <text id="matchNumberText" onclick="print('Hi.');"></text>
-
-            <rect id="matchNumberButton" onclick="print('Hi.');" />
-            <text id="matchNumberText" onclick="print('Hi.');"></text>
-
-            <rect id="matchNumberButton" onclick="print('Hi.');" />
-            <text id="matchNumberText" onclick="print('Hi.');"></text>
-
-            <rect id="matchNumberButton" onclick="print('Hi.');" />
-            <text id="matchNumberText" onclick="print('Hi.');"></text>
-
-            <rect id="matchNumberButton" onclick="print('Hi.');" />
-            <text id="matchNumberText" onclick="print('Hi.');"></text>
-
-            <rect id="matchNumberButton" onclick="print('Hi.');" />
-            <text id="matchNumberText" onclick="print('Hi.');"></text>
-
-            <rect id="matchNumberButton" onclick="print('Hi.');" />
-            <text id="matchNumberText" onclick="print('Hi.');"></text>
-
-            <rect id="matchNumberButton" onclick="print('Hi.');" />
-            <text id="matchNumberText" onclick="print('Hi.');"></text>
-
-            <rect id="matchNumberButton" onclick="print('Hi.');" />
-            <text id="matchNumberText" onclick="print('Hi.');"></text>
-
-            <rect id="matchNumberButton" onclick="print('Hi.');" />
-            <text id="matchNumberText" onclick="print('Hi.');"></text>
-
-            <rect id="matchNumberButton" onclick="print('Hi.');" />
-            <text id="matchNumberText" onclick="print('Hi.');"></text>
-
-            <rect id="matchNumberButton" onclick="print('Hi.');" />
-            <text id="matchNumberText" onclick="print('Hi.');"></text>
-
-            <rect id="matchNumberButton" onclick="print('Hi.');" />
-            <text id="matchNumberText" onclick="print('Hi.');"></text>
-
-            <rect id="matchNumberButton" onclick="print('Hi.');" />
-            <text id="matchNumberText" onclick="print('Hi.');"></text>
-
-            <rect id="matchNumberButton" onclick="print('Hi.');" />
-            <text id="matchNumberText" onclick="print('Hi.');"></text>
-
-            <rect id="matchNumberButton" onclick="print('Hi.');" />
-            <text id="matchNumberText" onclick="print('Hi.');"></text>
-
-            <rect id="matchNumberButton" onclick="print('Hi.');" />
-            <text id="matchNumberText" onclick="print('Hi.');"></text>
-
-            <rect id="matchNumberButton" onclick="print('Hi.');" />
-            <text id="matchNumberText" onclick="print('Hi.');"></text>
-
-            <rect id="matchNumberButton" onclick="print('Hi.');" />
-            <text id="matchNumberText" onclick="print('Hi.');"></text>
-
-            <rect id="matchNumberButton" onclick="print('Hi.');" />
-            <text id="matchNumberText" onclick="print('Hi.');"></text>
-
-            <rect id="matchNumberButton" onclick="print('Hi.');" />
-            <text id="matchNumberText" onclick="print('Hi.');"></text>
-
-            <rect id="matchNumberButton" onclick="print('Hi.');" />
-            <text id="matchNumberText" onclick="print('Hi.');"></text>
+            <rect id="temp8Button" onclick="print('Hi.');" />
+            <text id="temp8Text" onclick="print('Hi.');"></text>
 
             <script type="text/javascript">
                 setButtons();
