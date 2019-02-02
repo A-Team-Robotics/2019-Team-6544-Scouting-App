@@ -3,11 +3,14 @@
 	if($_POST){
 		//Get variables from post array
 		$teamName = ($_POST['teamName']);
+		$teamName = addslashes($teamName);
 		$teamNumber = ($_POST['teamNumber']); 
-		$teamSchoolName = ($_POST['teamSchoolName']); 
+		$teamSchoolName = ($_POST['teamSchoolName']);
+		$teamSchoolName = addslashes($teamSchoolName);
 		$teamEmail =($_POST['teamEmail']);
-		$teamAge = ($_POST['teamAge']); 
+		$teamAge = ($_POST['teamAge']);
 		$teamLocation = ($_POST['teamLocation']);
+		$teamLocation = addslashes($teamLocation);
 		
 		//Create customer query
 		$query ="INSERT INTO team_info (teamName, teamNumber, teamSchoolName, teamEmail, teamAge, teamLocation)
@@ -75,7 +78,7 @@
 			<label>Team Location</label> 
 			<input name="teamLocation" type="text" class="form-control" placeholder="Enter Team Location">
 			</div>
-			<br><input type="submit" class="btn btn-default" value="Add Team" /></br>
+			<br /><input type="submit" class="btn btn-default" value="Add Team" />
 		</form>
         </div>
       </div>

@@ -95,7 +95,7 @@
             <rect width="40" height="15" x="673" y="55" style="fill: rgb(255, 208, 0);stroke: rgb(0, 0, 0)" />
             <rect width="40" height="15" x="788" y="55" style="fill: rgb(255, 208, 0);stroke: rgb(0, 0, 0)" />
             <rect width="40" height="15" x="903" y="55" style="fill: rgb(255, 208, 0);stroke: rgb(0, 0, 0)" />
-            <rect width="40" height="15" x="1018" y="55" style="fill: rgb(255, 208, 0);stroke: rgb(0, 0, 0)" onclick="print('Your using me for scouting is repellent.');" />
+            <rect width="40" height="15" x="1018" y="55" style="fill: rgb(255, 208, 0);stroke: rgb(0, 0, 0)" onclick="alert('Your using me for scouting is repellent.');" />
             <rect width="40" height="15" x="1133" y="55" style="fill: rgb(255, 208, 0);stroke: rgb(0, 0, 0)" />
             <rect width="40" height="15" x="328" y="680" style="fill: rgb(255, 208, 0);stroke: rgb(0, 0, 0)" />
             <rect width="40" height="15" x="443" y="680" style="fill: rgb(255, 208, 0);stroke: rgb(0, 0, 0)" />
@@ -222,26 +222,50 @@
                 <line x1="837" y1="642" x2="800" y2="630" style="stroke: rgb(255, 255, 255);stroke-width:1;" />
             
             <!-- Make Buttons -->
-            <rect id="teamNumberButton" onclick="print('This is really annoying.');" />
-            <text id="teamNumberText" onclick="print('This is really annoying.');"></text>
+            <rect id="teamNumberButton" onclick="alert('This is really annoying.');" />
+            <text id="teamNumberText" onclick="alert('This is really annoying.');"></text>
 
             <rect id="matchNumberButton" onclick="alert('Hi.');" />
             <text id="matchNumberText" onclick="alert('Hi.');"></text>
 
-            <rect id="startButton" onclick="incrementTime();" />
-            <text id="startText" onclick="incrementTime();"></text>
+            <rect id="startButton" onclick="startMatch();" />
+            <text id="startText" onclick="startMatch();"></text>
 
-            <rect id="lRCButton" onclick="setTempButtons(lrcValues, autoCargoRocketsSuccess, autoCargoRocketsFail, teleopCargoRocketsSuccess, teleopCargoRocketsFail);" />
-            <text id="lRCText" onclick="setTempButtons(lrcValues, autoCargoRocketsSuccess, autoCargoRocketsFail, teleopCargoRocketsSuccess, teleopCargoRocketsFail);"></text>
+            <rect id="lRCButton" onclick="setTempButtons(cValues, autoCargoRocketsSuccess, autoCargoRocketsFail, teleopCargoRocketsSuccess, teleopCargoRocketsFail);" />
+            <text id="lRCText" onclick="setTempButtons(cValues, autoCargoRocketsSuccess, autoCargoRocketsFail, teleopCargoRocketsSuccess, teleopCargoRocketsFail);"></text>
 
-            <rect id="lRHButton" onclick="setTempButtons(lrhValues, autoHatchRocketsSuccess, autoHatchRocketsFail, teleopHatchRocketsSuccess, teleopHatchRocketsFail);" />
-            <text id="lRHText" onclick="setTempButtons(lrhValues, autoHatchRocketsSuccess, autoHatchRocketsFail, teleopHatchRocketsSuccess, teleopHatchRocketsFail);"></text>
+            <rect id="lRHButton" onclick="setTempButtons(hValues, autoHatchRocketsSuccess, autoHatchRocketsFail, teleopHatchRocketsSuccess, teleopHatchRocketsFail);" />
+            <text id="lRHText" onclick="setTempButtons(hValues, autoHatchRocketsSuccess, autoHatchRocketsFail, teleopHatchRocketsSuccess, teleopHatchRocketsFail);"></text>
 
-            <rect id="rRCButton" onclick="setTempButtons(lrcValues, autoCargoRocketsSuccess, autoCargoRocketsFail, teleopCargoRocketsSuccess, teleopCargoRocketsFail);" />
-            <text id="rRCText" onclick="setTempButtons(lrcValues, autoCargoRocketsSuccess, autoCargoRocketsFail, teleopCargoRocketsSuccess, teleopCargoRocketsFail);"></text>
+            <rect id="rRCButton" onclick="setTempButtons(cValues, autoCargoRocketsSuccess, autoCargoRocketsFail, teleopCargoRocketsSuccess, teleopCargoRocketsFail);" />
+            <text id="rRCText" onclick="setTempButtons(cValues, autoCargoRocketsSuccess, autoCargoRocketsFail, teleopCargoRocketsSuccess, teleopCargoRocketsFail);"></text>
 
-            <rect id="rRHButton" onclick="setTempButtons(lrhValues, autoHatchRocketsSuccess, autoHatchRocketsFail, teleopHatchRocketsSuccess, teleopHatchRocketsFail);" />
-            <text id="rRHText" onclick="setTempButtons(lrhValues, autoHatchRocketsSuccess, autoHatchRocketsFail, teleopHatchRocketsSuccess, teleopHatchRocketsFail);"></text>
+            <rect id="rRHButton" onclick="setTempButtons(hValues, autoHatchRocketsSuccess, autoHatchRocketsFail, teleopHatchRocketsSuccess, teleopHatchRocketsFail);" />
+            <text id="rRHText" onclick="setTempButtons(hValues, autoHatchRocketsSuccess, autoHatchRocketsFail, teleopHatchRocketsSuccess, teleopHatchRocketsFail);"></text>
+            
+            <rect id="sCButton" onclick="setTempButtons(cValues, autoCargoShipSuccess, autoCargoShipFail, teleopCargoShipSuccess, teleopCargoShipFail);" />
+            <text id="sCText" onclick="setTempButtons(cValues, autoCargoShipSuccess, autoCargoShipFail, teleopCargoShipSuccess, teleopCargoShipFail);"></text>
+
+            <rect id="sHButton" onclick="setTempButtons(hValues, autoHatchShipSuccess, autoHatchShipFail, teleopHatchShipSuccess, teleopHatchShipFail);" />
+            <text id="sHText" onclick="setTempButtons(hValues, autoHatchShipSuccess, autoHatchShipFail, teleopHatchShipSuccess, teleopHatchShipFail);"></text>
+
+            <rect id="lRC2Button" onclick="setTempButtons(cValues, autoCargoRocketsSuccess, autoCargoRocketsFail, teleopCargoRocketsSuccess, teleopCargoRocketsFail);" />
+            <text id="lRC2Text" onclick="setTempButtons(cValues, autoCargoRocketsSuccess, autoCargoRocketsFail, teleopCargoRocketsSuccess, teleopCargoRocketsFail);"></text>
+
+            <rect id="lRH2Button" onclick="setTempButtons(hValues, autoHatchRocketsSuccess, autoHatchRocketsFail, teleopHatchRocketsSuccess, teleopHatchRocketsFail);" />
+            <text id="lRH2Text" onclick="setTempButtons(hValues, autoHatchRocketsSuccess, autoHatchRocketsFail, teleopHatchRocketsSuccess, teleopHatchRocketsFail);"></text>
+
+            <rect id="rRC2Button" onclick="setTempButtons(cValues, autoCargoRocketsSuccess, autoCargoRocketsFail, teleopCargoRocketsSuccess, teleopCargoRocketsFail);" />
+            <text id="rRC2Text" onclick="setTempButtons(cValues, autoCargoRocketsSuccess, autoCargoRocketsFail, teleopCargoRocketsSuccess, teleopCargoRocketsFail);"></text>
+
+            <rect id="rRH2Button" onclick="setTempButtons(hValues, autoHatchRocketsSuccess, autoHatchRocketsFail, teleopHatchRocketsSuccess, teleopHatchRocketsFail);" />
+            <text id="rRH2Text" onclick="setTempButtons(hValues, autoHatchRocketsSuccess, autoHatchRocketsFail, teleopHatchRocketsSuccess, teleopHatchRocketsFail);"></text>
+            
+            <rect id="sC2Button" onclick="setTempButtons(cValues, autoCargoShipSuccess, autoCargoShipFail, teleopCargoShipSuccess, teleopCargoShipFail);" />
+            <text id="sC2Text" onclick="setTempButtons(cValues, autoCargoShipSuccess, autoCargoShipFail, teleopCargoShipSuccess, teleopCargoShipFail);"></text>
+
+            <rect id="sH2Button" onclick="setTempButtons(hValues, autoHatchShipSuccess, autoHatchShipFail, teleopHatchShipSuccess, teleopHatchShipFail);" />
+            <text id="sH2Text" onclick="setTempButtons(hValues, autoHatchShipSuccess, autoHatchShipFail, teleopHatchShipSuccess, teleopHatchShipFail);"></text>
 
             <rect id="temp1Button" /> <!--BIND-->
             <text id="temp1Text"></text>
@@ -267,6 +291,14 @@
             <rect id="temp8Button" />
             <text id="temp8Text"></text>
 
+            <!-- Set Number Indicators for Ship -->
+
+            <text width="30" height="30" x="660" y="280" value="1" style="font-family:'Times New Roman';fill:rgb(0, 255, 203);font-size:50px;">1</text>
+            <text width="30" height="30" x="500" y="390" value="1" style="font-family:'Times New Roman';fill:rgb(0, 255, 203);font-size:50px;">2</text>
+            <text width="30" height="30" x="660" y="495" value="1" style="font-family:'Times New Roman';fill:rgb(0, 255, 203);font-size:50px;">3</text>
+            <text width="30" height="30" x="815" y="280" value="1" style="font-family:'Times New Roman';fill:rgb(0, 255, 203);font-size:50px;">3</text>
+            <text width="30" height="30" x="975" y="390" value="1" style="font-family:'Times New Roman';fill:rgb(0, 255, 203);font-size:50px;">2</text>
+            <text width="30" height="30" x="815" y="495" value="1" style="font-family:'Times New Roman';fill:rgb(0, 255, 203);font-size:50px;">1</text>
             <script type="text/javascript">
                 setButtons();
             </script>

@@ -1,7 +1,11 @@
 <?php include('includes/database.php'); ?>
 <?php
-	$numRows = $_GET["num"];
-	$startMatchNum = $_GET["start"];
+	$numRows = 1;
+	$startMatchNum = 1;
+	if(isset($_GET['num'])) {
+		$numRows = $_GET["num"];
+		$startMatchNum = $_GET["start"];
+	}
     $query = "SELECT DISTINCT teamNumber
                 FROM team_info
                 ORDER BY teamNumber
@@ -9,24 +13,40 @@
     //Get results
 	$result = $mysqli->query($query) or die($mysqli->error.__LINE__);
 	$doc = new DomDocument;
-	$values = array('blue1Team', 'blue2Team','blue3Team','red1Team','red2Team','red3Team');
+	$values = array('blue1Team','blue2Team','blue3Team','red1Team','red2Team','red3Team');
 ?>
 <?php
 	function send() {
 		if($_POST){
 			//Get variables from post array
-			$matchNumber = ($_POST['matchNumber']);
-			$blueTeam1 = ($_POST['blue1Team']); 
-			$blueTeam2 = ($_POST['blue2Team']); 
-			$blueTeam3 = ($_POST['blue3Team']);
-			$redTeam1 = ($_POST['red1Team']);
-			$redTeam2 = ($_POST['red2Team']);
-			$redTeam3 = ($_POST['red3Team']);
-
-			$query = "INSERT INTO match_info (matchNumber, blueTeam1, blueTeam2, blueTeam3, redTeam1, redTeam2, redTeam3) 
+			$check = ($_POST['blueTeam1']);
+			if($numRows > 1) {
+				$blueTeam1 = explode ("|", $_POST['blueTeam1']);
+				$blueTeam2 = explode ("|", $_POST['blueTeam2']);
+				$blueTeam3 = explode ("|", $_POST['blueTeam3']);
+				$redTeam1 = explode ("|", $_POST['redTeam1']);
+				$redTeam2 = explode ("|", $_POST['redTeam2']);
+				$redTeam3 = explode ("|", $_POST['redTeam3']);
+				for($i = 0;i < $numRows;$i++) {
+					$matchNumber = $i + 1;
+					$query = "INSERT INTO matches (matchNumber, blueTeam1, blueTeam2, blueTeam3, redTeam1, redTeam2, redTeam3)
+										VALUES ('$matchNumber','$blueTeam1[$i]','$blueTeam2[$i]','$blueTeam3[$i]','$redTeam1[$i]','$redTeam2[$i]','$redTeam3[$i]')";
+					$mysqli->query($query);
+				}
+			}
+			else {
+				$matchNumber = $startMatchNum;
+				$blueTeam1 = ($_POST['blue1Team']);
+				$blueTeam2 = ($_POST['blue2Team']); 
+				$blueTeam3 = ($_POST['blue3Team']);
+				$redTeam1 = ($_POST['red1Team']);
+				$redTeam2 = ($_POST['red2Team']);
+				$redTeam3 = ($_POST['red3Team']);
+				$query = "INSERT INTO match_info (matchNumber, blueTeam1, blueTeam2, blueTeam3, redTeam1, redTeam2, redTeam3) 
 									VALUES ('$matchNumber','$blueTeam1','$blueTeam2','$blueTeam3','$redTeam1','$redTeam2','$redTeam3')";
+				$mysqli->query($query);
+			}
 
-			$mysqli->query($query);
 			$msg='Match Info Added';
 			header('Location: teamList.php?'.urlencode($msg).'');
 			exit;
@@ -70,27 +90,6 @@
 		</style>
   </head>
   <body>
-		<!--
-		<script type="text/javascript">
-			var numRows = 1;
-
-			document.addEventListener("DOMContentLoaded", function(event) {
-					document.getElementById("num").innerHTML = numRows; 
-			});
-			function adder() {
-				numRows += 1;
-				document.getElementById("num").innerHTML = numRows;
-				draw();
-				debugger;
-			}
-			function subtractor() {
-				numRows -= 1;
-				document.getElementById("num").innerHTML = numRows;
-				draw();
-				debugger;
-			}
-		</script>
-		-->
     <div class="container">
       <div class="header">
         <h3 style="color:purple; font:bold;">A-Team Scouting Page</h3>
@@ -117,7 +116,6 @@
 					<th>Red Team 3</th>
 				</tr>
 				<?php
-					
 					for($num = 0;$num < $numRows;$num++) {
 						echo '<tr><td>'. ($num + 1). '</td>';
 						$count = 0;
@@ -127,15 +125,16 @@
 							
 							while ($row = mysqli_fetch_array($result)) {
 								echo '<option value="'.$row['teamNumber'].'">' . $row['teamNumber'] . '</option>';
-								$count++;
 							}
 							echo '</select></td>';
 							mysqli_data_seek($result, 0);
+							$count++;
 						}
 						echo '</tr>';
 					}
 					echo '</table>';
 
+					
 					function submit($numRows, $doc, $values, $mysqli) {
 
 						$blueTeam1 = array_fill(0, abs($numRows), 0);
@@ -164,25 +163,26 @@
 				<div id="hidden_form_container" style="display:none;">
 					<script type="text/javascript">
 						function getSelectionValue(rowNum, columnNum) {
+							document.cookie = "rowNum=" + rowNum;
+							//FOR EXTERNAL PHP FILE
+							//window.location = "http://example.com/file.php";
 							var id =
 								<?php
 								$index = 0;
-								$row = 2;
+								$row = 0;
+								if ( ! empty( $_COOKIE['rowNum'] ) ) {
+									$row = $_COOKIE['rowNum'];
+								}
 								echo '"'.$values[$index].$row.'"';
 								?>;
 							var e = document.getElementById(id);
 							var selectedValue = e.options[e.selectedIndex].value;
-							alert(selectedValue);
 						}
 
-						function getCellValues(rowNum, columnNum) {
-							var table = document.getElementById('matches');
-							alert(table.rows[rowNum].cells[columnNum].innerHTML);
-							//return table.rows[rowNum].cells[columnNum].innerHTML;
-						}
-
-						function postRefreshPage () {
-							var theForm, newInput1, newInput2;
+						function postRefreshPage() {
+							var theForm, newInput1, newInput2, newInput3, newInput4, newInput5, newInput6;
+							var rows = <?php echo $numRows; ?>;
+							var nums1 = new Array(rows);
 							// Start by creating a <form>
 							theForm = document.createElement('form');
 							theForm.action = 'addMatch.php';
@@ -191,49 +191,86 @@
 							newInput1 = document.createElement('input');
 							newInput1.type = 'hidden';
 							newInput1.name = 'blue1Team';
-							newInput1.value = 'blue1Team';
+							newInput1.value = "";
+							for(var i = 0;i < rows;i++) {
+								newInput1.value += getSelectionValue(i, 0);
+								if((i + 1) != rows) {
+									newInput1.value += "|";
+								}
+							}
+
 							newInput2 = document.createElement('input');
 							newInput2.type = 'hidden';
 							newInput2.name = 'blue2Team';
-							newInput2.value = <?php echo 'fudgikuh'; ?>;
+							newInput2.value = "";
+							for(var i = 0;i < rows;i++) {
+								newInput2.value += getSelectionValue(i, 1);
+								if((i + 1) != rows) {
+									newInput2.value += "|";
+								}
+							}
+							alert(newInput2.value);
+							
 							newInput3 = document.createElement('input');
 							newInput3.type = 'hidden';
 							newInput3.name = 'blue3Team';
-							newInput3.value = 'value 2';
+							newInput3.value = "";
+							for(var i = 0;i < rows;i++) {
+								newInput3.value += getSelectionValue(i, 2);
+								if((i + 1) != rows) {
+									newInput3.value += "|";
+								}
+							}
+							
 							newInput4 = document.createElement('input');
 							newInput4.type = 'hidden';
 							newInput4.name = 'red1Team';
-							newInput4.value = 'value 2';
+							newInput4.value = "";
+							for(var i = 0;i < rows;i++) {
+								newInput4.value += getSelectionValue(i, 3);
+								if((i + 1) != rows) {
+									newInput4.value += "|";
+								}
+							}
+							
 							newInput5 = document.createElement('input');
 							newInput5.type = 'hidden';
 							newInput5.name = 'red2Team';
-							newInput5.value = 'value 2';
+							newInput5.value = "";
+							for(var i = 0;i < rows;i++) {
+								newInput5.value += getSelectionValue(i, 4);
+								if((i + 1) != rows) {
+									newInput5.value += "|";
+								}
+							}
+							
 							newInput6 = document.createElement('input');
 							newInput6.type = 'hidden';
 							newInput6.name = 'red3Team';
-							newInput6.value = 'value 2';
-							newInput7 = document.createElement('input');
-							newInput7.type = 'hidden';
-							newInput7.name = 'input_2';
-							newInput7.value = 'value 2';
+							newInput6.value = "";
+							for(var i = 0;i < rows;i++) {
+								newInput6.value += getSelectionValue(i, 5);
+								if((i + 1) != rows) {
+									newInput6.value += "|";
+								}
+							}
 							// Now put everything together...
 							theForm.appendChild(newInput1);
 							theForm.appendChild(newInput2);
+							theForm.appendChild(newInput3);
+							theForm.appendChild(newInput4);
+							theForm.appendChild(newInput5);
+							theForm.appendChild(newInput6);
 							// ...and it to the DOM...
 							document.getElementById('hidden_form_container').appendChild(theForm);
 							// ...and submit it
 							theForm.submit();
+							//location.reload();
 						}
 					</script>
 				</div>
-				<button type="button" onclick="getSelectionValue(2, 3);">Do it.</button>
-				<script type="text/javascript">
-					function submit() {
-						var onCall = "<?php submit($numRows, $doc, $values, $mysqli); ?>";
-						alert(onCall);
-					}
-				</script>
-				<button type="button" onclick="submit();">Submit</button>
+				<button type="button" onclick="alert(getSelectionValue(2, 0));">Do it.</button>
+				<button type="button" onclick="postRefreshPage();">Submit</button>
 		</div>
       <div class="footer">
 			<p style="color:purple;">&copy; A-Team Robotics 2018</p>
