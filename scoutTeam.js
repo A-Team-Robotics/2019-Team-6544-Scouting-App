@@ -185,11 +185,25 @@ function setTempButtons(values, a1, a2, t1, t2) {
     }
     
     document.getElementById(tempIds[0] + "Button").onclick = function() {
-        a1[0] += 1;
+        if(time >= 120) {
+            a1[0] += 1;
+            alert(a1[0]);
+        }
+        else {
+            t1[0] += 1;
+            alert(t1[0]);
+        }
         unsetTempButtons();
     };
     document.getElementById(tempIds[0] + "Text").onclick = function() {
-        a1[0] += 1;
+        if(time >= 120) {
+            a1[0] += 1;
+            alert(a1[0]);
+        }
+        else {
+            t1[0] += 1;
+            alert(t1[0]);
+        }
         unsetTempButtons();
     };
     document.getElementById(tempIds[1] + "Button").onclick = function() {
