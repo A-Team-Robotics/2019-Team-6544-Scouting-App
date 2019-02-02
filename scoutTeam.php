@@ -225,41 +225,47 @@
             <rect id="teamNumberButton" onclick="print('This is really annoying.');" />
             <text id="teamNumberText" onclick="print('This is really annoying.');"></text>
 
-            <rect id="matchNumberButton" onclick="print('Hi.');" />
-            <text id="matchNumberText" onclick="print('Hi.');"></text>
+            <rect id="matchNumberButton" onclick="alert('Hi.');" />
+            <text id="matchNumberText" onclick="alert('Hi.');"></text>
 
-            <rect id="startButton" onclick="print('It works.');" />
-            <text id="startText" onclick="print('It works.');"></text>
+            <rect id="startButton" onclick="incrementTime();" />
+            <text id="startText" onclick="incrementTime();"></text>
 
-            <rect id="lRCButton" onclick="setTempButtons(lrcValues, autoCargoShipSuccess, 0, autoCargoShipSuccess, 1, autoCargoShipSuccess, 2, autoCargoRocketsFail, 0, autoCargoRocketsFail, 1, autoCargoRocketsFail, 2);" />
-            <text id="lRCText" onclick="setTempButtons(lrcValues, autoCargoShipSuccess, 0, autoCargoShipSuccess, 1, autoCargoShipSuccess, 2, autoCargoRocketsFail, 0, autoCargoRocketsFail, 1, autoCargoRocketsFail, 2);"></text>
+            <rect id="lRCButton" onclick="setTempButtons(lrcValues, autoCargoRocketsSuccess, autoCargoRocketsFail, teleopCargoRocketsSuccess, teleopCargoRocketsFail);" />
+            <text id="lRCText" onclick="setTempButtons(lrcValues, autoCargoRocketsSuccess, autoCargoRocketsFail, teleopCargoRocketsSuccess, teleopCargoRocketsFail);"></text>
 
-            <rect id="lRHButton" onclick="print('Hi.');" />
-            <text id="lRHText" onclick="print('Hi.');"></text>
+            <rect id="lRHButton" onclick="setTempButtons(lrhValues, autoHatchRocketsSuccess, autoHatchRocketsFail, teleopHatchRocketsSuccess, teleopHatchRocketsFail);" />
+            <text id="lRHText" onclick="setTempButtons(lrhValues, autoHatchRocketsSuccess, autoHatchRocketsFail, teleopHatchRocketsSuccess, teleopHatchRocketsFail);"></text>
 
-            <rect id="temp1Button" onclick="print('Hi.');" />
-            <text id="temp1Text" onclick="print('Hi.');"></text>
+            <rect id="rRCButton" onclick="setTempButtons(lrcValues, autoCargoRocketsSuccess, autoCargoRocketsFail, teleopCargoRocketsSuccess, teleopCargoRocketsFail);" />
+            <text id="rRCText" onclick="setTempButtons(lrcValues, autoCargoRocketsSuccess, autoCargoRocketsFail, teleopCargoRocketsSuccess, teleopCargoRocketsFail);"></text>
 
-            <rect id="temp2Button" onclick="print('Hi.');" />
-            <text id="temp2Text" onclick="print('Hi.');"></text>
+            <rect id="rRHButton" onclick="setTempButtons(lrhValues, autoHatchRocketsSuccess, autoHatchRocketsFail, teleopHatchRocketsSuccess, teleopHatchRocketsFail);" />
+            <text id="rRHText" onclick="setTempButtons(lrhValues, autoHatchRocketsSuccess, autoHatchRocketsFail, teleopHatchRocketsSuccess, teleopHatchRocketsFail);"></text>
 
-            <rect id="temp3Button" onclick="print('Hi.');" />
-            <text id="temp3Text" onclick="print('Hi.');"></text>
+            <rect id="temp1Button" /> <!--BIND-->
+            <text id="temp1Text"></text>
 
-            <rect id="temp4Button" onclick="print('Hi.');" />
-            <text id="temp4Text" onclick="print('Hi.');"></text>
+            <rect id="temp2Button" />
+            <text id="temp2Text"></text>
 
-            <rect id="temp5Button" onclick="print('Hi.');" />
-            <text id="temp5Text" onclick="print('Hi.');"></text>
+            <rect id="temp3Button" />
+            <text id="temp3Text"></text>
 
-            <rect id="temp6Button" onclick="print('Hi.');" />
-            <text id="temp6Text" onclick="print('Hi.');"></text>
+            <rect id="temp4Button" />
+            <text id="temp4Text"></text>
 
-            <rect id="temp7Button" onclick="print('Hi.');" />
-            <text id="temp7Text" onclick="print('Hi.');"></text>
+            <rect id="temp5Button" />
+            <text id="temp5Text"></text>
 
-            <rect id="temp8Button" onclick="print('Hi.');" />
-            <text id="temp8Text" onclick="print('Hi.');"></text>
+            <rect id="temp6Button" />
+            <text id="temp6Text"></text>
+
+            <rect id="temp7Button" />
+            <text id="temp7Text"></text>
+
+            <rect id="temp8Button" />
+            <text id="temp8Text"></text>
 
             <script type="text/javascript">
                 setButtons();

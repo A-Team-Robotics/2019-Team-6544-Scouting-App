@@ -1,289 +1,56 @@
-var time = 150;
+var time = 135;
 var teamNumber = 0;
 var matchNumber = 0;
 var color = 0; //0 is blue, 1 is red
 //Rocket array (A is 0, B is 1)
 
 //AUTONOMOUS / SANDSTORM
-var autoHatchRocketsSuccess = [
-    [0, 0, 0],
-    [0, 0, 0]
-];
-
-function setAutoHatchShipSuccess(num, i, j) {
-    autoHatchShipSuccess[i][j] = num;
-}
-
+var autoHatchRocketsSuccess = [0, 0, 0];
 var autoCargoRocketsSuccess = [0, 0, 0];
-
-function setAutoCargoShipSuccess(num, i) {
-    autoCargoShipSuccess[i] = num;
-}
-
-var autoHatchRocketsFail = [
-    [0, 0, 0],
-    [0, 0, 0]
-];
-
-function setAutoHatchRocketsFail(num, i, j) {
-    autoHatchRocketsFail[i][j] = num;
-}
-
+var autoHatchRocketsFail = [0, 0, 0];
 var autoCargoRocketsFail = [0, 0, 0];
-
-function setAutoCargoRocketsFail(num, i) {
-    autoCargoRocketsFail[i] = num;
-}
-
-var autoHatchShipSuccess = [0, 0, 0, 0, 0, 0, 0, 0];
-
-function setAutoHatchShipSuccess(num, i) {
-    autoHatchShipSuccess[i] = num;
-}
-
-var autoCargoShipSuccess = [0, 0, 0, 0, 0, 0, 0, 0];
-
-function setAutoCargoShipSuccess(num, i) {
-    autoCargoShipSuccess[i] = num;
-}
-
-var autoHatchShipFail = [0, 0, 0, 0, 0, 0, 0, 0];
-
-function setAutoHatchShipFail(num, i) {
-    autoHatchShipFail[i] = num;
-}
-
-var autoCargoShipFail = [0, 0, 0, 0, 0, 0, 0, 0];
-
-function setAutoCargoShipFail(num, i) {
-    autoCargoShipFail[i] = num;
-}
+var autoHatchShipSuccess = [0, 0, 0];
+var autoCargoShipSuccess = [0, 0, 0];
+var autoHatchShipFail = [0, 0, 0];
+var autoCargoShipFail = [0, 0, 0];
 
 //TIMING
-var autoHatchRocketsSuccessTime = [
-    [0, 0, 0],
-    [0, 0, 0]
-];
+var autoHatchRocketsSuccessTime = [0, 0, 0];
+var autoCargoRocketsSuccessTime = [0, 0, 0];
+var autoHatchRocketsFailTime = [0, 0, 0];
+var autoCargoRocketsFailTime = [0, 0, 0];
+var autoHatchShipSuccessTime = [0, 0, 0];
+var autoCargoShipSuccessTime = [0, 0, 0];
+var autoHatchShipFailTime = [0, 0, 0];
+var autoCargoShipFailTime = [0, 0, 0];
 
-function setAutoHatchRocketsSuccessTime(num, i, j) {
-    autoHatchRocketsSuccessTime[i][j] = num;
-}
-
-var autoCargoRocketsSuccessTime = [
-    [0, 0, 0],
-    [0, 0, 0]
-];
-
-function setAutoCargoRocketsSuccessTime(num, i, j) {
-    autoCargoRocketsSuccessTime[i][j] = num;
-}
-
-var autoHatchRocketsFailTime = [
-    [0, 0, 0],
-    [0, 0, 0]
-];
-
-function setAutoHatchRocketsFailTime(num, i, j) {
-    autoHatchRocketsFailTime[i][j] = num;
-}
-
-var autoCargoRocketsFailTime = [
-    [0, 0, 0],
-    [0, 0, 0]
-];
-
-function setAutoCargoRocketsFailTime(num, i, j) {
-    autoCargoRocketsFailTime[i][j] = num;
-}
-
-var autoHatchShipSuccessTime = [0, 0, 0, 0, 0, 0, 0, 0];
-
-function setAutoHatchShipSuccessTime(num, i) {
-    autoHatchShipSuccessTime[i] = num;
-}
-
-var autoCargoShipSuccessTime = [0, 0, 0, 0, 0, 0, 0, 0];
-
-function setAutoCargoShipSuccessTime(num, i) {
-    autoCargoShipSuccessTime[i] = num;
-}
-
-var autoHatchShipFailTime = [0, 0, 0, 0, 0, 0, 0, 0];
-
-function setAutoHatchShipFailTime(num, i) {
-    autoHatchShipFailTime[i] = num;
-}
-
-var autoCargoShipFailTime = [0, 0, 0, 0, 0, 0, 0, 0];
-
-function setAutoCargoShipFailTime(num, i) {
-    autoCargoShipFailTime[i] = num;
-}
-
-/*--------------------------------------------------------------------------------*/
-/*--------------------------------------------------------------------------------*/
-/*--------------------------------------------------------------------------------*/
-/*--------------------------------------------------------------------------------*/
 //TELEOP
 
-var teleopHatchRocketsSuccess = [
-    [0, 0, 0],
-    [0, 0, 0]
-];
-
-function setTeleopHatchRocketsSuccess(num, i, j) {
-    teleopHatchRocketsSuccess[i][j] = num;
-}
-
-var teleopCargoRocketsSuccess = [
-    [0, 0, 0],
-    [0, 0, 0]
-];
-
-function setTeleopCargoRocketsSuccess(num, i, j) {
-    teleopCargoRocketsSuccess[i][j] = num;
-}
-
-var teleopHatchRocketsFail = [
-    [0, 0, 0],
-    [0, 0, 0]
-];
-
-function setTeleopHatchRocketsFail(num, i, j) {
-    teleopHatchRocketsFail[i][j] = num;
-}
-
-var teleopCargoRocketsFail = [
-    [0, 0, 0],
-    [0, 0, 0]
-];
-
-function setTeleopCargoRocketsFail(num, i, j) {
-    teleopCargoRocketsFail[i][j] = num;
-}
-
-var teleopHatchShipSuccess = [0, 0, 0, 0, 0, 0, 0, 0];
-
-function setTeleopHatchShipSuccess(num, i) {
-    teleopHatchShipSuccess[i] = num;
-}
-
-var teleopCargoShipSuccess = [0, 0, 0, 0, 0, 0, 0, 0];
-
-function setTeleopCargoShipSuccess(num, i) {
-    teleopCargoShipSuccess[i] = num;
-}
-
-var teleopHatchShipFail = [0, 0, 0, 0, 0, 0, 0, 0];
-
-function setTeleopHatchShipFail(num, i) {
-    teleopHatchShipFail[i] = num;
-}
-
-var teleopCargoShipFail = [0, 0, 0, 0, 0, 0, 0, 0];
-
-function setTeleopCargoShipFail(num, i) {
-    teleopCargoShipFail[i] = num;
-}
+var teleopHatchRocketsSuccess = [0, 0, 0];
+var teleopCargoRocketsSuccess = [0, 0, 0];
+var teleopHatchRocketsFail = [0, 0, 0];
+var teleopCargoRocketsFail = [0, 0, 0];
+var teleopHatchShipSuccess = [0, 0, 0];
+var teleopCargoShipSuccess = [0, 0, 0];
+var teleopHatchShipFail = [0, 0, 0];
+var teleopCargoShipFail = [0, 0, 0];
 
 //TELEOP TIMING
-var teleopHatchRocketsSuccessTime = [
-    [0, 0, 0],
-    [0, 0, 0]
-];
+var teleopHatchRocketsSuccessTime = [0, 0, 0];
+var teleopCargoRocketsSuccessTime = [0, 0, 0];
+var teleopHatchRocketsFailTime = [0, 0, 0];
+var teleopCargoRocketsFailTime = [0, 0, 0];
+var teleopHatchShipSuccessTime = [0, 0, 0];
+var teleopCargoShipSuccessTime = [0, 0, 0];
+var teleopHatchShipFailTime = [0, 0, 0];
+var teleopCargoShipFailTime = [0, 0, 0];
 
-function setTeleopHatchRocketsSuccessTime(num, i, j) {
-    teleopHatchRocketsSuccessTime[i][j] = num;
-}
+//OTHER
 
-var teleopCargoRocketsSuccessTime = [
-    [0, 0, 0],
-    [0, 0, 0]
-];
-
-function setTeleopCargoRocketsSuccessTime(num, i, j) {
-    teleopCargoRocketsSuccessTime[i][j] = num;
-}
-
-var teleopHatchRocketsFailTime = [
-    [0, 0, 0],
-    [0, 0, 0]
-];
-
-function setTeleopHatchRocketsFailTime(num, i, j) {
-    teleopHatchRocketsFailTime[i][j] = num;
-}
-
-var teleopCargoRocketsFailTime = [
-    [0, 0, 0],
-    [0, 0, 0]
-];
-
-function setTeleopCargoRocketsFailTime(num, i, j) {
-    teleopCargoRocketsFailTime[i][j] = num;
-}
-
-var teleopHatchShipSuccessTime = [0, 0, 0, 0, 0, 0, 0, 0];
-
-function setTeleopHatchShipSuccessTime(num, i) {
-    teleopHatchShipSuccessTime[i] = num;
-}
-
-var teleopCargoShipSuccessTime = [0, 0, 0, 0, 0, 0, 0, 0];
-
-function setTeleopCargoShipSuccessTime(num, i) {
-    teleopCargoShipSuccessTime[i] = num;
-}
-
-var teleopHatchShipFailTime = [0, 0, 0, 0, 0, 0, 0, 0];
-
-function setTeleopHatchShipFailTime(num, i) {
-    teleopHatchShipFailTime[i] = num;
-}
-
-var teleopCargoShipFailTime = [0, 0, 0, 0, 0, 0, 0, 0];
-
-function setCargoShipFailTime(num, i) {
-    teleopCargoShipFailTime[i] = num;
-}
-
-
-var climb = [
-    [0, 0, 0],
-    [0, 0, 0]
-    ];
-
-function setClimb(num, i, j) {
-    climb[i][j] = num;
-}
-    
-var climbTime = [
-    [0, 0, 0],
-    [0, 0, 0]
-    ];
-  
-function setClimbTime(num, i, j) {
-    climbTime[i][j] = num;
-}
-
-var climbFail = [
-    [0, 0, 0],
-    [0, 0, 0]
-    ];
-
-function setClimbFail(num, i, j) {
-    climbFail[i][j] = num;
-}
-    
-var climbFailTime = [
-    [0, 0, 0],
-    [0, 0, 0]
-    ];
-  
-function setClimbFailTime(num, i, j) {
-    climbFailTime[i][j] = num;
-}
-
+var climb = [0, 0, 0];
+var climbTime = [0, 0, 0];
+var climbFail = [0, 0, 0];
+var climbFailTime = [0, 0, 0];
 
 //Button Dimensions (width, height, x, y]
 //Color (red, green, blue]
@@ -292,20 +59,24 @@ function setClimbFailTime(num, i, j) {
 var attributes = ['width', 'height', 'x', 'y'];
 var texts = ['width', 'height','x', 'y', 'font-family', 'font-size', 'value'];
 
-var ids = ['matchNumber', 'teamNumber', 'start', 'lRC','lRH'];
+var ids = ['matchNumber', 'teamNumber', 'start', 'lRC','lRH','rRC','rRH'];
 
 var setsDimensions = [ //The first dimension indexes match the indexes for the array ids.
                     [150, 30, 1340, 10],
                     [150, 30, 10, 10],
                     [150, 30, 675, 10],
                     [50, 50, 575, 575],
-                    [50, 50, 655, 575]
+                    [50, 50, 655, 575],
+                    [50, 50, 575, 125],
+                    [50, 50, 655, 125]
                     ];
 
 var setsColors = [ //The first dimension indexes match the indexes for the array ids.
                 [150, 150, 150],
                 [150, 150, 150],
                 [150, 150, 150],
+                [0, 0, 255],
+                [0, 0, 255],
                 [0, 0, 255],
                 [0, 0, 255]
                 ];
@@ -314,16 +85,10 @@ var textAttributes = [[150, 30, setsDimensions[0][2], setsDimensions[0][3] + 20,
                     [150, 30, setsDimensions[1][2], setsDimensions[1][3] + 20, 'Times New Roman', 20, "Select Team"],
                     [150, 30, setsDimensions[2][2], setsDimensions[2][3] + 20, 'Times New Roman', 20, "START"],
                     [setsDimensions[3][0], setsDimensions[3][1], setsDimensions[3][2] + 5, setsDimensions[3][3] + 40, 'Times New Roman', 50, "C"],
-                    [setsDimensions[4][0], setsDimensions[4][1], setsDimensions[4][2] + 5, setsDimensions[4][3] + 40, 'Times New Roman', 50, "H"]
+                    [setsDimensions[4][0], setsDimensions[4][1], setsDimensions[4][2] + 5, setsDimensions[4][3] + 40, 'Times New Roman', 50, "H"],
+                    [setsDimensions[5][0], setsDimensions[5][1], setsDimensions[5][2] + 5, setsDimensions[5][3] + 40, 'Times New Roman', 50, "C"],
+                    [setsDimensions[5][0], setsDimensions[6][1], setsDimensions[6][2] + 5, setsDimensions[6][3] + 40, 'Times New Roman', 50, "H"]
                     ];
-
-var textColors = [
-                [255, 255, 255],
-                [255, 255, 255],
-                [255, 255, 255],
-                [255, 255, 255],
-                [255, 255, 255]
-                ];
 
 var tempDimensions = [
     [100, 100, 200, 720],
@@ -355,6 +120,7 @@ var tempColor = [[0, 255, 0],
     ];
 
 var lrcValues = ['C1', 'C2', 'C3', 'C4', 'C5', 'C6'];
+var lrhValues = ['H1', 'H2', 'H3', 'H4', 'H5', 'H6'];
 
 function hideSVG(id) {
     var style = document.getElementById(id).style.display;
@@ -364,6 +130,31 @@ function hideSVG(id) {
         document.getElementById(id).style.display = "none";
     //or to hide the all svg
     //document.getElementById("mySvg").style.display = "none";
+}
+
+function incrementTime() {
+    if(time != 0) {
+        time -= 1;
+        document.getElementById('startText').value = time;
+        document.getElementById('startText').innerHTML = time;
+        setTimeout(incrementTime, 1000);
+    }
+    else {
+        document.getElementById('startText').value = "C'est fini!";
+        document.getElementById('startText').innerHTML = "C'est fini!";
+    }
+}
+
+//Resets the Temporary Buttons so the user doesn't mistake them.
+function unsetTempButtons() {
+    for(var i = 0;i < 6;i++) {
+        var tempId = tempIds[i] + "Button";
+        var tempId2 = tempIds[i] + "Text";
+        document.getElementById(tempId2).value = null;
+        document.getElementById(tempId2).innerHTML = null;
+        document.getElementById(tempId).onclick = null;
+        document.getElementById(tempId2).onclick = null;
+    }
 }
 
 function tempButtons() {
@@ -385,135 +176,62 @@ function tempButtons() {
     }
 }
 
-function setTempButtons(values, f1, f2, f3, f4, f5, f6, p1, i1, p2, i2, p3, i3, p4, i4, p5, i5, p6, i6) {
-    for(var i = 0;i < 6;i++) {
-        var tempId = tempIds[i] + "Button";
-        var tempId2 = tempIds[i] + "Text";
-        document.getElementById(tempId2).value = values[i];
-        document.getElementById(tempId2).innerHTML = values[i];
-        document.getElementById(tempId2).onclick = f1(p1, i1);
-        document.getElementById(tempId2).onclick = f1(p1, i1);
-        document.getElementById(tempId2).onclick = f2(p2, i2);
-        document.getElementById(tempId2).onclick = f2(p2, i2);
-        document.getElementById(tempId2).onclick = f3(p3, i3);
-        document.getElementById(tempId2).onclick = f3(p3, i3);
-        document.getElementById(tempId2).onclick = f4(p4, i4);
-        document.getElementById(tempId2).onclick = f4(p4, i4);
-        document.getElementById(tempId2).onclick = f5(p5, i5);
-        document.getElementById(tempId2).onclick = f5(p5, i5);
-        document.getElementById(tempId2).onclick = f6(p6, i6);
-        document.getElementById(tempId2).onclick = f6(p6, i6);
-    }
-}
-/*
-function setsTempButtons(values, f1, f2, f3, f4, f5, f6, p1, p2, p3, p4, p5, p6) {
+function setTempButtons(values, a1, a2, t1, t2) {
     for(var i = 0;i < 6;i++) {
         var tempId = tempIds[i] + "Button";
         var tempId2 = tempIds[i] + "Text";
         document.getElementById(tempId2).value = values[i];
         document.getElementById(tempId2).innerHTML = values[i];
     }
-
+    
     document.getElementById(tempIds[0] + "Button").onclick = function() {
-        p1(f1);
+        a1[0] += 1;
+        unsetTempButtons();
     };
-    /*
-    document.getElementById(tempIds[0] + "Text").onclick = f1(p1);
-    document.getElementById(tempIds[1] + "Button").onclick = f2(p2);
-    document.getElementById(tempIds[1] + "Text").onclick = f2(p2);
-    document.getElementById(tempIds[2] + "Button").onclick = f3(p3);
-    document.getElementById(tempIds[2] + "Text").onclick = f3(p3);
-    document.getElementById(tempIds[3] + "Button").onclick = f4(p4);
-    document.getElementById(tempIds[3] + "Text").onclick = f4(p4);
-    document.getElementById(tempIds[4] + "Button").onclick = f5(p5);
-    document.getElementById(tempIds[4] + "Text").onclick = f5(p5);
-    document.getElementById(tempIds[5] + "Button").onclick = f6(p6);
-    document.getElementById(tempIds[5] + "Text").onclick = f6(p6);
-    *\/
-}
-*/
-
-function setTempButtons(values, v1, i1, v2, i2, v3, i3, v4, i4, v5, i5, v6, i6) {
-    for(var i = 0;i < 6;i++) {
-        var tempId = tempIds[i] + "Button";
-        var tempId2 = tempIds[i] + "Text";
-        document.getElementById(tempId2).value = values[i];
-        document.getElementById(tempId2).innerHTML = values[i];
-    }
-
-    document.getElementById(values[0] + "Button").onclick = function(v1, i1) {
-        v1[i1] += 1;
-        alert(v1[i1]);
+    document.getElementById(tempIds[0] + "Text").onclick = function() {
+        a1[0] += 1;
+        unsetTempButtons();
     };
-    document.getElementById(values[0] + "Text").onclick = function(v1, i1) {
-        v1[i1] += 1;
-        alert(v1[i1]);
+    document.getElementById(tempIds[1] + "Button").onclick = function() {
+        a1[1] += 1;
+        unsetTempButtons();
     };
-    document.getElementById(values[1] + "Button").onclick = function(v2, i2) {
-        v2[i2] += 1;
-        alert(v2[i2]);
+    document.getElementById(tempIds[1] + "Text").onclick = function() {
+        a1[1] += 1;
+        unsetTempButtons();
     };
-    document.getElementById(values[1] + "Text").onclick = function(v2, i2) {
-        v2[i2] += 1;
-        alert(v2[i2]);
+    document.getElementById(tempIds[2] + "Button").onclick = function() {
+        a1[2] += 1;
+        unsetTempButtons();
     };
-    document.getElementById(values[2] + "Button").onclick = function(v3, i3) {
-        v3[i3] += 1;
-        alert(v3[i3]);
+    document.getElementById(tempIds[2] + "Text").onclick = function() {
+        a1[2] += 1;
+        unsetTempButtons();
     };
-    document.getElementById(values[2] + "Text").onclick = function(v3, i3) {
-        v3[i3] += 1;
-        alert(v3[i3]);
+    document.getElementById(tempIds[3] + "Button").onclick = function() {
+        a2[0] += 1;
+        unsetTempButtons();
     };
-    document.getElementById(values[3] + "Button").onclick = function(v4, i4) {
-        v4[i4] += 1;
-        alert(v4[i4]);
+    document.getElementById(tempIds[3] + "Text").onclick = function() {
+        a2[0] += 1;
+        unsetTempButtons();
     };
-    document.getElementById(values[3] + "Text").onclick = function(v4, i4) {
-        v4[i4] += 1;
-        alert(v4[i4]);
+    document.getElementById(tempIds[4] + "Button").onclick = function() {
+        a2[1] += 1;
+        unsetTempButtons();
     };
-    document.getElementById(values[4] + "Button").onclick = function(v5, i5) {
-        v5[i5] += 1;
-        alert(v5[i5]);
+    document.getElementById(tempIds[4] + "Text").onclick = function() {
+        a2[1] += 1;
+        unsetTempButtons();
     };
-    document.getElementById(values[4] + "Text").onclick = function(v5, i5) {
-        v5[i5] += 1;
-        alert(v5[i5]);
+    document.getElementById(tempIds[5] + "Button").onclick = function() {
+        a2[2] += 1;
+        unsetTempButtons();
     };
-    document.getElementById(values[5] + "Button").onclick = function(v6, i6) {
-        v6[i6] += 1;
-        alert(v6[i6]);
+    document.getElementById(tempIds[5] + "Text").onclick = function() {
+        a2[2] += 1;
+        unsetTempButtons();
     };
-    document.getElementById(values[5] + "Text").onclick = function(v6, i6) {
-        v6[i6] += 1;
-        alert(v6[i6]);
-    };
-}
-
-function setTempButtons2(values, f1, f2, f3, f4, f5, f6, p1, i1, j1, p2, i2, j2, p3, i3, j3, p4, i4, j4, p5, i5, j5, p6, i6, j6) {
-    for(var i = 0;i < 6;i++) {
-        var tempId = tempIds[i] + "Button";
-        var tempId2 = tempIds[i] + "Text";
-        document.getElementById(tempId2).value = values[i];
-        document.getElementById(tempId2).innerHTML = values[i];
-        document.getElementById(tempId2).onclick = f1(p1, i1, j1);
-        document.getElementById(tempId2).onclick = f1(p1, i1, j1);
-        document.getElementById(tempId2).onclick = f2(p2, i2, j2);
-        document.getElementById(tempId2).onclick = f2(p2, i2, j2);
-        document.getElementById(tempId2).onclick = f3(p3, i3, j3);
-        document.getElementById(tempId2).onclick = f3(p3, i3, j3);
-        document.getElementById(tempId2).onclick = f4(p4, i4, j4);
-        document.getElementById(tempId2).onclick = f4(p4, i4, j4);
-        document.getElementById(tempId2).onclick = f5(p5, i5, j5);
-        document.getElementById(tempId2).onclick = f5(p5, i5, j5);
-        document.getElementById(tempId2).onclick = f6(p6, i6, j6);
-        document.getElementById(tempId2).onclick = f6(p6, i6, j6);
-    }
-}
-
-function print(str) {
-    alert(str);
 }
 
 function click(id, i) {
@@ -553,8 +271,8 @@ function setButtons() {
         document.getElementById(id2).style.font = textAttributes[i][4];
         document.getElementById(id2).style.fontSize = textAttributes[i][5];
         document.getElementById(id2).style.textAlign = 'center';
-        document.getElementById(id2).style.fill = "rgb(" + textColors[i][0] + ", " + textColors[i][1] + ", " + textColors[i][2] + ")";
-        document.getElementById(id2).style.stroke = "rgb(" + textColors[i][0] + ", " + textColors[i][1] + ", " + textColors[i][2] + ")";
+        document.getElementById(id2).style.fill = "rgb(" + 255 + ", " + 255 + ", " + 255 + ")";
+        document.getElementById(id2).style.stroke = "rgb(" + 255 + ", " + 255 + ", " + 255 + ")";
         document.getElementById(id2).value = textAttributes[i][6];
         document.getElementById(id2).innerHTML = textAttributes[i][6];
     }
