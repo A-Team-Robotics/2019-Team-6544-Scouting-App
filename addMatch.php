@@ -21,12 +21,12 @@
 			//Get variables from post array
 			$check = ($_POST['blueTeam1']);
 			if($numRows > 1) {
-				$blueTeam1 = explode ("|", $_POST['blueTeam1']);
-				$blueTeam2 = explode ("|", $_POST['blueTeam2']);
-				$blueTeam3 = explode ("|", $_POST['blueTeam3']);
-				$redTeam1 = explode ("|", $_POST['redTeam1']);
-				$redTeam2 = explode ("|", $_POST['redTeam2']);
-				$redTeam3 = explode ("|", $_POST['redTeam3']);
+				$blueTeam1 = explode ("|", $_POST['blue1Team']);
+				$blueTeam2 = explode ("|", $_POST['blue2Team']);
+				$blueTeam3 = explode ("|", $_POST['blue3Team']);
+				$redTeam1 = explode ("|", $_POST['red1Team']);
+				$redTeam2 = explode ("|", $_POST['red2Team']);
+				$redTeam3 = explode ("|", $_POST['red3Team']);
 				for($i = 0;i < $numRows;$i++) {
 					$matchNumber = $i + 1;
 					$query = "INSERT INTO matches (matchNumber, blueTeam1, blueTeam2, blueTeam3, redTeam1, redTeam2, redTeam3)
@@ -42,7 +42,7 @@
 				$redTeam1 = ($_POST['red1Team']);
 				$redTeam2 = ($_POST['red2Team']);
 				$redTeam3 = ($_POST['red3Team']);
-				$query = "INSERT INTO match_info (matchNumber, blueTeam1, blueTeam2, blueTeam3, redTeam1, redTeam2, redTeam3) 
+				$query = "INSERT INTO matches (matchNumber, blueTeam1, blueTeam2, blueTeam3, redTeam1, redTeam2, redTeam3) 
 									VALUES ('$matchNumber','$blueTeam1','$blueTeam2','$blueTeam3','$redTeam1','$redTeam2','$redTeam3')";
 				$mysqli->query($query);
 			}
@@ -177,6 +177,7 @@
 								?>;
 							var e = document.getElementById(id);
 							var selectedValue = e.options[e.selectedIndex].value;
+							return selectedValue;
 						}
 
 						function postRefreshPage() {
@@ -191,6 +192,7 @@
 							newInput1 = document.createElement('input');
 							newInput1.type = 'hidden';
 							newInput1.name = 'blue1Team';
+							newInput1.id = 'blue1Team'; //new concept
 							newInput1.value = "";
 							for(var i = 0;i < rows;i++) {
 								newInput1.value += getSelectionValue(i, 0);
@@ -202,6 +204,7 @@
 							newInput2 = document.createElement('input');
 							newInput2.type = 'hidden';
 							newInput2.name = 'blue2Team';
+							newInput2.id = 'blue2Team';
 							newInput2.value = "";
 							for(var i = 0;i < rows;i++) {
 								newInput2.value += getSelectionValue(i, 1);
@@ -214,6 +217,7 @@
 							newInput3 = document.createElement('input');
 							newInput3.type = 'hidden';
 							newInput3.name = 'blue3Team';
+							newInput3.id = 'blue3Team';
 							newInput3.value = "";
 							for(var i = 0;i < rows;i++) {
 								newInput3.value += getSelectionValue(i, 2);
@@ -225,6 +229,7 @@
 							newInput4 = document.createElement('input');
 							newInput4.type = 'hidden';
 							newInput4.name = 'red1Team';
+							newInput4.id = 'red1Team';
 							newInput4.value = "";
 							for(var i = 0;i < rows;i++) {
 								newInput4.value += getSelectionValue(i, 3);
@@ -236,6 +241,7 @@
 							newInput5 = document.createElement('input');
 							newInput5.type = 'hidden';
 							newInput5.name = 'red2Team';
+							newInput5.id = 'red2Team';
 							newInput5.value = "";
 							for(var i = 0;i < rows;i++) {
 								newInput5.value += getSelectionValue(i, 4);
@@ -247,6 +253,7 @@
 							newInput6 = document.createElement('input');
 							newInput6.type = 'hidden';
 							newInput6.name = 'red3Team';
+							newInput6.id = 'red3Team';
 							newInput6.value = "";
 							for(var i = 0;i < rows;i++) {
 								newInput6.value += getSelectionValue(i, 5);
@@ -262,7 +269,8 @@
 							theForm.appendChild(newInput5);
 							theForm.appendChild(newInput6);
 							// ...and it to the DOM...
-							document.getElementById('hidden_form_container').appendChild(theForm);
+							document.body.appendChild(theForm);
+							//document.getElementById('hidden_form_container').appendChild(theForm);
 							// ...and submit it
 							theForm.submit();
 							//location.reload();
