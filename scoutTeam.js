@@ -28,10 +28,12 @@ var teleopCargoShipFail = [0, 0, 0];
 
 //OTHER
 
-var climb = [0, 0, 0];
-var climbTime = [0, 0, 0];
-var climbFail = [0, 0, 0];
-var climbFailTime = [0, 0, 0];
+var climb = 0;
+var climbLevel = 0;
+var climbTime = 0;
+var climbFail = 0;
+var climbFailLevel = 0;
+var climbFailTime = 0;
 
 //Button Dimensions (width, height, x, y]
 //Color (red, green, blue]
@@ -40,11 +42,9 @@ var climbFailTime = [0, 0, 0];
 var attributes = ['width', 'height', 'x', 'y'];
 var texts = ['width', 'height','x', 'y', 'font-family', 'font-size', 'value'];
 
-var ids = ['matchNumber','teamNumber','start','lRC','lRH','rRC','rRH','sC', 'sH','lRC2','lRH2','rRC2','rRH2','sC2', 'sH2'];
+var ids = ['start','lRC','lRH','rRC','rRH','sC', 'sH','lRC2','lRH2','rRC2','rRH2','sC2', 'sH2'];
 
 var setsDimensions = [ //The first dimension indexes match the indexes for the array ids.
-                    [150, 30, 1340, 10],
-                    [150, 30, 10, 10],
                     [150, 30, 675, 10],
                     [50, 50, 575, 575],
                     [50, 50, 655, 575],
@@ -63,8 +63,6 @@ var setsDimensions = [ //The first dimension indexes match the indexes for the a
 
 var setsColors = [ //The first dimension indexes match the indexes for the array ids.
                 [150, 150, 150],
-                [150, 150, 150],
-                [150, 150, 150],
                 [0, 0, 255],
                 [0, 0, 255],
                 [0, 0, 255],
@@ -79,21 +77,19 @@ var setsColors = [ //The first dimension indexes match the indexes for the array
                 [235, 184, 0]
                 ];
 
-var textAttributes = [[150, 30, setsDimensions[0][2], setsDimensions[0][3] + 20, 'Times New Roman', 20, "Select Match"],
-                    [150, 30, setsDimensions[1][2], setsDimensions[1][3] + 20, 'Times New Roman', 20, "Select Team"],
-                    [150, 30, setsDimensions[2][2], setsDimensions[2][3] + 20, 'Times New Roman', 20, "START"],
+var textAttributes = [[150, 30, setsDimensions[0][2], setsDimensions[0][3] + 20, 'Times New Roman', 20, "START"],
+                    [setsDimensions[1][0], setsDimensions[1][1], setsDimensions[1][2] + 5, setsDimensions[1][3] + 40, 'Times New Roman', 50, "C"],
+                    [setsDimensions[2][0], setsDimensions[2][1], setsDimensions[2][2] + 5, setsDimensions[2][3] + 40, 'Times New Roman', 50, "H"],
                     [setsDimensions[3][0], setsDimensions[3][1], setsDimensions[3][2] + 5, setsDimensions[3][3] + 40, 'Times New Roman', 50, "C"],
                     [setsDimensions[4][0], setsDimensions[4][1], setsDimensions[4][2] + 5, setsDimensions[4][3] + 40, 'Times New Roman', 50, "H"],
-                    [setsDimensions[5][0], setsDimensions[5][1], setsDimensions[5][2] + 5, setsDimensions[5][3] + 40, 'Times New Roman', 50, "C"],
-                    [setsDimensions[6][0], setsDimensions[6][1], setsDimensions[6][2] + 5, setsDimensions[6][3] + 40, 'Times New Roman', 50, "H"],
-                    [setsDimensions[7][0], setsDimensions[7][1], setsDimensions[7][2] + 5, setsDimensions[7][3] + 38, 'Times New Roman', 45, "C"],
-                    [setsDimensions[8][0], setsDimensions[8][1], setsDimensions[8][2] + 5, setsDimensions[8][3] + 38, 'Times New Roman', 45, "H"],
+                    [setsDimensions[5][0], setsDimensions[5][1], setsDimensions[5][2] + 5, setsDimensions[5][3] + 38, 'Times New Roman', 45, "C"],
+                    [setsDimensions[6][0], setsDimensions[6][1], setsDimensions[6][2] + 5, setsDimensions[6][3] + 38, 'Times New Roman', 45, "H"],
+                    [setsDimensions[7][0], setsDimensions[7][1], setsDimensions[7][2] + 5, setsDimensions[7][3] + 40, 'Times New Roman', 50, "C"],
+                    [setsDimensions[8][0], setsDimensions[8][1], setsDimensions[8][2] + 5, setsDimensions[8][3] + 40, 'Times New Roman', 50, "H"],
                     [setsDimensions[9][0], setsDimensions[9][1], setsDimensions[9][2] + 5, setsDimensions[9][3] + 40, 'Times New Roman', 50, "C"],
                     [setsDimensions[10][0], setsDimensions[10][1], setsDimensions[10][2] + 5, setsDimensions[10][3] + 40, 'Times New Roman', 50, "H"],
-                    [setsDimensions[11][0], setsDimensions[11][1], setsDimensions[11][2] + 5, setsDimensions[11][3] + 40, 'Times New Roman', 50, "C"],
-                    [setsDimensions[12][0], setsDimensions[12][1], setsDimensions[12][2] + 5, setsDimensions[12][3] + 40, 'Times New Roman', 50, "H"],
-                    [setsDimensions[13][0], setsDimensions[13][1], setsDimensions[13][2] + 5, setsDimensions[13][3] + 38, 'Times New Roman', 45, "C"],
-                    [setsDimensions[14][0], setsDimensions[14][1], setsDimensions[14][2] + 5, setsDimensions[14][3] + 38, 'Times New Roman', 45, "H"]
+                    [setsDimensions[11][0], setsDimensions[11][1], setsDimensions[11][2] + 5, setsDimensions[11][3] + 38, 'Times New Roman', 45, "C"],
+                    [setsDimensions[12][0], setsDimensions[12][1], setsDimensions[12][2] + 5, setsDimensions[12][3] + 38, 'Times New Roman', 45, "H"]
                     ];
 
 var tempDimensions = [

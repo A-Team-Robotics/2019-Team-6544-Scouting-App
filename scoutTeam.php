@@ -1,4 +1,38 @@
 <?php include('includes/database.php'); ?>
+<?php
+    $query = "SELECT *
+                FROM matches
+                ORDER BY matchNumber ASC";
+    $result = $mysqli->query($query) or die($mysqli->error.__LINE__);
+?>
+<?php
+    if($_POST) {
+        $autoHatchRocketsSuccess = explode("|", $_POST['autoHatchRocketsSuccess']);
+        $autoCargoRocketsSuccess = explode("|", $_POST['autoCargoRocketsSuccess']);
+        $autoHatchRocketsFail = explode("|", $_POST['autoHatchRocketsFail']);
+        $autoCargoRocketsFail = explode("|", $_POST['autoCargoRocketsFail']);
+        $autoHatchShipSuccess = explode("|", $_POST['autoHatchShipSuccess']);
+        $autoCargoShipSuccess = explode("|", $_POST['autoCargoShipSuccess']);
+        $autoHatchShipFail = explode("|", $_POST['autoHatchShipFail']);
+        $autoCargoShipFail = explode("|", $_POST['autoCargoShipFail']);
+
+        $teleopHatchRocketsSuccess = explode("|", $_POST['teleopHatchRocketsSuccess']);
+        $teleopCargoRocketsSuccess = explode("|", $_POST['teleopCargoRocketsSuccess']);
+        $teleopHatchRocketsFail = explode("|", $_POST['teleopHatchRocketsFail']);
+        $teleopCargoRocketsFail = explode("|", $_POST['teleopCargoRocketsFail']);
+        $teleopHatchShipSuccess = explode("|", $_POST['teleopHatchShipSuccess']);
+        $teleopCargoShipSuccess = explode("|", $_POST['teleopCargoShipSuccess']);
+        $teleopHatchShipFail = explode("|", $_POST['teleopHatchShipFail']);
+        $teleopCargoShipFail = explode("|", $_POST['teleopCargoShipFail']);
+
+        $climb = $_POST['climb'];
+        $climbLevel = $_POST['climbLevel'];
+        $climbTime = $_POST['climbTime'];
+        $climbFail = $_POST['climbFail'];
+        $climbFailLevel = $_POST['climbFailLevel'];
+        $climbFailTime = $_POST['climbFailTime'];
+    }
+?>
 <!DOCTYPE html>
 <html>
     <head>
@@ -48,6 +82,31 @@
             /* Change the background color of the dropdown button when the dropdown content is shown */
             .dropdown:hover .dropbtn {background-color: #3e8e41;}
         </style>
+        <script type="text/javascript">
+            var data = [
+                <?php
+                    $output = "";
+                    $numResults = mysqli_num_rows($result);
+                    $counter = 0;
+                    while($row = $result->fetch_assoc()) {
+                        $counter++;
+                        $output .= '['.$row['blueTeam1'].',';
+                        $output .= $row['blueTeam2'].',';
+                        $output .= $row['blueTeam3'].',';
+                        $output .= $row['redTeam1'].',';
+                        $output .= $row['redTeam2'].',';
+                        if($counter == $numResults) {
+                            $output .= $row['redTeam3'].']';
+                        }
+                        else {
+                            $output .= $row['redTeam3'].'],';
+                        }
+                    }
+                    echo $output;
+                    mysqli_data_seek($result, 0);
+                ?>
+            ];
+        </script>
     </head>
 	<body>
         <?php
@@ -79,229 +138,277 @@
             </div>
         </div>
         <br />
-		<svg width="1500" height="850">
-            <rect width="1500" height="850" x="0" y="0" fill="transparent" stroke="#000000" style="stroke-width:5px" />
-            <!-- draws the field background -->
-            <rect width="1490" height="650" x="5" y="50" style="fill: rgb(122, 122, 122);stroke:#3a3a3a;stroke-width:3px" />
-            <rect width="20" height="125" x="180" y="180" style="fill: rgb(86, 119, 211);stroke: rgb(30, 30, 30)" />
-            <rect width="20" height="125" x="180" y="312" style="fill: rgb(86, 119, 211);stroke: rgb(30, 30, 30)" />
-            <rect width="20" height="125" x="180" y="445" style="fill: rgb(86, 119, 211);stroke: rgb(30, 30, 30)" />
-            <rect width="20" height="125" x="1300" y="180" style="fill: rgb(86, 119, 211);stroke: rgb(30, 30, 30)" />
-            <rect width="20" height="125" x="1300" y="312" style="fill: rgb(86, 119, 211);stroke: rgb(30, 30, 30)" />
-            <rect width="20" height="125" x="1300" y="445" style="fill: rgb(86, 119, 211);stroke: rgb(30, 30, 30)" />
-            <rect width="40" height="15" x="328" y="55" style="fill: rgb(255, 208, 0);stroke: rgb(0, 0, 0)" />
-            <rect width="40" height="15" x="443" y="55" style="fill: rgb(255, 208, 0);stroke: rgb(0, 0, 0)" />
-            <rect width="40" height="15" x="558" y="55" style="fill: rgb(255, 208, 0);stroke: rgb(0, 0, 0)" />
-            <rect width="40" height="15" x="673" y="55" style="fill: rgb(255, 208, 0);stroke: rgb(0, 0, 0)" />
-            <rect width="40" height="15" x="788" y="55" style="fill: rgb(255, 208, 0);stroke: rgb(0, 0, 0)" />
-            <rect width="40" height="15" x="903" y="55" style="fill: rgb(255, 208, 0);stroke: rgb(0, 0, 0)" />
-            <rect width="40" height="15" x="1018" y="55" style="fill: rgb(255, 208, 0);stroke: rgb(0, 0, 0)" onclick="alert('Your using me for scouting is repellent.');" />
-            <rect width="40" height="15" x="1133" y="55" style="fill: rgb(255, 208, 0);stroke: rgb(0, 0, 0)" />
-            <rect width="40" height="15" x="328" y="680" style="fill: rgb(255, 208, 0);stroke: rgb(0, 0, 0)" />
-            <rect width="40" height="15" x="443" y="680" style="fill: rgb(255, 208, 0);stroke: rgb(0, 0, 0)" />
-            <rect width="40" height="15" x="558" y="680" style="fill: rgb(255, 208, 0);stroke: rgb(0, 0, 0)" />
-            <rect width="40" height="15" x="673" y="680" style="fill: rgb(255, 208, 0);stroke: rgb(0, 0, 0)" />
-            <rect width="40" height="15" x="788" y="680" style="fill: rgb(255, 208, 0);stroke: rgb(0, 0, 0)" />
-            <rect width="40" height="15" x="903" y="680" style="fill: rgb(255, 208, 0);stroke: rgb(0, 0, 0)" />
-            <rect width="40" height="15" x="1018" y="680" style="fill: rgb(255, 208, 0);stroke: rgb(0, 0, 0)" />
-            <rect width="40" height="15" x="1133" y="680" style="fill: rgb(255, 208, 0);stroke: rgb(0, 0, 0)" />
-            <rect width="30" height="30" x="170" y="595" style="fill: rgb(255, 255, 255);stroke: rgb(0, 0, 0);" />
-            <rect width="30" height="30" x="1300" y="595" style="fill: rgb(255, 255, 255);stroke: rgb(0, 0, 0);" />
-            <rect width="30" height="30" x="170" y="112" style="fill: rgb(255, 255, 255);stroke: rgb(0, 0, 0);" />
-            <rect width="30" height="30" x="1300" y="112" style="fill: rgb(255, 255, 255);stroke: rgb(0, 0, 0);" />
-            <!-- draws main lines -->
-            <line x1="730" y1="75" x2="730" y2="675" style="stroke:rgb(0, 0, 255);stroke-width:2" />
-            <line x1="770" y1="75" x2="770" y2="675" style="stroke:rgb(255, 0, 0);stroke-width:2" />
-            <line x1="400" y1="75" x2="400" y2="675" style="stroke:rgb(0, 0, 255);stroke-width:2" />
-            <line x1="1100" y1="75" x2="1100" y2="675" style="stroke:rgb(255, 0, 0);stroke-width:2" />
-            <line x1="200" y1="75" x2="1300" y2="75" style="stroke:rgb(240, 240, 240);stroke-width:2" />
-            <line x1="200" y1="675" x2="1300" y2="675" style="stroke:rgb(240, 240, 240);stroke-width:2" />
-            <line x1="5" y1="375" x2="1495" y2="375" style="stroke:rgb(36, 36, 36);stroke-width:1" />
-            <line x1="200" y1="50" x2="200" y2="700" style="stroke:rgb(0, 0, 255);stroke-width:3" />
-            <line x1="1300" y1="50" x2="1300" y2="700" style="stroke:rgb(255, 0, 0);stroke-width:3" />
-            <line x1="200" y1="74" x2="200" y2="180" style="stroke:rgb(255, 255, 255);stroke-width:3" />
-            <line x1="1300" y1="74" x2="1300" y2="180" style="stroke:rgb(255, 255, 255);stroke-width:3" />
-            <line x1="200" y1="676" x2="200" y2="545" style="stroke:rgb(255, 255, 255);stroke-width:3" />
-            <line x1="1300" y1="676" x2="1300" y2="545" style="stroke:rgb(255, 255, 255);stroke-width:3" />
-            <line x1="200" y1="127" x2="230" y2="127" style="stroke:rgb(255, 255, 255);stroke-width:1" />
-            <line x1="1300" y1="127" x2="1270" y2="127" style="stroke:rgb(255, 255, 255);stroke-width:1" />
-            <line x1="200" y1="610" x2="230" y2="610" style="stroke:rgb(255, 255, 255);stroke-width:1" />
-            <line x1="1300" y1="610" x2="1270" y2="610" style="stroke:rgb(255, 255, 255);stroke-width:1" />
-            <line x1="200" y1="180" x2="200" y2="545" style="stroke:rgb(0, 0, 0);stroke-width:3" />
-            <line x1="1300" y1="180" x2="1300" y2="545" style="stroke:rgb(0, 0, 0);stroke-width:3" />
-            <!-- draws main field shapes -->
-            <rect width="200" height="300" x="200" y="225" style="fill: rgb(0, 0, 255);stroke: rgb(30, 30, 30)" />
-                <line x1="200" y1="250" x2="375" y2="250" style="stroke: rgb(30, 30, 30);stroke-width:1" />
-                <line x1="375" y1="250" x2="400" y2="225" style="stroke: rgb(30, 30, 30);stroke-width:1" />
-                <line x1="200" y1="500" x2="375" y2="500" style="stroke: rgb(30, 30, 30);stroke-width:1" />
-                <line x1="375" y1="500" x2="400" y2="525" style="stroke: rgb(30, 30, 30);stroke-width:1" />
-                <line x1="200" y1="330" x2="310" y2="330" style="stroke: rgb(30, 30, 30);stroke-width:1" />
-                <line x1="200" y1="420" x2="310" y2="420" style="stroke: rgb(30, 30, 30);stroke-width:1" />
-                <line x1="310" y1="250" x2="310" y2="500" style="stroke: rgb(30, 30, 30);stroke-width:1" />
-                <line x1="310" y1="375" x2="375" y2="375" style="stroke: rgb(30, 30, 30);stroke-width:1" />
-                <line x1="375" y1="250" x2="375" y2="500" style="stroke: rgb(30, 30, 30);stroke-width:1" />
-            <rect width="110" height="50" x="200" y="200" style="fill: rgb(75, 75, 75);stroke: rgb(30, 30, 30);stroke-width:1" />
-            <ellipse cx="255" cy="225" rx="55" ry="25" style="fill:rgb(255, 94, 0);stroke:rgb(30, 30, 30);stroke-width:1" />
-            <rect width="110" height="50" x="200" y="500" style="fill: rgb(75, 75, 75);stroke: rgb(30, 30, 30);stroke-width:1" />
-            <ellipse cx="255" cy="525" rx="55" ry="25" style="fill:rgb(255, 94, 0);stroke:rgb(30, 30, 30);stroke-width:1" />
-
-            <rect width="200" height="300" x="1100" y="225" style="fill: rgb(255, 0, 0);stroke: rgb(30, 30, 30)" />
-                <line x1="1300" y1="250" x2="1125" y2="250" style="stroke: rgb(30, 30, 30);stroke-width:1" />
-                <line x1="1125" y1="250" x2="1100" y2="225" style="stroke: rgb(30, 30, 30);stroke-width:1" />
-                <line x1="1300" y1="500" x2="1125" y2="500" style="stroke: rgb(30, 30, 30);stroke-width:1" />
-                <line x1="1125" y1="500" x2="1100" y2="525" style="stroke: rgb(30, 30, 30);stroke-width:1" />
-                <line x1="1300" y1="330" x2="1190" y2="330" style="stroke: rgb(30, 30, 30);stroke-width:1" />
-                <line x1="1300" y1="420" x2="1190" y2="420" style="stroke: rgb(30, 30, 30);stroke-width:1" />
-                <line x1="1190" y1="250" x2="1190" y2="500" style="stroke: rgb(30, 30, 30);stroke-width:1" />
-                <line x1="1190" y1="375" x2="1125" y2="375" style="stroke: rgb(30, 30, 30);stroke-width:1" />
-                <line x1="1125" y1="250" x2="1125" y2="500" style="stroke: rgb(30, 30, 30);stroke-width:1" />
-            <rect width="110" height="50" x="1190" y="200" style="fill: rgb(75, 75, 75);stroke: rgb(30, 30, 30);stroke-width:1" />
-            <ellipse cx="1245" cy="225" rx="55" ry="25" style="fill:rgb(255, 94, 0);stroke:rgb(30, 30, 30);stroke-width:1" />
-            <rect width="110" height="50" x="1190" y="500" style="fill: rgb(75, 75, 75);stroke: rgb(30, 30, 30);stroke-width:1" />
-            <ellipse cx="1245" cy="525" rx="55" ry="25" style="fill:rgb(255, 94, 0);stroke:rgb(30, 30, 30);stroke-width:1" />
-
-            <rect width="50" height="50" x="575" y="325" style="fill:rgb(90, 90, 90);stroke:rgb(30, 30, 30);stroke-width:1" />
-            <rect width="50" height="50" x="575" y="375" style="fill:rgb(90, 90, 90);stroke:rgb(30, 30, 30);stroke-width:1" />
-            <rect width="50" height="50" x="875" y="325" style="fill:rgb(90, 90, 90);stroke:rgb(30, 30, 30);stroke-width:1" />
-            <rect width="50" height="50" x="875" y="375" style="fill:rgb(90, 90, 90);stroke:rgb(30, 30, 30);stroke-width:1" />
-            <rect width="250" height="80" x="625" y="335" style="fill:rgb(150, 150, 150);stroke:rgb(30, 30, 30);stroke-width:1" />
-            <rect width="140" height="50" x="755" y="350" rx="15" ry="15" style="fill:rgb(255, 0, 0);stroke:rgb(30, 30, 30);stroke-width:1" />
-            <rect width="150" height="50" x="605" y="350" rx="15" ry="15" style="fill:rgb(0, 0, 255);stroke:rgb(30, 30, 30);stroke-width:1" />
-            <rect width="50" height="50" x="725" y="350" style="fill:rgb(255, 255, 255);stroke:rgb(30, 30, 30);stroke-width:1" />
-                <line x1="640" y1="415" x2="640" y2="465" style="stroke: rgb(255, 255, 255);stroke-width:1" />
-                <line x1="675" y1="415" x2="675" y2="465" style="stroke: rgb(255, 255, 255);stroke-width:1" />
-                <line x1="710" y1="415" x2="710" y2="465" style="stroke: rgb(255, 255, 255);stroke-width:1" />
-                <line x1="657" y1="400" x2="657" y2="450" style="stroke: rgb(60, 60, 60);stroke-width:2" />
-                <line x1="692" y1="400" x2="692" y2="450" style="stroke: rgb(60, 60, 60);stroke-width:2" />
-
-                <line x1="640" y1="335" x2="640" y2="285" style="stroke: rgb(255, 255, 255);stroke-width:1" />
-                <line x1="675" y1="335" x2="675" y2="285" style="stroke: rgb(255, 255, 255);stroke-width:1" />
-                <line x1="710" y1="335" x2="710" y2="285" style="stroke: rgb(255, 255, 255);stroke-width:1" />
-                <line x1="657" y1="350" x2="657" y2="300" style="stroke: rgb(60, 60, 60);stroke-width:2" />
-                <line x1="692" y1="350" x2="692" y2="300" style="stroke: rgb(60, 60, 60);stroke-width:2" />
-
-                <line x1="860" y1="415" x2="860" y2="465" style="stroke: rgb(255, 255, 255);stroke-width:1" />
-                <line x1="825" y1="415" x2="825" y2="465" style="stroke: rgb(255, 255, 255);stroke-width:1" />
-                <line x1="790" y1="415" x2="790" y2="465" style="stroke: rgb(255, 255, 255);stroke-width:1" />
-                <line x1="843" y1="400" x2="843" y2="450" style="stroke: rgb(60, 60, 60);stroke-width:2" />
-                <line x1="808" y1="400" x2="808" y2="450" style="stroke: rgb(60, 60, 60);stroke-width:2" />
-
-                <line x1="860" y1="335" x2="860" y2="285" style="stroke: rgb(255, 255, 255);stroke-width:1" />
-                <line x1="825" y1="335" x2="825" y2="285" style="stroke: rgb(255, 255, 255);stroke-width:1" />
-                <line x1="790" y1="335" x2="790" y2="285" style="stroke: rgb(255, 255, 255);stroke-width:1" />
-                <line x1="843" y1="350" x2="843" y2="300" style="stroke: rgb(60, 60, 60);stroke-width:2" />
-                <line x1="808" y1="350" x2="808" y2="300" style="stroke: rgb(60, 60, 60);stroke-width:2" />
-                <circle cx="590" cy="400" r="15" style="fill:rgb(255, 94, 0);" />
-                <circle cx="590" cy="350" r="15" style="fill:rgb(255, 94, 0);" />
-                <circle cx="910" cy="400" r="15" style="fill:rgb(255, 94, 0);" />
-                <circle cx="910" cy="350" r="15" style="fill:rgb(255, 94, 0);" />
-                    <line x1="575" y1="400" x2="545" y2="400" style="stroke: rgb(255, 255, 255);stroke-width:1" />
-                    <line x1="575" y1="350" x2="545" y2="350" style="stroke: rgb(255, 255, 255);stroke-width:1" />
-                    <line x1="925" y1="400" x2="955" y2="400" style="stroke: rgb(255, 255, 255);stroke-width:1" />
-                    <line x1="925" y1="350" x2="955" y2="350" style="stroke: rgb(255, 255, 255);stroke-width:1" />
-            
-            <polygon points="595 76, 685 76, 685 90, 665 135, 615 135, 595 90" style="fill:rgb(30, 30, 30);" />
-            <polygon points="610 90, 670 90, 655 125, 625 125" style="fill:rgb(255, 255, 255);stroke:rgb(30, 30, 30);stroke-width:1;" />
-                <line x1="640" y1="125" x2="640" y2="165" style="stroke: rgb(255, 255, 255);stroke-width:1;" />
-                <line x1="617" y1="108" x2="585" y2="120" style="stroke: rgb(255, 255, 255);stroke-width:1;" />
-                <line x1="663" y1="108" x2="695" y2="120" style="stroke: rgb(255, 255, 255);stroke-width:1;" />
-            <polygon points="905 76, 815 76, 815 90, 835 135, 885 135, 905 90" style="fill:rgb(30, 30, 30);" />
-            <polygon points="890 90, 830 90, 845 125, 875 125" style="fill:rgb(255, 255, 255);stroke:rgb(30, 30, 30);stroke-width:1;" />
-                <line x1="860" y1="125" x2="860" y2="165" style="stroke: rgb(255, 255, 255);stroke-width:1;" />
-                <line x1="883" y1="108" x2="915" y2="120" style="stroke: rgb(255, 255, 255);stroke-width:1;" />
-                <line x1="837" y1="108" x2="800" y2="120" style="stroke: rgb(255, 255, 255);stroke-width:1;" />
-            <polygon points="595 674, 685 674, 685 660, 665 615, 615 615, 595 660" style="fill:rgb(30, 30, 30);" />
-            <polygon points="610 660, 670 660, 655 625, 625 625" style="fill:rgb(255, 255, 255);stroke:rgb(30, 30, 30);stroke-width:1;" />
-                <line x1="640" y1="625" x2="640" y2="585" style="stroke: rgb(255, 255, 255);stroke-width:1;" />
-                <line x1="617" y1="642" x2="585" y2="630" style="stroke: rgb(255, 255, 255);stroke-width:1;" />
-                <line x1="663" y1="642" x2="695" y2="630" style="stroke: rgb(255, 255, 255);stroke-width:1;" />
-            <polygon points="905 674, 815 674, 815 660, 835 615, 885 615, 905 660" style="fill:rgb(30, 30, 30);" />
-            <polygon points="890 660, 830 660, 845 625, 875 625" style="fill:rgb(255, 255, 255);stroke:rgb(30, 30, 30);stroke-width:1;" />
-                <line x1="860" y1="625" x2="860" y2="585" style="stroke: rgb(255, 255, 255);stroke-width:1;" />
-                <line x1="883" y1="642" x2="915" y2="630" style="stroke: rgb(255, 255, 255);stroke-width:1;" />
-                <line x1="837" y1="642" x2="800" y2="630" style="stroke: rgb(255, 255, 255);stroke-width:1;" />
-            
-            <!-- Make Buttons -->
-            <rect id="teamNumberButton" onclick="alert('This is really annoying.');" />
-            <text id="teamNumberText" onclick="alert('This is really annoying.');"></text>
-
-            <rect id="matchNumberButton" onclick="alert('Hi.');" />
-            <text id="matchNumberText" onclick="alert('Hi.');"></text>
-
-            <rect id="startButton" onclick="startMatch();" />
-            <text id="startText" onclick="startMatch();"></text>
-
-            <rect id="lRCButton" onclick="setTempButtons(cValues, autoCargoRocketsSuccess, autoCargoRocketsFail, teleopCargoRocketsSuccess, teleopCargoRocketsFail);" />
-            <text id="lRCText" onclick="setTempButtons(cValues, autoCargoRocketsSuccess, autoCargoRocketsFail, teleopCargoRocketsSuccess, teleopCargoRocketsFail);"></text>
-
-            <rect id="lRHButton" onclick="setTempButtons(hValues, autoHatchRocketsSuccess, autoHatchRocketsFail, teleopHatchRocketsSuccess, teleopHatchRocketsFail);" />
-            <text id="lRHText" onclick="setTempButtons(hValues, autoHatchRocketsSuccess, autoHatchRocketsFail, teleopHatchRocketsSuccess, teleopHatchRocketsFail);"></text>
-
-            <rect id="rRCButton" onclick="setTempButtons(cValues, autoCargoRocketsSuccess, autoCargoRocketsFail, teleopCargoRocketsSuccess, teleopCargoRocketsFail);" />
-            <text id="rRCText" onclick="setTempButtons(cValues, autoCargoRocketsSuccess, autoCargoRocketsFail, teleopCargoRocketsSuccess, teleopCargoRocketsFail);"></text>
-
-            <rect id="rRHButton" onclick="setTempButtons(hValues, autoHatchRocketsSuccess, autoHatchRocketsFail, teleopHatchRocketsSuccess, teleopHatchRocketsFail);" />
-            <text id="rRHText" onclick="setTempButtons(hValues, autoHatchRocketsSuccess, autoHatchRocketsFail, teleopHatchRocketsSuccess, teleopHatchRocketsFail);"></text>
-            
-            <rect id="sCButton" onclick="setTempButtons(cValues, autoCargoShipSuccess, autoCargoShipFail, teleopCargoShipSuccess, teleopCargoShipFail);" />
-            <text id="sCText" onclick="setTempButtons(cValues, autoCargoShipSuccess, autoCargoShipFail, teleopCargoShipSuccess, teleopCargoShipFail);"></text>
-
-            <rect id="sHButton" onclick="setTempButtons(hValues, autoHatchShipSuccess, autoHatchShipFail, teleopHatchShipSuccess, teleopHatchShipFail);" />
-            <text id="sHText" onclick="setTempButtons(hValues, autoHatchShipSuccess, autoHatchShipFail, teleopHatchShipSuccess, teleopHatchShipFail);"></text>
-
-            <rect id="lRC2Button" onclick="setTempButtons(cValues, autoCargoRocketsSuccess, autoCargoRocketsFail, teleopCargoRocketsSuccess, teleopCargoRocketsFail);" />
-            <text id="lRC2Text" onclick="setTempButtons(cValues, autoCargoRocketsSuccess, autoCargoRocketsFail, teleopCargoRocketsSuccess, teleopCargoRocketsFail);"></text>
-
-            <rect id="lRH2Button" onclick="setTempButtons(hValues, autoHatchRocketsSuccess, autoHatchRocketsFail, teleopHatchRocketsSuccess, teleopHatchRocketsFail);" />
-            <text id="lRH2Text" onclick="setTempButtons(hValues, autoHatchRocketsSuccess, autoHatchRocketsFail, teleopHatchRocketsSuccess, teleopHatchRocketsFail);"></text>
-
-            <rect id="rRC2Button" onclick="setTempButtons(cValues, autoCargoRocketsSuccess, autoCargoRocketsFail, teleopCargoRocketsSuccess, teleopCargoRocketsFail);" />
-            <text id="rRC2Text" onclick="setTempButtons(cValues, autoCargoRocketsSuccess, autoCargoRocketsFail, teleopCargoRocketsSuccess, teleopCargoRocketsFail);"></text>
-
-            <rect id="rRH2Button" onclick="setTempButtons(hValues, autoHatchRocketsSuccess, autoHatchRocketsFail, teleopHatchRocketsSuccess, teleopHatchRocketsFail);" />
-            <text id="rRH2Text" onclick="setTempButtons(hValues, autoHatchRocketsSuccess, autoHatchRocketsFail, teleopHatchRocketsSuccess, teleopHatchRocketsFail);"></text>
-            
-            <rect id="sC2Button" onclick="setTempButtons(cValues, autoCargoShipSuccess, autoCargoShipFail, teleopCargoShipSuccess, teleopCargoShipFail);" />
-            <text id="sC2Text" onclick="setTempButtons(cValues, autoCargoShipSuccess, autoCargoShipFail, teleopCargoShipSuccess, teleopCargoShipFail);"></text>
-
-            <rect id="sH2Button" onclick="setTempButtons(hValues, autoHatchShipSuccess, autoHatchShipFail, teleopHatchShipSuccess, teleopHatchShipFail);" />
-            <text id="sH2Text" onclick="setTempButtons(hValues, autoHatchShipSuccess, autoHatchShipFail, teleopHatchShipSuccess, teleopHatchShipFail);"></text>
-
-            <rect id="temp1Button" /> <!--BIND-->
-            <text id="temp1Text"></text>
-
-            <rect id="temp2Button" />
-            <text id="temp2Text"></text>
-
-            <rect id="temp3Button" />
-            <text id="temp3Text"></text>
-
-            <rect id="temp4Button" />
-            <text id="temp4Text"></text>
-
-            <rect id="temp5Button" />
-            <text id="temp5Text"></text>
-
-            <rect id="temp6Button" />
-            <text id="temp6Text"></text>
-
-            <rect id="temp7Button" />
-            <text id="temp7Text"></text>
-
-            <rect id="temp8Button" />
-            <text id="temp8Text"></text>
-
-            <!-- Set Number Indicators for Ship -->
-
-            <text width="30" height="30" x="660" y="280" value="1" style="font-family:'Times New Roman';fill:rgb(0, 255, 203);font-size:50px;">1</text>
-            <text width="30" height="30" x="500" y="390" value="1" style="font-family:'Times New Roman';fill:rgb(0, 255, 203);font-size:50px;">2</text>
-            <text width="30" height="30" x="660" y="495" value="1" style="font-family:'Times New Roman';fill:rgb(0, 255, 203);font-size:50px;">3</text>
-            <text width="30" height="30" x="815" y="280" value="1" style="font-family:'Times New Roman';fill:rgb(0, 255, 203);font-size:50px;">3</text>
-            <text width="30" height="30" x="975" y="390" value="1" style="font-family:'Times New Roman';fill:rgb(0, 255, 203);font-size:50px;">2</text>
-            <text width="30" height="30" x="815" y="495" value="1" style="font-family:'Times New Roman';fill:rgb(0, 255, 203);font-size:50px;">1</text>
+        <div id="selections">
+            Select Match: <select id="matchNum" onchange="refreshSelections();">
+                <?php
+                    $output = "";
+                    while($row = $result->fetch_assoc()) {
+                        $output .='<option value="'.$row['matchNumber'].'">' . $row['matchNumber'] . '</option>';
+                    }
+                    mysqli_data_seek($result, 0);
+                    echo $output;
+                ?>
+            </select><br />
+            Select Team: <select id="teamNum">
+                    <option id="blue1"></option>
+                    <option id="blue2"></option>
+                    <option id="blue3"></option>
+                    <option id="red1"></option>
+                    <option id="red2"></option>
+                    <option id="red3"></option>
+                <?php
+                /*
+                    $doc = new DomDocument;
+                    $matchNumber = $doc->getElementById('matchNum')->value;
+                    $row = $result->fetch_assoc();
+                    $output .= '<option value="'.$row['blueTeam1'].'">' . $row['blueTeam1'] . '</option>';
+                    $output .= '<option value="'.$row['blueTeam2'].'">' . $row['blueTeam2'] . '</option>';
+                    $output .= '<option value="'.$row['blueTeam3'].'">' . $row['blueTeam3'] . '</option>';
+                    $output .= '<option value="'.$row['redTeam1'].'">' . $row['redTeam1'] . '</option>';
+                    $output .= '<option value="'.$row['redTeam2'].'">' . $row['redTeam2'] . '</option>';
+                    $output .= '<option value="'.$row['redTeam3'].'">' . $row['redTeam3'] . '</option>';
+                    echo $output;
+                    echo $matchNumber;
+                    */
+                ?>
+            </select>
             <script type="text/javascript">
-                setButtons();
+                function refreshSelections() {
+                    var matchNum = document.getElementById('matchNum').value;
+                    document.getElementById('blue1').value = data[matchNum - 1][0];
+                    document.getElementById('blue1').innerHTML = data[matchNum - 1][0];
+                    document.getElementById('blue2').value = data[matchNum - 1][1];
+                    document.getElementById('blue2').innerHTML = data[matchNum - 1][1];
+                    document.getElementById('blue3').value = data[matchNum - 1][2];
+                    document.getElementById('blue3').innerHTML = data[matchNum - 1][2];
+                    document.getElementById('red1').value = data[matchNum - 1][3];
+                    document.getElementById('red1').innerHTML = data[matchNum - 1][3];
+                    document.getElementById('red2').value = data[matchNum - 1][4];
+                    document.getElementById('red2').innerHTML = data[matchNum - 1][4];
+                    document.getElementById('red3').value = data[matchNum - 1][5];
+                    document.getElementById('red3').innerHTML = data[matchNum - 1][5];
+                }
             </script>
-        </svg>
+        </div>
+        <div>
+            <svg width="1500" height="850">
+                <rect width="1500" height="850" x="0" y="0" fill="transparent" stroke="#000000" style="stroke-width:5px" />
+                <!-- draws the field background -->
+                <rect width="1490" height="650" x="5" y="50" style="fill: rgb(122, 122, 122);stroke:#3a3a3a;stroke-width:3px" />
+                <rect width="20" height="125" x="180" y="180" style="fill: rgb(86, 119, 211);stroke: rgb(30, 30, 30)" />
+                <rect width="20" height="125" x="180" y="312" style="fill: rgb(86, 119, 211);stroke: rgb(30, 30, 30)" />
+                <rect width="20" height="125" x="180" y="445" style="fill: rgb(86, 119, 211);stroke: rgb(30, 30, 30)" />
+                <rect width="20" height="125" x="1300" y="180" style="fill: rgb(86, 119, 211);stroke: rgb(30, 30, 30)" />
+                <rect width="20" height="125" x="1300" y="312" style="fill: rgb(86, 119, 211);stroke: rgb(30, 30, 30)" />
+                <rect width="20" height="125" x="1300" y="445" style="fill: rgb(86, 119, 211);stroke: rgb(30, 30, 30)" />
+                <rect width="40" height="15" x="328" y="55" style="fill: rgb(255, 208, 0);stroke: rgb(0, 0, 0)" />
+                <rect width="40" height="15" x="443" y="55" style="fill: rgb(255, 208, 0);stroke: rgb(0, 0, 0)" />
+                <rect width="40" height="15" x="558" y="55" style="fill: rgb(255, 208, 0);stroke: rgb(0, 0, 0)" />
+                <rect width="40" height="15" x="673" y="55" style="fill: rgb(255, 208, 0);stroke: rgb(0, 0, 0)" />
+                <rect width="40" height="15" x="788" y="55" style="fill: rgb(255, 208, 0);stroke: rgb(0, 0, 0)" />
+                <rect width="40" height="15" x="903" y="55" style="fill: rgb(255, 208, 0);stroke: rgb(0, 0, 0)" />
+                <rect width="40" height="15" x="1018" y="55" style="fill: rgb(255, 208, 0);stroke: rgb(0, 0, 0)" onclick="console.log('Your using me for scouting is repellent.');" />
+                <rect width="40" height="15" x="1133" y="55" style="fill: rgb(255, 208, 0);stroke: rgb(0, 0, 0)" />
+                <rect width="40" height="15" x="328" y="680" style="fill: rgb(255, 208, 0);stroke: rgb(0, 0, 0)" />
+                <rect width="40" height="15" x="443" y="680" style="fill: rgb(255, 208, 0);stroke: rgb(0, 0, 0)" />
+                <rect width="40" height="15" x="558" y="680" style="fill: rgb(255, 208, 0);stroke: rgb(0, 0, 0)" />
+                <rect width="40" height="15" x="673" y="680" style="fill: rgb(255, 208, 0);stroke: rgb(0, 0, 0)" />
+                <rect width="40" height="15" x="788" y="680" style="fill: rgb(255, 208, 0);stroke: rgb(0, 0, 0)" />
+                <rect width="40" height="15" x="903" y="680" style="fill: rgb(255, 208, 0);stroke: rgb(0, 0, 0)" />
+                <rect width="40" height="15" x="1018" y="680" style="fill: rgb(255, 208, 0);stroke: rgb(0, 0, 0)" />
+                <rect width="40" height="15" x="1133" y="680" style="fill: rgb(255, 208, 0);stroke: rgb(0, 0, 0)" />
+                <rect width="30" height="30" x="170" y="595" style="fill: rgb(255, 255, 255);stroke: rgb(0, 0, 0);" />
+                <rect width="30" height="30" x="1300" y="595" style="fill: rgb(255, 255, 255);stroke: rgb(0, 0, 0);" />
+                <rect width="30" height="30" x="170" y="112" style="fill: rgb(255, 255, 255);stroke: rgb(0, 0, 0);" />
+                <rect width="30" height="30" x="1300" y="112" style="fill: rgb(255, 255, 255);stroke: rgb(0, 0, 0);" />
+                <!-- draws main lines -->
+                <line x1="730" y1="75" x2="730" y2="675" style="stroke:rgb(0, 0, 255);stroke-width:2" />
+                <line x1="770" y1="75" x2="770" y2="675" style="stroke:rgb(255, 0, 0);stroke-width:2" />
+                <line x1="400" y1="75" x2="400" y2="675" style="stroke:rgb(0, 0, 255);stroke-width:2" />
+                <line x1="1100" y1="75" x2="1100" y2="675" style="stroke:rgb(255, 0, 0);stroke-width:2" />
+                <line x1="200" y1="75" x2="1300" y2="75" style="stroke:rgb(240, 240, 240);stroke-width:2" />
+                <line x1="200" y1="675" x2="1300" y2="675" style="stroke:rgb(240, 240, 240);stroke-width:2" />
+                <line x1="5" y1="375" x2="1495" y2="375" style="stroke:rgb(36, 36, 36);stroke-width:1" />
+                <line x1="200" y1="50" x2="200" y2="700" style="stroke:rgb(0, 0, 255);stroke-width:3" />
+                <line x1="1300" y1="50" x2="1300" y2="700" style="stroke:rgb(255, 0, 0);stroke-width:3" />
+                <line x1="200" y1="74" x2="200" y2="180" style="stroke:rgb(255, 255, 255);stroke-width:3" />
+                <line x1="1300" y1="74" x2="1300" y2="180" style="stroke:rgb(255, 255, 255);stroke-width:3" />
+                <line x1="200" y1="676" x2="200" y2="545" style="stroke:rgb(255, 255, 255);stroke-width:3" />
+                <line x1="1300" y1="676" x2="1300" y2="545" style="stroke:rgb(255, 255, 255);stroke-width:3" />
+                <line x1="200" y1="127" x2="230" y2="127" style="stroke:rgb(255, 255, 255);stroke-width:1" />
+                <line x1="1300" y1="127" x2="1270" y2="127" style="stroke:rgb(255, 255, 255);stroke-width:1" />
+                <line x1="200" y1="610" x2="230" y2="610" style="stroke:rgb(255, 255, 255);stroke-width:1" />
+                <line x1="1300" y1="610" x2="1270" y2="610" style="stroke:rgb(255, 255, 255);stroke-width:1" />
+                <line x1="200" y1="180" x2="200" y2="545" style="stroke:rgb(0, 0, 0);stroke-width:3" />
+                <line x1="1300" y1="180" x2="1300" y2="545" style="stroke:rgb(0, 0, 0);stroke-width:3" />
+                <!-- draws main field shapes -->
+                <rect width="200" height="300" x="200" y="225" style="fill: rgb(0, 0, 255);stroke: rgb(30, 30, 30)" />
+                    <line x1="200" y1="250" x2="375" y2="250" style="stroke: rgb(30, 30, 30);stroke-width:1" />
+                    <line x1="375" y1="250" x2="400" y2="225" style="stroke: rgb(30, 30, 30);stroke-width:1" />
+                    <line x1="200" y1="500" x2="375" y2="500" style="stroke: rgb(30, 30, 30);stroke-width:1" />
+                    <line x1="375" y1="500" x2="400" y2="525" style="stroke: rgb(30, 30, 30);stroke-width:1" />
+                    <line x1="200" y1="330" x2="310" y2="330" style="stroke: rgb(30, 30, 30);stroke-width:1" />
+                    <line x1="200" y1="420" x2="310" y2="420" style="stroke: rgb(30, 30, 30);stroke-width:1" />
+                    <line x1="310" y1="250" x2="310" y2="500" style="stroke: rgb(30, 30, 30);stroke-width:1" />
+                    <line x1="310" y1="375" x2="375" y2="375" style="stroke: rgb(30, 30, 30);stroke-width:1" />
+                    <line x1="375" y1="250" x2="375" y2="500" style="stroke: rgb(30, 30, 30);stroke-width:1" />
+                <rect width="110" height="50" x="200" y="200" style="fill: rgb(75, 75, 75);stroke: rgb(30, 30, 30);stroke-width:1" />
+                <ellipse cx="255" cy="225" rx="55" ry="25" style="fill:rgb(255, 94, 0);stroke:rgb(30, 30, 30);stroke-width:1" />
+                <rect width="110" height="50" x="200" y="500" style="fill: rgb(75, 75, 75);stroke: rgb(30, 30, 30);stroke-width:1" />
+                <ellipse cx="255" cy="525" rx="55" ry="25" style="fill:rgb(255, 94, 0);stroke:rgb(30, 30, 30);stroke-width:1" />
+
+                <rect width="200" height="300" x="1100" y="225" style="fill: rgb(255, 0, 0);stroke: rgb(30, 30, 30)" />
+                    <line x1="1300" y1="250" x2="1125" y2="250" style="stroke: rgb(30, 30, 30);stroke-width:1" />
+                    <line x1="1125" y1="250" x2="1100" y2="225" style="stroke: rgb(30, 30, 30);stroke-width:1" />
+                    <line x1="1300" y1="500" x2="1125" y2="500" style="stroke: rgb(30, 30, 30);stroke-width:1" />
+                    <line x1="1125" y1="500" x2="1100" y2="525" style="stroke: rgb(30, 30, 30);stroke-width:1" />
+                    <line x1="1300" y1="330" x2="1190" y2="330" style="stroke: rgb(30, 30, 30);stroke-width:1" />
+                    <line x1="1300" y1="420" x2="1190" y2="420" style="stroke: rgb(30, 30, 30);stroke-width:1" />
+                    <line x1="1190" y1="250" x2="1190" y2="500" style="stroke: rgb(30, 30, 30);stroke-width:1" />
+                    <line x1="1190" y1="375" x2="1125" y2="375" style="stroke: rgb(30, 30, 30);stroke-width:1" />
+                    <line x1="1125" y1="250" x2="1125" y2="500" style="stroke: rgb(30, 30, 30);stroke-width:1" />
+                <rect width="110" height="50" x="1190" y="200" style="fill: rgb(75, 75, 75);stroke: rgb(30, 30, 30);stroke-width:1" />
+                <ellipse cx="1245" cy="225" rx="55" ry="25" style="fill:rgb(255, 94, 0);stroke:rgb(30, 30, 30);stroke-width:1" />
+                <rect width="110" height="50" x="1190" y="500" style="fill: rgb(75, 75, 75);stroke: rgb(30, 30, 30);stroke-width:1" />
+                <ellipse cx="1245" cy="525" rx="55" ry="25" style="fill:rgb(255, 94, 0);stroke:rgb(30, 30, 30);stroke-width:1" />
+
+                <rect width="50" height="50" x="575" y="325" style="fill:rgb(90, 90, 90);stroke:rgb(30, 30, 30);stroke-width:1" />
+                <rect width="50" height="50" x="575" y="375" style="fill:rgb(90, 90, 90);stroke:rgb(30, 30, 30);stroke-width:1" />
+                <rect width="50" height="50" x="875" y="325" style="fill:rgb(90, 90, 90);stroke:rgb(30, 30, 30);stroke-width:1" />
+                <rect width="50" height="50" x="875" y="375" style="fill:rgb(90, 90, 90);stroke:rgb(30, 30, 30);stroke-width:1" />
+                <rect width="250" height="80" x="625" y="335" style="fill:rgb(150, 150, 150);stroke:rgb(30, 30, 30);stroke-width:1" />
+                <rect width="140" height="50" x="755" y="350" rx="15" ry="15" style="fill:rgb(255, 0, 0);stroke:rgb(30, 30, 30);stroke-width:1" />
+                <rect width="150" height="50" x="605" y="350" rx="15" ry="15" style="fill:rgb(0, 0, 255);stroke:rgb(30, 30, 30);stroke-width:1" />
+                <rect width="50" height="50" x="725" y="350" style="fill:rgb(255, 255, 255);stroke:rgb(30, 30, 30);stroke-width:1" />
+                    <line x1="640" y1="415" x2="640" y2="465" style="stroke: rgb(255, 255, 255);stroke-width:1" />
+                    <line x1="675" y1="415" x2="675" y2="465" style="stroke: rgb(255, 255, 255);stroke-width:1" />
+                    <line x1="710" y1="415" x2="710" y2="465" style="stroke: rgb(255, 255, 255);stroke-width:1" />
+                    <line x1="657" y1="400" x2="657" y2="450" style="stroke: rgb(60, 60, 60);stroke-width:2" />
+                    <line x1="692" y1="400" x2="692" y2="450" style="stroke: rgb(60, 60, 60);stroke-width:2" />
+
+                    <line x1="640" y1="335" x2="640" y2="285" style="stroke: rgb(255, 255, 255);stroke-width:1" />
+                    <line x1="675" y1="335" x2="675" y2="285" style="stroke: rgb(255, 255, 255);stroke-width:1" />
+                    <line x1="710" y1="335" x2="710" y2="285" style="stroke: rgb(255, 255, 255);stroke-width:1" />
+                    <line x1="657" y1="350" x2="657" y2="300" style="stroke: rgb(60, 60, 60);stroke-width:2" />
+                    <line x1="692" y1="350" x2="692" y2="300" style="stroke: rgb(60, 60, 60);stroke-width:2" />
+
+                    <line x1="860" y1="415" x2="860" y2="465" style="stroke: rgb(255, 255, 255);stroke-width:1" />
+                    <line x1="825" y1="415" x2="825" y2="465" style="stroke: rgb(255, 255, 255);stroke-width:1" />
+                    <line x1="790" y1="415" x2="790" y2="465" style="stroke: rgb(255, 255, 255);stroke-width:1" />
+                    <line x1="843" y1="400" x2="843" y2="450" style="stroke: rgb(60, 60, 60);stroke-width:2" />
+                    <line x1="808" y1="400" x2="808" y2="450" style="stroke: rgb(60, 60, 60);stroke-width:2" />
+
+                    <line x1="860" y1="335" x2="860" y2="285" style="stroke: rgb(255, 255, 255);stroke-width:1" />
+                    <line x1="825" y1="335" x2="825" y2="285" style="stroke: rgb(255, 255, 255);stroke-width:1" />
+                    <line x1="790" y1="335" x2="790" y2="285" style="stroke: rgb(255, 255, 255);stroke-width:1" />
+                    <line x1="843" y1="350" x2="843" y2="300" style="stroke: rgb(60, 60, 60);stroke-width:2" />
+                    <line x1="808" y1="350" x2="808" y2="300" style="stroke: rgb(60, 60, 60);stroke-width:2" />
+                    <circle cx="590" cy="400" r="15" style="fill:rgb(255, 94, 0);" />
+                    <circle cx="590" cy="350" r="15" style="fill:rgb(255, 94, 0);" />
+                    <circle cx="910" cy="400" r="15" style="fill:rgb(255, 94, 0);" />
+                    <circle cx="910" cy="350" r="15" style="fill:rgb(255, 94, 0);" />
+                        <line x1="575" y1="400" x2="545" y2="400" style="stroke: rgb(255, 255, 255);stroke-width:1" />
+                        <line x1="575" y1="350" x2="545" y2="350" style="stroke: rgb(255, 255, 255);stroke-width:1" />
+                        <line x1="925" y1="400" x2="955" y2="400" style="stroke: rgb(255, 255, 255);stroke-width:1" />
+                        <line x1="925" y1="350" x2="955" y2="350" style="stroke: rgb(255, 255, 255);stroke-width:1" />
+                
+                <polygon points="595 76, 685 76, 685 90, 665 135, 615 135, 595 90" style="fill:rgb(30, 30, 30);" />
+                <polygon points="610 90, 670 90, 655 125, 625 125" style="fill:rgb(255, 255, 255);stroke:rgb(30, 30, 30);stroke-width:1;" />
+                    <line x1="640" y1="125" x2="640" y2="165" style="stroke: rgb(255, 255, 255);stroke-width:1;" />
+                    <line x1="617" y1="108" x2="585" y2="120" style="stroke: rgb(255, 255, 255);stroke-width:1;" />
+                    <line x1="663" y1="108" x2="695" y2="120" style="stroke: rgb(255, 255, 255);stroke-width:1;" />
+                <polygon points="905 76, 815 76, 815 90, 835 135, 885 135, 905 90" style="fill:rgb(30, 30, 30);" />
+                <polygon points="890 90, 830 90, 845 125, 875 125" style="fill:rgb(255, 255, 255);stroke:rgb(30, 30, 30);stroke-width:1;" />
+                    <line x1="860" y1="125" x2="860" y2="165" style="stroke: rgb(255, 255, 255);stroke-width:1;" />
+                    <line x1="883" y1="108" x2="915" y2="120" style="stroke: rgb(255, 255, 255);stroke-width:1;" />
+                    <line x1="837" y1="108" x2="800" y2="120" style="stroke: rgb(255, 255, 255);stroke-width:1;" />
+                <polygon points="595 674, 685 674, 685 660, 665 615, 615 615, 595 660" style="fill:rgb(30, 30, 30);" />
+                <polygon points="610 660, 670 660, 655 625, 625 625" style="fill:rgb(255, 255, 255);stroke:rgb(30, 30, 30);stroke-width:1;" />
+                    <line x1="640" y1="625" x2="640" y2="585" style="stroke: rgb(255, 255, 255);stroke-width:1;" />
+                    <line x1="617" y1="642" x2="585" y2="630" style="stroke: rgb(255, 255, 255);stroke-width:1;" />
+                    <line x1="663" y1="642" x2="695" y2="630" style="stroke: rgb(255, 255, 255);stroke-width:1;" />
+                <polygon points="905 674, 815 674, 815 660, 835 615, 885 615, 905 660" style="fill:rgb(30, 30, 30);" />
+                <polygon points="890 660, 830 660, 845 625, 875 625" style="fill:rgb(255, 255, 255);stroke:rgb(30, 30, 30);stroke-width:1;" />
+                    <line x1="860" y1="625" x2="860" y2="585" style="stroke: rgb(255, 255, 255);stroke-width:1;" />
+                    <line x1="883" y1="642" x2="915" y2="630" style="stroke: rgb(255, 255, 255);stroke-width:1;" />
+                    <line x1="837" y1="642" x2="800" y2="630" style="stroke: rgb(255, 255, 255);stroke-width:1;" />
+                
+                <!-- Make Buttons -->
+                <rect id="startButton" onclick="startMatch();" />
+                <text id="startText" onclick="startMatch();"></text>
+
+                <rect id="lRCButton" onclick="setTempButtons(cValues, autoCargoRocketsSuccess, autoCargoRocketsFail, teleopCargoRocketsSuccess, teleopCargoRocketsFail);" />
+                <text id="lRCText" onclick="setTempButtons(cValues, autoCargoRocketsSuccess, autoCargoRocketsFail, teleopCargoRocketsSuccess, teleopCargoRocketsFail);"></text>
+
+                <rect id="lRHButton" onclick="setTempButtons(hValues, autoHatchRocketsSuccess, autoHatchRocketsFail, teleopHatchRocketsSuccess, teleopHatchRocketsFail);" />
+                <text id="lRHText" onclick="setTempButtons(hValues, autoHatchRocketsSuccess, autoHatchRocketsFail, teleopHatchRocketsSuccess, teleopHatchRocketsFail);"></text>
+
+                <rect id="rRCButton" onclick="setTempButtons(cValues, autoCargoRocketsSuccess, autoCargoRocketsFail, teleopCargoRocketsSuccess, teleopCargoRocketsFail);" />
+                <text id="rRCText" onclick="setTempButtons(cValues, autoCargoRocketsSuccess, autoCargoRocketsFail, teleopCargoRocketsSuccess, teleopCargoRocketsFail);"></text>
+
+                <rect id="rRHButton" onclick="setTempButtons(hValues, autoHatchRocketsSuccess, autoHatchRocketsFail, teleopHatchRocketsSuccess, teleopHatchRocketsFail);" />
+                <text id="rRHText" onclick="setTempButtons(hValues, autoHatchRocketsSuccess, autoHatchRocketsFail, teleopHatchRocketsSuccess, teleopHatchRocketsFail);"></text>
+                
+                <rect id="sCButton" onclick="setTempButtons(cValues, autoCargoShipSuccess, autoCargoShipFail, teleopCargoShipSuccess, teleopCargoShipFail);" />
+                <text id="sCText" onclick="setTempButtons(cValues, autoCargoShipSuccess, autoCargoShipFail, teleopCargoShipSuccess, teleopCargoShipFail);"></text>
+
+                <rect id="sHButton" onclick="setTempButtons(hValues, autoHatchShipSuccess, autoHatchShipFail, teleopHatchShipSuccess, teleopHatchShipFail);" />
+                <text id="sHText" onclick="setTempButtons(hValues, autoHatchShipSuccess, autoHatchShipFail, teleopHatchShipSuccess, teleopHatchShipFail);"></text>
+
+                <rect id="lRC2Button" onclick="setTempButtons(cValues, autoCargoRocketsSuccess, autoCargoRocketsFail, teleopCargoRocketsSuccess, teleopCargoRocketsFail);" />
+                <text id="lRC2Text" onclick="setTempButtons(cValues, autoCargoRocketsSuccess, autoCargoRocketsFail, teleopCargoRocketsSuccess, teleopCargoRocketsFail);"></text>
+
+                <rect id="lRH2Button" onclick="setTempButtons(hValues, autoHatchRocketsSuccess, autoHatchRocketsFail, teleopHatchRocketsSuccess, teleopHatchRocketsFail);" />
+                <text id="lRH2Text" onclick="setTempButtons(hValues, autoHatchRocketsSuccess, autoHatchRocketsFail, teleopHatchRocketsSuccess, teleopHatchRocketsFail);"></text>
+
+                <rect id="rRC2Button" onclick="setTempButtons(cValues, autoCargoRocketsSuccess, autoCargoRocketsFail, teleopCargoRocketsSuccess, teleopCargoRocketsFail);" />
+                <text id="rRC2Text" onclick="setTempButtons(cValues, autoCargoRocketsSuccess, autoCargoRocketsFail, teleopCargoRocketsSuccess, teleopCargoRocketsFail);"></text>
+
+                <rect id="rRH2Button" onclick="setTempButtons(hValues, autoHatchRocketsSuccess, autoHatchRocketsFail, teleopHatchRocketsSuccess, teleopHatchRocketsFail);" />
+                <text id="rRH2Text" onclick="setTempButtons(hValues, autoHatchRocketsSuccess, autoHatchRocketsFail, teleopHatchRocketsSuccess, teleopHatchRocketsFail);"></text>
+                
+                <rect id="sC2Button" onclick="setTempButtons(cValues, autoCargoShipSuccess, autoCargoShipFail, teleopCargoShipSuccess, teleopCargoShipFail);" />
+                <text id="sC2Text" onclick="setTempButtons(cValues, autoCargoShipSuccess, autoCargoShipFail, teleopCargoShipSuccess, teleopCargoShipFail);"></text>
+
+                <rect id="sH2Button" onclick="setTempButtons(hValues, autoHatchShipSuccess, autoHatchShipFail, teleopHatchShipSuccess, teleopHatchShipFail);" />
+                <text id="sH2Text" onclick="setTempButtons(hValues, autoHatchShipSuccess, autoHatchShipFail, teleopHatchShipSuccess, teleopHatchShipFail);"></text>
+
+                <rect id="temp1Button" /> <!--BIND-->
+                <text id="temp1Text"></text>
+
+                <rect id="temp2Button" />
+                <text id="temp2Text"></text>
+
+                <rect id="temp3Button" />
+                <text id="temp3Text"></text>
+
+                <rect id="temp4Button" />
+                <text id="temp4Text"></text>
+
+                <rect id="temp5Button" />
+                <text id="temp5Text"></text>
+
+                <rect id="temp6Button" />
+                <text id="temp6Text"></text>
+
+                <rect id="temp7Button" />
+                <text id="temp7Text"></text>
+
+                <rect id="temp8Button" />
+                <text id="temp8Text"></text>
+
+                <!-- Set Number Indicators for Ship -->
+
+                <text width="30" height="30" x="660" y="280" value="1" style="font-family:'Times New Roman';fill:rgb(0, 255, 203);font-size:50px;">1</text>
+                <text width="30" height="30" x="500" y="390" value="1" style="font-family:'Times New Roman';fill:rgb(0, 255, 203);font-size:50px;">2</text>
+                <text width="30" height="30" x="660" y="495" value="1" style="font-family:'Times New Roman';fill:rgb(0, 255, 203);font-size:50px;">3</text>
+                <text width="30" height="30" x="815" y="280" value="1" style="font-family:'Times New Roman';fill:rgb(0, 255, 203);font-size:50px;">3</text>
+                <text width="30" height="30" x="975" y="390" value="1" style="font-family:'Times New Roman';fill:rgb(0, 255, 203);font-size:50px;">2</text>
+                <text width="30" height="30" x="815" y="495" value="1" style="font-family:'Times New Roman';fill:rgb(0, 255, 203);font-size:50px;">1</text>
+                <script type="text/javascript">
+                    setButtons();
+                </script>
+            </svg>
+        </div>
 	</body>
 </html>

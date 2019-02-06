@@ -4,53 +4,52 @@
 	$startMatchNum = 1;
 	if(isset($_GET['num'])) {
 		$numRows = $_GET["num"];
-		$startMatchNum = $_GET["start"];
 	}
     $query = "SELECT DISTINCT teamNumber
                 FROM team_info
                 ORDER BY teamNumber
-                ";
-    //Get results
+				";
+	/*$query2 = "SELECT MAX(matchNumber)
+				FROM matches"; */
+	
+				//Get results
 	$result = $mysqli->query($query) or die($mysqli->error.__LINE__);
 	$doc = new DomDocument;
 	$values = array('blue1Team','blue2Team','blue3Team','red1Team','red2Team','red3Team');
 ?>
 <?php
-	function send() {
-		if($_POST){
-			//Get variables from post array
-			$check = ($_POST['blueTeam1']);
-			if($numRows > 1) {
-				$blueTeam1 = explode ("|", $_POST['blue1Team']);
-				$blueTeam2 = explode ("|", $_POST['blue2Team']);
-				$blueTeam3 = explode ("|", $_POST['blue3Team']);
-				$redTeam1 = explode ("|", $_POST['red1Team']);
-				$redTeam2 = explode ("|", $_POST['red2Team']);
-				$redTeam3 = explode ("|", $_POST['red3Team']);
-				for($i = 0;i < $numRows;$i++) {
-					$matchNumber = $i + 1;
-					$query = "INSERT INTO matches (matchNumber, blueTeam1, blueTeam2, blueTeam3, redTeam1, redTeam2, redTeam3)
-										VALUES ('$matchNumber','$blueTeam1[$i]','$blueTeam2[$i]','$blueTeam3[$i]','$redTeam1[$i]','$redTeam2[$i]','$redTeam3[$i]')";
-					$mysqli->query($query);
-				}
+	if($_POST){
+		//Get variables from post array
+		if($numRows > 1) {
+			$blueTeam1 = explode ("|", $_POST['blue1Team']);
+			$blueTeam2 = explode ("|", $_POST['blue2Team']);
+			$blueTeam3 = explode ("|", $_POST['blue3Team']);
+			$redTeam1 = explode ("|", $_POST['red1Team']);
+			$redTeam2 = explode ("|", $_POST['red2Team']);
+			$redTeam3 = explode ("|", $_POST['red3Team']);
+			for($i = 0;$i < $numRows;$i++) {
+				$matchNumber = $i + 1;
+				$query = "INSERT INTO matches(matchNumber, blueTeam1, blueTeam2, blueTeam3, redTeam1, redTeam2, redTeam3)
+									VALUES ('$matchNumber','$blueTeam1[$i]','$blueTeam2[$i]','$blueTeam3[$i]','$redTeam1[$i]','$redTeam2[$i]','$redTeam3[$i]')";
+				$mysqli->query($query) or die($mysqli->error.__LINE__);
 			}
-			else {
-				$matchNumber = $startMatchNum;
-				$blueTeam1 = ($_POST['blue1Team']);
-				$blueTeam2 = ($_POST['blue2Team']); 
-				$blueTeam3 = ($_POST['blue3Team']);
-				$redTeam1 = ($_POST['red1Team']);
-				$redTeam2 = ($_POST['red2Team']);
-				$redTeam3 = ($_POST['red3Team']);
-				$query = "INSERT INTO matches (matchNumber, blueTeam1, blueTeam2, blueTeam3, redTeam1, redTeam2, redTeam3) 
-									VALUES ('$matchNumber','$blueTeam1','$blueTeam2','$blueTeam3','$redTeam1','$redTeam2','$redTeam3')";
-				$mysqli->query($query);
-			}
-
-			$msg='Match Info Added';
-			header('Location: teamList.php?'.urlencode($msg).'');
-			exit;
 		}
+		else {
+			$matchNumber = $startMatchNum;
+			$blueTeam1 = ($_POST['blue1Team']);
+			$blueTeam2 = ($_POST['blue2Team']);
+			$blueTeam3 = ($_POST['blue3Team']);
+			$redTeam1 = ($_POST['red1Team']);
+			$redTeam2 = ($_POST['red2Team']);
+			$redTeam3 = ($_POST['red3Team']);
+			$query = "INSERT INTO matches (matchNumber, blueTeam1, blueTeam2, blueTeam3, redTeam1, redTeam2, redTeam3) 
+								VALUES ('$matchNumber','$blueTeam1','$blueTeam2','$blueTeam3','$redTeam1','$redTeam2','$redTeam3')";
+			$mysqli->query($query) or die($mysqli->error.__LINE__);
+		}
+
+		$msg='Match Info Added'.$numRows;
+		header('Location: teamList.php?'.urlencode($msg).'');
+		exit;
 	}
 ?>
 <!DOCTYPE html>
@@ -133,48 +132,13 @@
 						echo '</tr>';
 					}
 					echo '</table>';
-
-					
-					function submit($numRows, $doc, $values, $mysqli) {
-
-						$blueTeam1 = array_fill(0, abs($numRows), 0);
-						$blueTeam2 = array_fill(0, abs($numRows), 0);
-						$blueTeam2 = array_fill(0, abs($numRows), 0);
-						$redTeam1 = array_fill(0, abs($numRows), 0);
-						$redTeam2 = array_fill(0, abs($numRows), 0);
-						$redTeam3 = array_fill(0, abs($numRows), 0);
-						for($num = 0;$num < $numRows;$num++) {
-							$matchNumber = $num + 1;
-							$blueTeam1 = $doc->getElementById($values[0].$num);
-							$blueTeam2 = $doc->getElementById($values[1].$num);
-							$blueTeam3 = $doc->getElementById($values[2].$num);
-							$redTeam1 = $doc->getElementById($values[3].$num);
-							$redTeam2 = $doc->getElementById($values[4].$num);
-							$redTeam3 = $doc->getElementById($values[5].$num);
-
-							$query = "INSERT INTO matches (matchNumber, blueTeam1, blueTeam2, blueTeam3, redTeam1, redTeam2, redTeam3)
-													VALUES ('$matchNumber','$blueTeam1','$blueTeam2','$blueTeam3','$redTeam1','$redTeam2','$redTeam3')";
-							$mysqli->query($query);
-						}
-						echo "It is completed.";
-					}
 				?>
 				
 				<div id="hidden_form_container" style="display:none;">
 					<script type="text/javascript">
+						var teamIds = ['blue1Team','blue2Team','blue3Team','red1Team','red2Team','red3Team'];
 						function getSelectionValue(rowNum, columnNum) {
-							document.cookie = "rowNum=" + rowNum;
-							//FOR EXTERNAL PHP FILE
-							//window.location = "http://example.com/file.php";
-							var id =
-								<?php
-								$index = 0;
-								$row = 0;
-								if ( ! empty( $_COOKIE['rowNum'] ) ) {
-									$row = $_COOKIE['rowNum'];
-								}
-								echo '"'.$values[$index].$row.'"';
-								?>;
+							var id = teamIds[columnNum] + rowNum;
 							var e = document.getElementById(id);
 							var selectedValue = e.options[e.selectedIndex].value;
 							return selectedValue;
@@ -183,10 +147,10 @@
 						function postRefreshPage() {
 							var theForm, newInput1, newInput2, newInput3, newInput4, newInput5, newInput6;
 							var rows = <?php echo $numRows; ?>;
-							var nums1 = new Array(rows);
+							//var nums1 = new Array(rows);
 							// Start by creating a <form>
 							theForm = document.createElement('form');
-							theForm.action = 'addMatch.php';
+							theForm.action = 'addMatch.php?num=' + rows;
 							theForm.method = 'post';
 							// Next create the <input>s in the form and give them names and values
 							newInput1 = document.createElement('input');
@@ -200,7 +164,6 @@
 									newInput1.value += "|";
 								}
 							}
-
 							newInput2 = document.createElement('input');
 							newInput2.type = 'hidden';
 							newInput2.name = 'blue2Team';
@@ -212,7 +175,6 @@
 									newInput2.value += "|";
 								}
 							}
-							alert(newInput2.value);
 							
 							newInput3 = document.createElement('input');
 							newInput3.type = 'hidden';
@@ -269,15 +231,16 @@
 							theForm.appendChild(newInput5);
 							theForm.appendChild(newInput6);
 							// ...and it to the DOM...
-							document.body.appendChild(theForm);
-							//document.getElementById('hidden_form_container').appendChild(theForm);
+							//document.body.appendChild(theForm);
+							document.getElementById('hidden_form_container').appendChild(theForm);
+
 							// ...and submit it
 							theForm.submit();
 							//location.reload();
 						}
 					</script>
 				</div>
-				<button type="button" onclick="alert(getSelectionValue(2, 0));">Do it.</button>
+				<!-- <button type="button" onclick="alert(getSelectionValue(0, 1));">Do it.</button> -->
 				<button type="button" onclick="postRefreshPage();">Submit</button>
 		</div>
       <div class="footer">
