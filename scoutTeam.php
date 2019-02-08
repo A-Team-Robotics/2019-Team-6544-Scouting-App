@@ -27,10 +27,16 @@
 
         $climb = $_POST['climb'];
         $climbLevel = $_POST['climbLevel'];
-        $climbTime = $_POST['climbTime'];
         $climbFail = $_POST['climbFail'];
         $climbFailLevel = $_POST['climbFailLevel'];
-        $climbFailTime = $_POST['climbFailTime'];
+
+        $foul = $_POST['foul'];
+        $yellowCard = $_POST['yellowCard'];
+        $redCard = $_POST['redCard'];
+        $fallover = $_POST['fallover'];
+        $falloverSave = $_POST['falloverSave'];
+        $win = $_POST['win'];
+        $extraInformation = $_POST['extraInformation'];
     }
 ?>
 <!DOCTYPE html>
@@ -138,6 +144,10 @@
             </div>
         </div>
         <br />
+        <div id="theForm"></div>
+        <script type="text/javascript">
+            
+        </script>
         <div id="selections">
             Select Match: <select id="matchNum" onchange="refreshSelections();">
                 <?php
@@ -243,6 +253,14 @@
                 <line x1="1300" y1="180" x2="1300" y2="545" style="stroke:rgb(0, 0, 0);stroke-width:3" />
                 <!-- draws main field shapes -->
                 <rect width="200" height="300" x="200" y="225" style="fill: rgb(0, 0, 255);stroke: rgb(30, 30, 30)" />
+                    <rect id="climbB2Button" onclick="climbSet(1);" />
+                    <text id="climbB2Text" onclick="climbSet(1);"></text>
+                    <text id="climbB2Text2" onclick="climbSet(1);"></text>
+                    
+                    <rect id="climbR2Button" onclick="climbSet(1);" />
+                    <text id="climbR2Text" onclick="climbSet(1);"></text>
+                    <text id="climbR2Text2" onclick="climbSet(1);"></text>
+
                     <line x1="200" y1="250" x2="375" y2="250" style="stroke: rgb(30, 30, 30);stroke-width:1" />
                     <line x1="375" y1="250" x2="400" y2="225" style="stroke: rgb(30, 30, 30);stroke-width:1" />
                     <line x1="200" y1="500" x2="375" y2="500" style="stroke: rgb(30, 30, 30);stroke-width:1" />
@@ -391,11 +409,23 @@
                 <rect id="temp6Button" />
                 <text id="temp6Text"></text>
 
-                <rect id="temp7Button" />
-                <text id="temp7Text"></text>
+                <rect id="climbB1Button" onclick="climbSet(0);" />
+                <text id="climbB1Text" onclick="climbSet(0);"></text>
 
-                <rect id="temp8Button" />
-                <text id="temp8Text"></text>
+                <rect id="climbB3Button" onclick="climbSet(2);" />
+                <text id="climbB3Text" onclick="climbSet(2);"></text>
+
+                <rect id="climbR1Button" onclick="climbSet(0);" />
+                <text id="climbR1Text" onclick="climbSet(0);"></text>
+
+                <rect id="climbR3Button" onclick="climbSet(2);" />
+                <text id="climbR3Text" onclick="climbSet(2);"></text>
+
+                <rect id="climbYesButton" style="display: none;" />
+                <text id="climbYesText" style="display: none;"></text>
+
+                <rect id="climbNoButton" style="display: none;" />
+                <text id="climbNoText" style="display: none;"></text>
 
                 <!-- Set Number Indicators for Ship -->
 
@@ -407,6 +437,7 @@
                 <text width="30" height="30" x="815" y="495" value="1" style="font-family:'Times New Roman';fill:rgb(0, 255, 203);font-size:50px;">1</text>
                 <script type="text/javascript">
                     setButtons();
+                    refreshSelections();
                 </script>
             </svg>
         </div>

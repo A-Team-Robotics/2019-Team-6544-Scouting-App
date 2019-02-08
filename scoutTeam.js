@@ -1,8 +1,16 @@
-var time = 135;
+var time = 136;
 var teamNumber = 0;
 var matchNumber = 0;
 var color = 0; //0 is blue, 1 is red
 var started = false;
+var startLocation = null;
+var foul = null;
+var yellowCard = null;
+var redCard = null;
+var fallover = null;
+var falloverSave = null;
+var win = null;
+var extraInformation = null;
 //Rocket array (A is 0, B is 1)
 
 //AUTONOMOUS / SANDSTORM
@@ -28,12 +36,10 @@ var teleopCargoShipFail = [0, 0, 0];
 
 //OTHER
 
-var climb = 0;
-var climbLevel = 0;
-var climbTime = 0;
-var climbFail = 0;
-var climbFailLevel = 0;
-var climbFailTime = 0;
+var climb = null;
+var climbLevel = null;
+var climbFail = null;
+var climbFailLevel = null;
 
 //Button Dimensions (width, height, x, y]
 //Color (red, green, blue]
@@ -42,8 +48,7 @@ var climbFailTime = 0;
 var attributes = ['width', 'height', 'x', 'y'];
 var texts = ['width', 'height','x', 'y', 'font-family', 'font-size', 'value'];
 
-var ids = ['start','lRC','lRH','rRC','rRH','sC', 'sH','lRC2','lRH2','rRC2','rRH2','sC2', 'sH2'];
-
+var ids = ['start','lRC','lRH','rRC','rRH','sC', 'sH','lRC2','lRH2','rRC2','rRH2','sC2', 'sH2', 'climbYes', 'climbNo'];
 var setsDimensions = [ //The first dimension indexes match the indexes for the array ids.
                     [150, 30, 675, 10],
                     [50, 50, 575, 575],
@@ -58,9 +63,10 @@ var setsDimensions = [ //The first dimension indexes match the indexes for the a
                     [50, 50, 875, 125],
                     [50, 50, 795, 125],
                     [45, 45, 825, 352],
-                    [45, 45, 778, 352]
+                    [45, 45, 778, 352],
+                    [100, 50, 375, 324],
+                    [100, 50, 375, 376]
                     ];
-
 var setsColors = [ //The first dimension indexes match the indexes for the array ids.
                 [150, 150, 150],
                 [0, 0, 255],
@@ -74,9 +80,27 @@ var setsColors = [ //The first dimension indexes match the indexes for the array
                 [255, 0, 0],
                 [255, 0, 0],
                 [235, 184, 0],
-                [235, 184, 0]
+                [235, 184, 0],
+                [0, 255, 0],
+                [255, 0, 0]
                 ];
-
+var textColor = [
+                [255, 255, 255],
+                [255, 255, 255],
+                [255, 255, 255],
+                [255, 255, 255],
+                [255, 255, 255],
+                [255, 255, 255],
+                [255, 255, 255],
+                [255, 255, 255],
+                [255, 255, 255],
+                [255, 255, 255],
+                [255, 255, 255],
+                [255, 255, 255],
+                [255, 255, 255],
+                [255, 255, 255],
+                [255, 255, 255]
+                ];
 var textAttributes = [[150, 30, setsDimensions[0][2], setsDimensions[0][3] + 20, 'Times New Roman', 20, "START"],
                     [setsDimensions[1][0], setsDimensions[1][1], setsDimensions[1][2] + 5, setsDimensions[1][3] + 40, 'Times New Roman', 50, "C"],
                     [setsDimensions[2][0], setsDimensions[2][1], setsDimensions[2][2] + 5, setsDimensions[2][3] + 40, 'Times New Roman', 50, "H"],
@@ -89,7 +113,9 @@ var textAttributes = [[150, 30, setsDimensions[0][2], setsDimensions[0][3] + 20,
                     [setsDimensions[9][0], setsDimensions[9][1], setsDimensions[9][2] + 5, setsDimensions[9][3] + 40, 'Times New Roman', 50, "C"],
                     [setsDimensions[10][0], setsDimensions[10][1], setsDimensions[10][2] + 5, setsDimensions[10][3] + 40, 'Times New Roman', 50, "H"],
                     [setsDimensions[11][0], setsDimensions[11][1], setsDimensions[11][2] + 5, setsDimensions[11][3] + 38, 'Times New Roman', 45, "C"],
-                    [setsDimensions[12][0], setsDimensions[12][1], setsDimensions[12][2] + 5, setsDimensions[12][3] + 38, 'Times New Roman', 45, "H"]
+                    [setsDimensions[12][0], setsDimensions[12][1], setsDimensions[12][2] + 5, setsDimensions[12][3] + 38, 'Times New Roman', 45, "H"],
+                    [setsDimensions[13][0], setsDimensions[13][1], setsDimensions[13][2] + 5, setsDimensions[13][3] + 38, 'Times New Roman', 30, "Success"],
+                    [setsDimensions[14][0], setsDimensions[14][1], setsDimensions[14][2] + 5, setsDimensions[14][3] + 38, 'Times New Roman', 30, "Failure"]
                     ];
 
 var tempDimensions = [
@@ -100,7 +126,6 @@ var tempDimensions = [
     [100, 100, 640, 720],
     [100, 100, 750, 720]
     ];
-
 var tempText = [[150, 30, tempDimensions[0][2], tempDimensions[0][3] + 80, 'Times New Roman', 80],
     [100, 100, tempDimensions[1][2], tempDimensions[1][3] + 80, 'Times New Roman', 80],
     [100, 100, tempDimensions[2][2], tempDimensions[2][3] + 80, 'Times New Roman', 80],
@@ -108,11 +133,7 @@ var tempText = [[150, 30, tempDimensions[0][2], tempDimensions[0][3] + 80, 'Time
     [100, 100, tempDimensions[4][2], tempDimensions[4][3] + 80, 'Times New Roman', 80],
     [100, 100, tempDimensions[5][2], tempDimensions[5][3] + 80, 'Times New Roman', 80]
     ];
-
 var tempIds = ['temp1', 'temp2', 'temp3', 'temp4', 'temp5', 'temp6'];
-var tempDefaultValues = ['', '', '', '', '', ''];
-var tempDisplay = false;
-
 var tempColor = [[0, 255, 0],
     [0, 255, 0],
     [0, 255, 0],
@@ -123,6 +144,308 @@ var tempColor = [[0, 255, 0],
 
 var cValues = ['C1', 'C2', 'C3', 'C4', 'C5', 'C6'];
 var hValues = ['H1', 'H2', 'H3', 'H4', 'H5', 'H6'];
+
+var climbIds = ['climbB1', 'climbB2', 'climbB3', 'climbR1', 'climbR2', 'climbR3'];
+var climbDimensions = [
+    [63, 248, 311, 251],
+    [108, 248, 201, 251],
+    [108, 88, 201, 331],
+    [63, 248, 1126, 251],
+    [108, 248, 1191, 251],
+    [108, 88, 1191, 331]
+];
+var climbText = [
+    [50, 50, climbDimensions[0][2], climbDimensions[0][3] + 40, 'Times New Roman', 45, 'L1'],
+    [50, 50, climbDimensions[1][2], climbDimensions[1][3] + 40, 'Times New Roman', 45, 'L2'],
+    [50, 50, climbDimensions[2][2], climbDimensions[2][3] + 40, 'Times New Roman', 45, 'L3'],
+    [50, 50, climbDimensions[3][2], climbDimensions[3][3] + 40, 'Times New Roman', 45, 'L1'],
+    [50, 50, climbDimensions[4][2], climbDimensions[4][3] + 40, 'Times New Roman', 45, 'L2'],
+    [50, 50, climbDimensions[5][2], climbDimensions[5][3] + 40, 'Times New Roman', 45, 'L3']
+];
+var climbText2 = [50, 50, climbDimensions[1][2], 475, 'Times New Roman', 45, 'L2'];
+var climbText3 = [50, 50, climbDimensions[4][2], 475, 'Times New Roman', 45, 'L2'];
+var climbColor = [
+    [50, 255, 255],
+    [50, 255, 255],
+    [50, 255, 255],
+    [255, 0, 50],
+    [255, 0, 50],
+    [255, 0, 50]
+];
+
+function postData() {
+    var form, fteamNumber, fstartLocation, fautoHatchRocketsSuccess, fautoCargoRocketsSuccess, fautoHatchRocketsFail, fautoCargoRocketsFail, fautoHatchShipSuccess,
+        fautoCargoShipSuccess, fautoHatchShipFail, fautoCargoShipFail, fteleopHatchRocketsSuccess, fteleopCargoRocketsSuccess, fteleopHatchRocketsFail, fteleopCargoRocketsFail,
+        fteleopHatchShipSuccess, fteleopCargoShipSuccess, fteleopHatchShipFail, fteleopCargoShipFail, fclimb, fclimbLevel, fclimbFail, fclimbFailLevel,
+        ffoul, fyellowCard, fredCard, ffallover, ffalloverSave, fwin, fextraInformation;
+    form = document.createElement('form');
+    form.action = 'scoutTeam.php';
+    form.method = 'post';
+
+    fteamNumber = document.createElement('input');
+    fteamNumber.type = 'hidden';
+    fteamNumber.name = 'teamNumber';
+    fteamNumber.id = 'teamNumber'; //new concept
+    fteamNumber.value = teamNumber;
+
+    fstartLocation = document.createElement('input');
+    fstartLocation.type = 'hidden';
+    fstartLocation.name = 'startLocation';
+    fstartLocation.id = 'startLocation';
+    fstartLocation.value = startLocation;
+
+    fautoHatchRocketsSuccess = document.createElement('input');
+    fautoHatchRocketsSuccess.type = 'hidden';
+    fautoHatchRocketsSuccess.name = 'autoHatchRocketsSuccess';
+    fautoHatchRocketsSuccess.id = 'autoHatchRocketsSuccess';
+    fautoHatchRocketsSuccess.value = autoHatchRocketsSuccess[0] + "|" + autoHatchRocketsSuccess[1] + "|" + autoHatchRocketsSuccess[2];
+
+    fautoCargoRocketsSuccess = document.createElement('input');
+    fautoCargoRocketsSuccess.type = 'hidden';
+    fautoCargoRocketsSuccess.name = 'autoCargoRocketsSuccess';
+    fautoCargoRocketsSuccess.id = 'autoCargoRocketsSuccess';
+    fautoCargoRocketsSuccess.value = autoCargoRocketsSuccess[0] + "|" + autoCargoRocketsSuccess[1] + "|" + autoCargoRocketsSuccess[2];
+
+    fautoHatchRocketsFail = document.createElement('input');
+    fautoHatchRocketsFail.type = 'hidden';
+    fautoHatchRocketsFail.name = 'autoHatchRocketsFail';
+    fautoHatchRocketsFail.id = 'autoHatchRocketsFail';
+    fautoHatchRocketsFail.value = autoHatchRocketsFail[0] + "|" + autoHatchRocketsFail[1] + "|" + autoHatchRocketsFail[2];
+
+    fautoCargoRocketsFail = document.createElement('input');
+    fautoCargoRocketsFail.type = 'hidden';
+    fautoCargoRocketsFail.name = 'autoCargoRocketsFail';
+    fautoCargoRocketsFail.id = 'autoCargoRocketsFail';
+    fautoCargoRocketsFail.value = autoCargoRocketsFail[0] + "|" + autoCargoRocketsFail[1] + "|" + autoCargoRocketsFail[2];
+
+    fautoHatchShipSuccess = document.createElement('input');
+    fautoHatchShipSuccess.type = 'hidden';
+    fautoHatchShipSuccess.name = 'autoHatchShipSuccess';
+    fautoHatchShipSuccess.id = 'autoHatchShipSuccess';
+    fautoHatchShipSuccess.value = autoHatchShipSuccess[0] + "|" + autoHatchShipSuccess[1] + "|" + autoHatchShipSuccess[2];
+
+    fautoCargoShipSuccess = document.createElement('input');
+    fautoCargoShipSuccess.type = 'hidden';
+    fautoCargoShipSuccess.name = 'autoCargoShipSuccess';
+    fautoCargoShipSuccess.id = 'autoCargoShipSuccess';
+    fautoCargoShipSuccess.value = autoCargoShipSuccess[0] + "|" + autoCargoShipSuccess[1] + "|" + autoCargoShipSuccess[2];
+
+    fautoHatchShipFail = document.createElement('input');
+    fautoHatchShipFail.type = 'hidden';
+    fautoHatchShipFail.name = 'autoHatchShipFail';
+    fautoHatchShipFail.id = 'autoHatchShipFail';
+    fautoHatchShipFail.value = autoHatchShipFail[0] + "|" + autoHatchShipFail[1] + "|" + autoHatchShipFail[2];
+
+    fautoCargoShipFail = document.createElement('input');
+    fautoCargoShipFail.type = 'hidden';
+    fautoCargoShipFail.name = 'autoCargoShipFail';
+    fautoCargoShipFail.id = 'autoCargoShipFail';
+    fautoCargoShipFail.value = autoCargoShipFail[0] + "|" + autoCargoShipFail[1] + "|" + autoCargoShipFail[2];
+
+    fteleopHatchRocketsSuccess = document.createElement('input');
+    fteleopHatchRocketsSuccess.type = 'hidden';
+    fteleopHatchRocketsSuccess.name = 'teleopHatchRocketsSuccess';
+    fteleopHatchRocketsSuccess.id = 'teleopHatchRocketsSuccess';
+    fteleopHatchRocketsSuccess.value = teleopHatchRocketsSuccess[0] + "|" + teleopHatchRocketsSuccess[1] + "|" + teleopHatchRocketsSuccess[2];
+
+    fteleopCargoRocketsSuccess = document.createElement('input');
+    fteleopCargoRocketsSuccess.type = 'hidden';
+    fteleopCargoRocketsSuccess.name = 'teleopCargoRocketsSuccess';
+    fteleopCargoRocketsSuccess.id = 'teleopCargoRocketsSuccess';
+    fteleopCargoRocketsSuccess.value = teleopCargoRocketsSuccess[0] + "|" + teleopCargoRocketsSuccess[1] + "|" + teleopCargoRocketsSuccess[2];
+
+    fteleopHatchRocketsFail = document.createElement('input');
+    fteleopHatchRocketsFail.type = 'hidden';
+    fteleopHatchRocketsFail.name = 'teleopHatchRocketsFail';
+    fteleopHatchRocketsFail.id = 'teleopHatchRocketsFail';
+    fteleopHatchRocketsFail.value = teleopHatchRocketsFail[0] + "|" + teleopHatchRocketsFail[1] + "|" + teleopHatchRocketsFail[2];
+
+    fteleopCargoRocketsFail = document.createElement('input');
+    fteleopCargoRocketsFail.type = 'hidden';
+    fteleopCargoRocketsFail.name = 'teleopCargoRocketsFail';
+    fteleopCargoRocketsFail.id = 'teleopCargoRocketsFail';
+    fteleopCargoRocketsFail.value = teleopCargoRocketsFail[0] + "|" + teleopCargoRocketsFail[1] + "|" + teleopCargoRocketsFail[2];
+
+    fteleopHatchShipSuccess = document.createElement('input');
+    fteleopHatchShipSuccess.type = 'hidden';
+    fteleopHatchShipSuccess.name = 'teleopHatchShipSuccess';
+    fteleopHatchShipSuccess.id = 'teleopHatchShipSuccess';
+    fteleopHatchShipSuccess.value = teleopHatchShipSuccess[0] + "|" + teleopHatchShipSuccess[1] + "|" + teleopHatchShipSuccess[2];
+
+    fteleopCargoShipSuccess = document.createElement('input');
+    fteleopCargoShipSuccess.type = 'hidden';
+    fteleopCargoShipSuccess.name = 'teleopCargoShipSuccess';
+    fteleopCargoShipSuccess.id = 'teleopCargoShipSuccess';
+    fteleopCargoShipSuccess.value = teleopCargoShipSuccess[0] + "|" + teleopCargoShipSuccess[1] + "|" + teleopCargoShipSuccess[2];
+
+    fteleopHatchShipFail = document.createElement('input');
+    fteleopHatchShipFail.type = 'hidden';
+    fteleopHatchShipFail.name = 'teleopHatchShipFail';
+    fteleopHatchShipFail.id = 'teleopHatchShipFail';
+    fteleopHatchShipFail.value = teleopHatchShipFail[0] + "|" + teleopHatchShipFail[1] + "|" + teleopHatchShipFail[2];
+
+    fteleopCargoShipFail = document.createElement('input');
+    fteleopCargoShipFail.type = 'hidden';
+    fteleopCargoShipFail.name = 'teleopCargoShipFail';
+    fteleopCargoShipFail.id = 'teleopCargoShipFail';
+    fteleopCargoShipFail.value = teleopCargoShipFail[0] + "|" + teleopCargoShipFail[1] + "|" + teleopCargoShipFail[2];
+
+    fclimb = document.createElement('input');
+    fclimb.type = 'hidden';
+    fclimb.name = 'climb';
+    fclimb.id = 'climb';
+    fclimb.value = climb;
+
+    fclimbLevel = document.createElement('input');
+    fclimbLevel.type = 'hidden';
+    fclimbLevel.name = 'climbLevel';
+    fclimbLevel.id = 'climbLevel';
+    fclimbLevel.value = climbLevel;
+
+    fclimbFail = document.createElement('input');
+    fclimbFail.type = 'hidden';
+    fclimbFail.name = 'climbFail';
+    fclimbFail.id = 'climbFail';
+    fclimbFail.value = climbFail;
+
+    fclimbLevelFail = document.createElement('input');
+    fclimbLevelFail.type = 'hidden';
+    fclimbLevelFail.name = 'climbLevelFail';
+    fclimbLevelFail.id = 'climbLevelFail';
+    fclimbLevelFail.value = climbLevelFail;
+
+    fclimbFailLevel = document.createElement('input');
+    fclimbFailLevel.type = 'hidden';
+    fclimbFailLevel.name = 'climbFailLevel';
+    fclimbFailLevel.id = 'climbFailLevel';
+    fclimbFailLevel.value = climbFailLevel;
+
+    ffoul = document.createElement('input');
+    ffoul.type = 'hidden';
+    ffoul.name = 'foul';
+    ffoul.id = 'foul';
+    ffoul.value = foul;
+
+    fyellowCard = document.createElement('input');
+    fyellowCard.type = 'hidden';
+    fyellowCard.name = 'yellowCard';
+    fyellowCard.id = 'yellowCard';
+    fyellowCard.value = yellowCard;
+
+    fredCard = document.createElement('input');
+    fredCard.type = 'hidden';
+    fredCard.name = 'redCard';
+    fredCard.id = 'redCard';
+    fredCard.value = redCard;
+
+    ffallover = document.createElement('input');
+    ffallover.type = 'hidden';
+    ffallover.name = 'fallover';
+    ffallover.id = 'fallover';
+    ffallover.value = fallover;
+
+    ffalloverSave = document.createElement('input');
+    ffalloverSave.type = 'hidden';
+    ffalloverSave.name = 'falloverSave';
+    ffalloverSave.id = 'falloverSave';
+    ffalloverSave.value = falloverSave;
+
+    fwin = document.createElement('input');
+    fwin.type = 'hidden';
+    fwin.name = 'win';
+    fwin.id = 'win';
+    fwin.value = win;
+
+    fextraInformation = document.createElement('input');
+    fextraInformation.type = 'hidden';
+    fextraInformation.name = 'extraInformation';
+    fextraInformation.id = 'extraInformation';
+    fextraInformation.value = extraInformation;
+
+    form.appendChild(fteamNumber);
+    form.appendChild(fstartLocation);
+    form.appendChild(fautoHatchRocketsSuccess);
+    form.appendChild(fautoCargoRocketsSuccess);
+    form.appendChild(fautoHatchRocketsFail);
+    form.appendChild(fautoCargoRocketsFail);
+    form.appendChild(fautoHatchShipSuccess);
+    form.appendChild(fautoCargoShipSuccess);
+    form.appendChild(fautoHatchShipFail);
+    form.appendChild(fautoCargoShipFail);
+    form.appendChild(fteleopHatchRocketsSuccess);
+    form.appendChild(fteleopCargoRocketsSuccess);
+    form.appendChild(fteleopHatchRocketsFail);
+    form.appendChild(fteleopCargoRocketsFail);
+    form.appendChild(fteleopHatchShipSuccess);
+    form.appendChild(fteleopCargoShipSuccess);
+    form.appendChild(fteleopHatchShipFail);
+    form.appendChild(fteleopCargoShipFail);
+    form.appendChild(fclimb);
+    form.appendChild(fclimbLevel);
+    form.appendChild(fclimbFail);
+    form.appendChild(fclimbFailLevel);
+    form.appendChild(ffoul);
+    form.appendChild(fyellowCard);
+    form.appendChild(fredCard);
+    form.appendChild(ffallover);
+    form.appendChild(ffalloverSave);
+    form.appendChild(fwin);
+    form.appendChild(fextraInformation);
+
+    document.getElementById('theForm').appendChild(form);
+    form.submit();
+}
+
+function finalDetails() {
+    if(confirm("Did the team get a yellow card?")) {
+        yellowCard = prompt("Why? Could it be from holding more than one game piece at a time, damaging the field, stepping over guard rails, etc.", "Enter Reason Here");
+    }
+    else {
+        yellowCard = "No Yellow Card.";
+    }
+
+    if(confirm("Did the team get a red card?")) {
+        redCard = prompt("Why? Could it be from throwing HATCH panels, threatening other team members, repeatedly stepping over guard rails, etc.", "Enter Reason Here");
+    }
+    else {
+        redCard = "No Red Card.";
+    }
+
+    if(confirm("Did the team get any other fouls?")) {
+        foul = prompt("Why?", "Enter Reason Here");
+    }
+
+    if(confirm("Did the team's robot fall over at all during the match?")) {
+        fallover = true;
+
+        if(confirm("Was the robot saved and able to play again?")) {
+            falloverSave = true;
+        }
+        else {
+            falloverSave = false;
+        }
+    }
+    else {
+        fallover = false;
+        falloverSave = null;
+    }
+
+    if(confirm("Did the team's alliance win?")) {
+        win = true;
+    }
+    else {
+        win = false;
+    }
+    
+    if(confirm("Any other information?")) {
+        extraInformation = prompt("Please enter anything else that happened.", "Enter Here");
+    }
+    else {
+        extraInformation = "Nothing.";
+    }
+    
+    postData();
+}
 
 function hideSVG(id) {
     var style = document.getElementById(id).style.display;
@@ -139,11 +462,12 @@ function incrementTime() {
         time -= 1;
         document.getElementById('startText').value = time;
         document.getElementById('startText').innerHTML = time;
-        setTimeout(incrementTime, 1000);
+        setTimeout(incrementTime, 1);
     }
     else {
         document.getElementById('startText').value = "C'est fini!";
         document.getElementById('startText').innerHTML = "C'est fini!";
+        finalDetails();
     }
 }
 
@@ -183,6 +507,54 @@ function tempButtons() {
         document.getElementById(tempId2).style.fill = "rgb(" + 255 + ", " + 255 + ", " + 255 + ")";
         document.getElementById(tempId2).style.stroke = "rgb(" + 255 + ", " + 255 + ", " + 255 + ")";
     }
+}
+
+function climbButtons() {
+    for(var i = 0;i < 6;i++) {
+        var climbId = climbIds[i] + "Button";
+        var climbId2 = climbIds[i] + "Text";
+        for(var j = 0;j < 4;j++) {
+            document.getElementById(climbId).setAttribute(attributes[j], climbDimensions[i][j]);
+            document.getElementById(climbId2).setAttribute(texts[j], climbText[i][j]);
+        }
+        document.getElementById(climbId).style.fill = "rgb(" + climbColor[i][0] + ", " + climbColor[i][1] + ", " + climbColor[i][2] + ")";
+        
+        document.getElementById(climbId2).style.fontFamily = climbText[i][4];
+        document.getElementById(climbId2).style.font = climbText[i][4];
+        document.getElementById(climbId2).style.fontSize = climbText[i][5];
+        document.getElementById(climbId2).style.textAlign = 'center';
+        document.getElementById(climbId2).style.fill = "rgb(" + 255 + ", " + 255 + ", " + 255 + ")";
+        document.getElementById(climbId2).style.stroke = "rgb(" + 255 + ", " + 255 + ", " + 255 + ")";
+        document.getElementById(climbId2).value = climbText[i][6];
+        document.getElementById(climbId2).innerHTML = climbText[i][6];
+    }
+
+    climbId2 = climbIds[1] + "Text2";
+
+    for(var j = 0;j < 4;j++) {
+        document.getElementById(climbId2).setAttribute(texts[j], climbText2[j]);
+        document.getElementById(climbIds[4] + "Text2").setAttribute(texts[j], climbText3[j]);
+    }
+
+    document.getElementById(climbId2).style.fontFamily = climbText2[4];
+    document.getElementById(climbId2).style.font = climbText2[4];
+    document.getElementById(climbId2).style.fontSize = climbText2[5];
+    document.getElementById(climbId2).style.textAlign = 'center';
+    document.getElementById(climbId2).style.fill = "rgb(" + 255 + ", " + 255 + ", " + 255 + ")";
+    document.getElementById(climbId2).style.stroke = "rgb(" + 255 + ", " + 255 + ", " + 255 + ")";
+    document.getElementById(climbId2).value = climbText2[6];
+    document.getElementById(climbId2).innerHTML = climbText2[6];
+
+    climbId2 = climbIds[4] + "Text2";
+
+    document.getElementById(climbId2).style.fontFamily = climbText3[4];
+    document.getElementById(climbId2).style.font = climbText3[4];
+    document.getElementById(climbId2).style.fontSize = climbText3[5];
+    document.getElementById(climbId2).style.textAlign = 'center';
+    document.getElementById(climbId2).style.fill = "rgb(" + 255 + ", " + 255 + ", " + 255 + ")";
+    document.getElementById(climbId2).style.stroke = "rgb(" + 255 + ", " + 255 + ", " + 255 + ")";
+    document.getElementById(climbId2).value = climbText3[6];
+    document.getElementById(climbId2).innerHTML = climbText3[6];
 }
 
 function setTempButtons(values, a1, a2, t1, t2) {
@@ -326,6 +698,92 @@ function unclick(id, i) {
     document.getElementById(id2).setAttribute(attributes[0], setsDimensions[i][5] + 1);
 }
 
+function climbSet(i) {
+    if(time == 136) {
+        startLocation = document.getElementById(climbIds[i] + "Text").value;
+    }
+    else {
+        //climbLevel = document.getElementById(climbIds[i] + "Text").value;
+        document.getElementById('climbYesButton').style.display = 'block';
+        document.getElementById('climbYesText').style.display = 'block';
+        document.getElementById('climbNoButton').style.display = 'block';
+        document.getElementById('climbNoText').style.display = 'block';
+
+        document.getElementById('climbYesButton').onclick = function() {
+            climb = true;
+            if(i == 0) {
+                climbLevel = 'L1';
+            }
+            else if(i == 1) {
+                climbLevel = 'L2';
+            }
+            else if(i == 2) {
+                climbLevel = 'L3';
+            }
+            
+            document.getElementById('climbYesButton').style.display = 'none';
+            document.getElementById('climbYesText').style.display = 'none';
+            document.getElementById('climbNoButton').style.display = 'none';
+            document.getElementById('climbNoText').style.display = 'none';
+        }
+
+        document.getElementById('climbYesText').onclick = function() {
+            climb = true;
+            if(i == 0) {
+                climbLevel = 'L1';
+            }
+            else if(i == 1) {
+                climbLevel = 'L2';
+            }
+            else if(i == 2) {
+                climbLevel = 'L3';
+            }
+            
+            document.getElementById('climbYesButton').style.display = 'none';
+            document.getElementById('climbYesText').style.display = 'none';
+            document.getElementById('climbNoButton').style.display = 'none';
+            document.getElementById('climbNoText').style.display = 'none';
+        }
+
+        document.getElementById('climbNoButton').onclick = function() {
+            climbFail = true;
+            if(i == 0) {
+                climbFailLevel = 'L1';
+            }
+            else if(i == 1) {
+                climbFailLevel = 'L2';
+            }
+            else if(i == 2) {
+                climbFailLevel = 'L3';
+            }
+            
+            document.getElementById('climbYesButton').style.display = 'none';
+            document.getElementById('climbYesText').style.display = 'none';
+            document.getElementById('climbNoButton').style.display = 'none';
+            document.getElementById('climbNoText').style.display = 'none';
+        }
+
+        document.getElementById('climbNoText').onclick = function() {
+            climbFail = true;
+            if(i == 0) {
+                climbFailLevel = 'L1';
+            }
+            else if(i == 1) {
+                climbFailLevel = 'L2';
+            }
+            else if(i == 2) {
+                climbFailLevel = 'L3';
+            }
+            
+            document.getElementById('climbYesButton').style.display = 'none';
+            document.getElementById('climbYesText').style.display = 'none';
+            document.getElementById('climbNoButton').style.display = 'none';
+            document.getElementById('climbNoText').style.display = 'none';
+        }
+    }
+    //alert(document.getElementById(climbIds[i] + "Text").value);
+}
+
 function setButtons() {
     for(var i = 0;i < ids.length;i++) {
         var id = ids[i] + 'Button';
@@ -342,11 +800,12 @@ function setButtons() {
         document.getElementById(id2).style.font = textAttributes[i][4];
         document.getElementById(id2).style.fontSize = textAttributes[i][5];
         document.getElementById(id2).style.textAlign = 'center';
-        document.getElementById(id2).style.fill = "rgb(" + 255 + ", " + 255 + ", " + 255 + ")";
-        document.getElementById(id2).style.stroke = "rgb(" + 255 + ", " + 255 + ", " + 255 + ")";
+        document.getElementById(id2).style.fill = "rgb(" + textColor[i][0] + ", " + textColor[i][1] + ", " + textColor[i][2] + ")";
+        document.getElementById(id2).style.stroke = "rgb(" + textColor[i][0] + ", " + textColor[i][1] + ", " + textColor[i][2] + ")";
         document.getElementById(id2).value = textAttributes[i][6];
         document.getElementById(id2).innerHTML = textAttributes[i][6];
     }
 
     tempButtons();
+    climbButtons();
 }
