@@ -7,6 +7,9 @@
 ?>
 <?php
     if($_POST) {
+        $teamNumber = $_POST['teamNumber'];
+        $startLocation = $_POST['startLocation'];
+
         $autoHatchRocketsSuccess = explode("|", $_POST['autoHatchRocketsSuccess']);
         $autoCargoRocketsSuccess = explode("|", $_POST['autoCargoRocketsSuccess']);
         $autoHatchRocketsFail = explode("|", $_POST['autoHatchRocketsFail']);
@@ -37,6 +40,46 @@
         $falloverSave = $_POST['falloverSave'];
         $win = $_POST['win'];
         $extraInformation = $_POST['extraInformation'];
+
+        $query = "INSERT INTO match_scout (teamNumber, startLocation, climb, climbLevel, climbFail, climbFailLevel, yellowCard, redCard, foul, fallover, falloverSave, win, extraInformation)
+                            VALUES ('$teamNumber','$startLocation','$climb','$climbLevel','$climbFail','$climbFailLevel','$yellowCard','$redCard','$foul','$fallover','$falloverSave','$win','$extraInformation')
+                            ";
+        $mysqli->query($query) or die($mysqli->error.__LINE__);
+        $query2 = "INSERT INTO match_scout_1 (teamNumber, autoHatchRocketsSuccess1, autoHatchRocketsSuccess2, autoHatchRocketsSuccess3, autoCargoRocketsSuccess1, autoCargoRocketsSuccess2,
+                                            autoCargoRocketsSuccess3, autoHatchRocketsFail1, autoHatchRocketsFail2, autoHatchRocketsFail3, autoCargoRocketsFail1, autoCargoRocketsFail2,
+                                            autoCargoRocketsFail3)
+                            VALUES ('$teamNumber','$autoHatchRocketsSuccess[0]','$autoHatchRocketsSuccess[1]','$autoHatchRocketsSuccess[2]','$autoCargoRocketsSuccess[0]','$autoCargoRocketsSuccess[1]',
+                                    '$autoCargoRocketsSuccess[2]','$autoHatchRocketsFail[0]','$autoHatchRocketsFail[1]','$autoHatchRocketsFail[2]','$autoCargoRocketsFail[0]','$autoCargoRocketsFail[1]',
+                                    '$autoCargoRocketsFail[2]')
+                                    ";
+        $mysqli->query($query2) or die($mysqli->error.__LINE__);
+        $query3 = "INSERT INTO match_scout_2 (teamNumber, autoHatchShipSuccess1, autoHatchShipSuccess2, autoHatchShipSuccess3, autoCargoShipSuccess1, autoCargoShipSuccess2,
+                                            autoCargoShipSuccess3, autoHatchShipFail1, autoHatchShipFail2, autoHatchShipFail3, autoCargoShipFail1, autoCargoShipFail2,
+                                            autoCargoShipFail3)
+                            VALUES ('$teamNumber','$autoHatchShipSuccess[0]','$autoHatchShipSuccess[1]','$autoHatchShipSuccess[2]','$autoCargoShipSuccess[0]','$autoCargoShipSuccess[1]',
+                                    '$autoCargoShipSuccess[2]','$autoHatchShipFail[0]','$autoHatchShipFail[1]','$autoHatchShipFail[2]','$autoCargoShipFail[0]','$autoCargoShipFail[1]',
+                                    '$autoCargoShipFail[2]')
+                                    ";
+        $mysqli->query($query3) or die($mysqli->error.__LINE__);
+        $query4 = "INSERT INTO match_scout_3 (teamNumber, teleopHatchRocketsSuccess1, teleopHatchRocketsSuccess2, teleopHatchRocketsSuccess3, teleopCargoRocketsSuccess1, teleopCargoRocketsSuccess2,
+                                            teleopCargoRocketsSuccess3, teleopHatchRocketsFail1, teleopHatchRocketsFail2, teleopHatchRocketsFail3, teleopCargoRocketsFail1, teleopCargoRocketsFail2,
+                                            teleopCargoRocketsFail3)
+                            VALUES ('$teamNumber','$teleopHatchRocketsSuccess[0]','$teleopHatchRocketsSuccess[1]','$teleopHatchRocketsSuccess[2]','$teleopCargoRocketsSuccess[0]','$teleopCargoRocketsSuccess[1]',
+                                    '$teleopCargoRocketsSuccess[2]','$teleopHatchRocketsFail[0]','$teleopHatchRocketsFail[1]','$teleopHatchRocketsFail[2]','$teleopCargoRocketsFail[0]','$teleopCargoRocketsFail[1]',
+                                    '$teleopCargoRocketsFail[2]')
+                                    ";
+        $mysqli->query($query4) or die($mysqli->error.__LINE__);
+        $query5 = "INSERT INTO match_scout_4 (teamNumber, teleopHatchShipSuccess1, teleopHatchShipSuccess2, teleopHatchShipSuccess3, teleopCargoShipSuccess1, teleopCargoShipSuccess2,
+                                            teleopCargoShipSuccess3, teleopHatchShipFail1, teleopHatchShipFail2, teleopHatchShipFail3, teleopCargoShipFail1, teleopCargoShipFail2,
+                                            teleopCargoShipFail3)
+                            VALUES ('$teamNumber','$teleopHatchShipSuccess[0]','$teleopHatchShipSuccess[1]','$teleopHatchShipSuccess[2]','$teleopCargoShipSuccess[0]','$teleopCargoShipSuccess[1]',
+                                    '$teleopCargoShipSuccess[2]','$teleopHatchShipFail[0]','$teleopHatchShipFail[1]','$teleopHatchShipFail[2]','$teleopCargoShipFail[0]','$teleopCargoShipFail[1]',
+                                    '$teleopCargoShipFail[2]')
+                                    ";
+        $mysqli->query($query5) or die($mysqli->error.__LINE__);
+        $msg='Team Scouted';
+		header('Location: teamList.php?'.urlencode($msg).'');
+		exit;
     }
 ?>
 <!DOCTYPE html>
@@ -146,7 +189,228 @@
         <br />
         <div id="theForm"></div>
         <script type="text/javascript">
-            
+            function postData() {
+                var form, fteamNumber, fstartLocation, fautoHatchRocketsSuccess, fautoCargoRocketsSuccess, fautoHatchRocketsFail, fautoCargoRocketsFail, fautoHatchShipSuccess,
+                    fautoCargoShipSuccess, fautoHatchShipFail, fautoCargoShipFail, fteleopHatchRocketsSuccess, fteleopCargoRocketsSuccess, fteleopHatchRocketsFail, fteleopCargoRocketsFail,
+                    fteleopHatchShipSuccess, fteleopCargoShipSuccess, fteleopHatchShipFail, fteleopCargoShipFail, fclimb, fclimbLevel, fclimbFail, fclimbFailLevel,
+                    ffoul, fyellowCard, fredCard, ffallover, ffalloverSave, fwin, fextraInformation;
+                form = document.createElement('form');
+                form.action = 'scoutTeam.php';
+                form.method = 'post';
+
+                fteamNumber = document.createElement('input');
+                fteamNumber.type = 'hidden';
+                fteamNumber.name = 'teamNumber';
+                fteamNumber.id = 'teamNumber'; //new concept
+                fteamNumber.value = document.getElementById('teamNum').options[document.getElementById('teamNum').selectedIndex].value;
+
+                fstartLocation = document.createElement('input');
+                fstartLocation.type = 'hidden';
+                fstartLocation.name = 'startLocation';
+                fstartLocation.id = 'startLocation';
+                fstartLocation.value = startLocation;
+
+                fautoHatchRocketsSuccess = document.createElement('input');
+                fautoHatchRocketsSuccess.type = 'hidden';
+                fautoHatchRocketsSuccess.name = 'autoHatchRocketsSuccess';
+                fautoHatchRocketsSuccess.id = 'autoHatchRocketsSuccess';
+                fautoHatchRocketsSuccess.value = autoHatchRocketsSuccess[0] + "|" + autoHatchRocketsSuccess[1] + "|" + autoHatchRocketsSuccess[2];
+
+                fautoCargoRocketsSuccess = document.createElement('input');
+                fautoCargoRocketsSuccess.type = 'hidden';
+                fautoCargoRocketsSuccess.name = 'autoCargoRocketsSuccess';
+                fautoCargoRocketsSuccess.id = 'autoCargoRocketsSuccess';
+                fautoCargoRocketsSuccess.value = autoCargoRocketsSuccess[0] + "|" + autoCargoRocketsSuccess[1] + "|" + autoCargoRocketsSuccess[2];
+
+                fautoHatchRocketsFail = document.createElement('input');
+                fautoHatchRocketsFail.type = 'hidden';
+                fautoHatchRocketsFail.name = 'autoHatchRocketsFail';
+                fautoHatchRocketsFail.id = 'autoHatchRocketsFail';
+                fautoHatchRocketsFail.value = autoHatchRocketsFail[0] + "|" + autoHatchRocketsFail[1] + "|" + autoHatchRocketsFail[2];
+
+                fautoCargoRocketsFail = document.createElement('input');
+                fautoCargoRocketsFail.type = 'hidden';
+                fautoCargoRocketsFail.name = 'autoCargoRocketsFail';
+                fautoCargoRocketsFail.id = 'autoCargoRocketsFail';
+                fautoCargoRocketsFail.value = autoCargoRocketsFail[0] + "|" + autoCargoRocketsFail[1] + "|" + autoCargoRocketsFail[2];
+
+                fautoHatchShipSuccess = document.createElement('input');
+                fautoHatchShipSuccess.type = 'hidden';
+                fautoHatchShipSuccess.name = 'autoHatchShipSuccess';
+                fautoHatchShipSuccess.id = 'autoHatchShipSuccess';
+                fautoHatchShipSuccess.value = autoHatchShipSuccess[0] + "|" + autoHatchShipSuccess[1] + "|" + autoHatchShipSuccess[2];
+
+                fautoCargoShipSuccess = document.createElement('input');
+                fautoCargoShipSuccess.type = 'hidden';
+                fautoCargoShipSuccess.name = 'autoCargoShipSuccess';
+                fautoCargoShipSuccess.id = 'autoCargoShipSuccess';
+                fautoCargoShipSuccess.value = autoCargoShipSuccess[0] + "|" + autoCargoShipSuccess[1] + "|" + autoCargoShipSuccess[2];
+
+                fautoHatchShipFail = document.createElement('input');
+                fautoHatchShipFail.type = 'hidden';
+                fautoHatchShipFail.name = 'autoHatchShipFail';
+                fautoHatchShipFail.id = 'autoHatchShipFail';
+                fautoHatchShipFail.value = autoHatchShipFail[0] + "|" + autoHatchShipFail[1] + "|" + autoHatchShipFail[2];
+
+                fautoCargoShipFail = document.createElement('input');
+                fautoCargoShipFail.type = 'hidden';
+                fautoCargoShipFail.name = 'autoCargoShipFail';
+                fautoCargoShipFail.id = 'autoCargoShipFail';
+                fautoCargoShipFail.value = autoCargoShipFail[0] + "|" + autoCargoShipFail[1] + "|" + autoCargoShipFail[2];
+
+                fteleopHatchRocketsSuccess = document.createElement('input');
+                fteleopHatchRocketsSuccess.type = 'hidden';
+                fteleopHatchRocketsSuccess.name = 'teleopHatchRocketsSuccess';
+                fteleopHatchRocketsSuccess.id = 'teleopHatchRocketsSuccess';
+                fteleopHatchRocketsSuccess.value = teleopHatchRocketsSuccess[0] + "|" + teleopHatchRocketsSuccess[1] + "|" + teleopHatchRocketsSuccess[2];
+
+                fteleopCargoRocketsSuccess = document.createElement('input');
+                fteleopCargoRocketsSuccess.type = 'hidden';
+                fteleopCargoRocketsSuccess.name = 'teleopCargoRocketsSuccess';
+                fteleopCargoRocketsSuccess.id = 'teleopCargoRocketsSuccess';
+                fteleopCargoRocketsSuccess.value = teleopCargoRocketsSuccess[0] + "|" + teleopCargoRocketsSuccess[1] + "|" + teleopCargoRocketsSuccess[2];
+
+                fteleopHatchRocketsFail = document.createElement('input');
+                fteleopHatchRocketsFail.type = 'hidden';
+                fteleopHatchRocketsFail.name = 'teleopHatchRocketsFail';
+                fteleopHatchRocketsFail.id = 'teleopHatchRocketsFail';
+                fteleopHatchRocketsFail.value = teleopHatchRocketsFail[0] + "|" + teleopHatchRocketsFail[1] + "|" + teleopHatchRocketsFail[2];
+
+                fteleopCargoRocketsFail = document.createElement('input');
+                fteleopCargoRocketsFail.type = 'hidden';
+                fteleopCargoRocketsFail.name = 'teleopCargoRocketsFail';
+                fteleopCargoRocketsFail.id = 'teleopCargoRocketsFail';
+                fteleopCargoRocketsFail.value = teleopCargoRocketsFail[0] + "|" + teleopCargoRocketsFail[1] + "|" + teleopCargoRocketsFail[2];
+
+                fteleopHatchShipSuccess = document.createElement('input');
+                fteleopHatchShipSuccess.type = 'hidden';
+                fteleopHatchShipSuccess.name = 'teleopHatchShipSuccess';
+                fteleopHatchShipSuccess.id = 'teleopHatchShipSuccess';
+                fteleopHatchShipSuccess.value = teleopHatchShipSuccess[0] + "|" + teleopHatchShipSuccess[1] + "|" + teleopHatchShipSuccess[2];
+
+                fteleopCargoShipSuccess = document.createElement('input');
+                fteleopCargoShipSuccess.type = 'hidden';
+                fteleopCargoShipSuccess.name = 'teleopCargoShipSuccess';
+                fteleopCargoShipSuccess.id = 'teleopCargoShipSuccess';
+                fteleopCargoShipSuccess.value = teleopCargoShipSuccess[0] + "|" + teleopCargoShipSuccess[1] + "|" + teleopCargoShipSuccess[2];
+
+                fteleopHatchShipFail = document.createElement('input');
+                fteleopHatchShipFail.type = 'hidden';
+                fteleopHatchShipFail.name = 'teleopHatchShipFail';
+                fteleopHatchShipFail.id = 'teleopHatchShipFail';
+                fteleopHatchShipFail.value = teleopHatchShipFail[0] + "|" + teleopHatchShipFail[1] + "|" + teleopHatchShipFail[2];
+
+                fteleopCargoShipFail = document.createElement('input');
+                fteleopCargoShipFail.type = 'hidden';
+                fteleopCargoShipFail.name = 'teleopCargoShipFail';
+                fteleopCargoShipFail.id = 'teleopCargoShipFail';
+                fteleopCargoShipFail.value = teleopCargoShipFail[0] + "|" + teleopCargoShipFail[1] + "|" + teleopCargoShipFail[2];
+
+                fclimb = document.createElement('input');
+                fclimb.type = 'hidden';
+                fclimb.name = 'climb';
+                fclimb.id = 'climb';
+                fclimb.value = climb;
+
+                fclimbLevel = document.createElement('input');
+                fclimbLevel.type = 'hidden';
+                fclimbLevel.name = 'climbLevel';
+                fclimbLevel.id = 'climbLevel';
+                fclimbLevel.value = climbLevel;
+
+                fclimbFail = document.createElement('input');
+                fclimbFail.type = 'hidden';
+                fclimbFail.name = 'climbFail';
+                fclimbFail.id = 'climbFail';
+                fclimbFail.value = climbFail;
+
+                fclimbLevelFail = document.createElement('input');
+                fclimbLevelFail.type = 'hidden';
+                fclimbLevelFail.name = 'climbLevelFail';
+                fclimbLevelFail.id = 'climbLevelFail';
+                fclimbLevelFail.value = climbFailLevel;
+
+                fclimbFailLevel = document.createElement('input');
+                fclimbFailLevel.type = 'hidden';
+                fclimbFailLevel.name = 'climbFailLevel';
+                fclimbFailLevel.id = 'climbFailLevel';
+                fclimbFailLevel.value = climbFailLevel;
+
+                ffoul = document.createElement('input');
+                ffoul.type = 'hidden';
+                ffoul.name = 'foul';
+                ffoul.id = 'foul';
+                ffoul.value = foul;
+
+                fyellowCard = document.createElement('input');
+                fyellowCard.type = 'hidden';
+                fyellowCard.name = 'yellowCard';
+                fyellowCard.id = 'yellowCard';
+                fyellowCard.value = yellowCard;
+
+                fredCard = document.createElement('input');
+                fredCard.type = 'hidden';
+                fredCard.name = 'redCard';
+                fredCard.id = 'redCard';
+                fredCard.value = redCard;
+
+                ffallover = document.createElement('input');
+                ffallover.type = 'hidden';
+                ffallover.name = 'fallover';
+                ffallover.id = 'fallover';
+                ffallover.value = fallover;
+
+                ffalloverSave = document.createElement('input');
+                ffalloverSave.type = 'hidden';
+                ffalloverSave.name = 'falloverSave';
+                ffalloverSave.id = 'falloverSave';
+                ffalloverSave.value = falloverSave;
+
+                fwin = document.createElement('input');
+                fwin.type = 'hidden';
+                fwin.name = 'win';
+                fwin.id = 'win';
+                fwin.value = win;
+
+                fextraInformation = document.createElement('input');
+                fextraInformation.type = 'hidden';
+                fextraInformation.name = 'extraInformation';
+                fextraInformation.id = 'extraInformation';
+                fextraInformation.value = extraInformation;
+
+                form.appendChild(fteamNumber);
+                form.appendChild(fstartLocation);
+                form.appendChild(fautoHatchRocketsSuccess);
+                form.appendChild(fautoCargoRocketsSuccess);
+                form.appendChild(fautoHatchRocketsFail);
+                form.appendChild(fautoCargoRocketsFail);
+                form.appendChild(fautoHatchShipSuccess);
+                form.appendChild(fautoCargoShipSuccess);
+                form.appendChild(fautoHatchShipFail);
+                form.appendChild(fautoCargoShipFail);
+                form.appendChild(fteleopHatchRocketsSuccess);
+                form.appendChild(fteleopCargoRocketsSuccess);
+                form.appendChild(fteleopHatchRocketsFail);
+                form.appendChild(fteleopCargoRocketsFail);
+                form.appendChild(fteleopHatchShipSuccess);
+                form.appendChild(fteleopCargoShipSuccess);
+                form.appendChild(fteleopHatchShipFail);
+                form.appendChild(fteleopCargoShipFail);
+                form.appendChild(fclimb);
+                form.appendChild(fclimbLevel);
+                form.appendChild(fclimbFail);
+                form.appendChild(fclimbFailLevel);
+                form.appendChild(ffoul);
+                form.appendChild(fyellowCard);
+                form.appendChild(fredCard);
+                form.appendChild(ffallover);
+                form.appendChild(ffalloverSave);
+                form.appendChild(fwin);
+                form.appendChild(fextraInformation);
+
+                document.getElementById('theForm').appendChild(form);
+                form.submit();
+            }
         </script>
         <div id="selections">
             Select Match: <select id="matchNum" onchange="refreshSelections();">
@@ -159,7 +423,7 @@
                     echo $output;
                 ?>
             </select><br />
-            Select Team: <select id="teamNum">
+            Select Team: <select id="teamNum" onchange="teamNumber = document.getElementById('teamNum').value;">
                     <option id="blue1"></option>
                     <option id="blue2"></option>
                     <option id="blue3"></option>
@@ -438,6 +702,8 @@
                 <script type="text/javascript">
                     setButtons();
                     refreshSelections();
+                    document.getElementById('teamNum').options[1].selected = true;
+                    document.getElementById('teamNum').options[0].selected = true;
                 </script>
             </svg>
         </div>
