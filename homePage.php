@@ -22,7 +22,9 @@
           <li><a href="addTeam.php">Add Team</a></li>
           <li><a href="robot.php">Add Robot</a></li>
           <li><a href="scoutTeam.php">Scout Team</a></li>
-          <li><a href="addMatchCount.php">Match Information</a></li>
+          <li><a href="addMatchCount.php">Add Match</a></li>
+          <li><a href="viewMatchSetNumber.php">View Match</a></li>
+          <li><a href="viewTeamSetNumber.php">View Team</a></li>
         </ul>
   		</div>
         <h3 style="color:purple; font:bold;">A-Team Scouting Page</h3>

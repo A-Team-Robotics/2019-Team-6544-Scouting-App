@@ -38,7 +38,9 @@
           <li><a href="addTeam.php">Add Team</a></li>
 					<li><a href="robot.php">Add Robot</a></li>
 					<li><a href="scoutTeam.php">Scout Team</a></li>
-					<li><a href="addMatchCount.php">Match Information</a></li>
+					<li><a href="addMatchCount.php">Add Match</a></li>
+					<li><a href="viewMatchSetNumber.php">View Match</a></li>
+          <li><a href="viewTeamSetNumber.php">View Team</a></li>
   		</div>
         </ul>
         <h3 style="color:purple; font:bold;">A-Team Scouting Page</h3>
@@ -67,7 +69,7 @@
 				while($row = $result->fetch_assoc()){
 					//Display customer info
 					$output ='<tr>';
-					$output .='<td>'.$row['teamName'].'-'.$row['teamNumber'].'</td>';
+					$output .='<td><a href="viewTeam.php?num='.$row['teamNumber'].'">'.$row['teamName'].'-'.$row['teamNumber'].'</td>';
 					$output .='<td>'.$row['teamSchoolName'].'</td>';
 					$output .='<td>'.$row['teamEmail'].'</td>';
 					$output .='<td>'.$row['teamAge'].'</td>';

@@ -11,6 +11,7 @@ var fallover = null;
 var falloverSave = null;
 var win = null;
 var extraInformation = null;
+var defense = null;
 //Rocket array (A is 0, B is 1)
 
 //AUTONOMOUS / SANDSTORM
@@ -142,8 +143,8 @@ var tempColor = [[0, 255, 0],
     [255, 0, 0],
     ];
 
-var cValues = ['C1', 'C2', 'C3', 'C4', 'C5', 'C6'];
-var hValues = ['H1', 'H2', 'H3', 'H4', 'H5', 'H6'];
+var cValues = ['C1', 'C2', 'C3', 'C1', 'C2', 'C3'];
+var hValues = ['H1', 'H2', 'H3', 'H1', 'H2', 'H3'];
 
 var climbIds = ['climbB1', 'climbB2', 'climbB3', 'climbR1', 'climbR2', 'climbR3'];
 var climbDimensions = [
@@ -165,12 +166,12 @@ var climbText = [
 var climbText2 = [50, 50, climbDimensions[1][2], 475, 'Times New Roman', 45, 'L2'];
 var climbText3 = [50, 50, climbDimensions[4][2], 475, 'Times New Roman', 45, 'L2'];
 var climbColor = [
-    [50, 255, 255],
-    [50, 255, 255],
-    [50, 255, 255],
-    [255, 0, 50],
-    [255, 0, 50],
-    [255, 0, 50]
+    [0, 0, 255],
+    [0, 0, 255],
+    [0, 0, 255],
+    [255, 0, 0],
+    [255, 0, 0],
+    [255, 0, 0]
 ];
 
 
@@ -196,6 +197,18 @@ function finalDetails() {
     else {
         foul = "No other fouls.";
     }
+    
+    if(confirm("Did the team play defensively?")) {
+        if(confirm("Press 'Okay' if they played defense A LOT, or 'Cancel' if they played defense partially.")) {
+            defense = "Very Defensive";
+        }
+        else {
+            defense = "Somewhat Defensive";
+        }
+    }
+    else {
+        defense = "Not Defensive";
+    }
 
     if(confirm("Did the team's robot fall over at all during the match?")) {
         fallover = "Yes";
@@ -218,7 +231,7 @@ function finalDetails() {
     else {
         win = "No";
     }
-    
+
     if(confirm("Any other information?")) {
         extraInformation = prompt("Please enter anything else that happened.", "Enter Here");
     }
@@ -262,7 +275,7 @@ function incrementTime() {
         time -= 1;
         document.getElementById('startText').value = time;
         document.getElementById('startText').innerHTML = time;
-        setTimeout(incrementTime, 50);
+        setTimeout(incrementTime, 1000);
     }
     else {
         document.getElementById('startText').value = "C'est fini!";
@@ -273,8 +286,8 @@ function incrementTime() {
 }
 
 function startMatch() {
+    matchNumber = document.getElementById('matchNum').options[document.getElementById('matchNum').selectedIndex].value;
     teamNumber = document.getElementById('teamNum').options[document.getElementById('teamNum').selectedIndex].value;
-    alert(teamNumber);
     if(!started) {
         started = true;
         incrementTime();
@@ -504,6 +517,7 @@ function unclick(id, i) {
 function climbSet(i) {
     if(time == 136) {
         startLocation = document.getElementById(climbIds[i] + "Text").value;
+        alert("Start Location Set");
     }
     else {
         //climbLevel = document.getElementById(climbIds[i] + "Text").value;

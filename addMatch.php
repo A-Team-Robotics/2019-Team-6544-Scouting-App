@@ -1,7 +1,6 @@
 <?php include('includes/database.php'); ?>
 <?php
 	$numRows = 1;
-	$startMatchNum = 1;
 	if(isset($_GET['num'])) {
 		$numRows = $_GET["num"];
 	}
@@ -11,9 +10,19 @@
 				";
 	/*$query2 = "SELECT MAX(matchNumber)
 				FROM matches"; */
-	
-				//Get results
 	$result = $mysqli->query($query) or die($mysqli->error.__LINE__);
+
+	$query2 = "SELECT DISTINCT matchNumber FROM matches ORDER BY matchNumber ASC";
+	$result2 = $mysqli->query($query2) or die($mysqli->error.__LINE__);
+
+	$matchNums = array();
+	$i = 0;
+
+	while($row2 = $result2->fetch_assoc()) {
+		$matchNums[$i] = $row2['matchNumber'];
+	}
+
+	$startMatchNum = $matchNums[sizeof($matchNums) - 1]; //I may be able to get rid of this '-1' and all the successive '+1's, but I don't want to risk messing up the program.
 	$doc = new DomDocument;
 	$values = array('blue1Team','blue2Team','blue3Team','red1Team','red2Team','red3Team');
 ?>
@@ -28,7 +37,7 @@
 			$redTeam2 = explode ("|", $_POST['red2Team']);
 			$redTeam3 = explode ("|", $_POST['red3Team']);
 			for($i = 0;$i < $numRows;$i++) {
-				$matchNumber = $i + 1;
+				$matchNumber = $i + $startMatchNum + 1;
 				$query = "INSERT INTO matches(matchNumber, blueTeam1, blueTeam2, blueTeam3, redTeam1, redTeam2, redTeam3)
 									VALUES ('$matchNumber','$blueTeam1[$i]','$blueTeam2[$i]','$blueTeam3[$i]','$redTeam1[$i]','$redTeam2[$i]','$redTeam3[$i]')";
 				$mysqli->query($query) or die($mysqli->error.__LINE__);
@@ -36,12 +45,12 @@
 		}
 		else {
 			$matchNumber = $startMatchNum;
-			$blueTeam1 = ($_POST['blue1Team']);
-			$blueTeam2 = ($_POST['blue2Team']);
-			$blueTeam3 = ($_POST['blue3Team']);
-			$redTeam1 = ($_POST['red1Team']);
-			$redTeam2 = ($_POST['red2Team']);
-			$redTeam3 = ($_POST['red3Team']);
+			$blueTeam1 = ($_POST['blue1Team']).($startMatchNum - 1);
+			$blueTeam2 = ($_POST['blue2Team']).($startMatchNum - 1);
+			$blueTeam3 = ($_POST['blue3Team']).($startMatchNum - 1);
+			$redTeam1 = ($_POST['red1Team']).($startMatchNum - 1);
+			$redTeam2 = ($_POST['red2Team']).($startMatchNum - 1);
+			$redTeam3 = ($_POST['red3Team']).($startMatchNum - 1);
 			$query = "INSERT INTO matches (matchNumber, blueTeam1, blueTeam2, blueTeam3, redTeam1, redTeam2, redTeam3) 
 								VALUES ('$matchNumber','$blueTeam1','$blueTeam2','$blueTeam3','$redTeam1','$redTeam2','$redTeam3')";
 			$mysqli->query($query) or die($mysqli->error.__LINE__);
@@ -96,9 +105,11 @@
           <li><a href="homePage.php">Home Page</a></li>
           <li><a href="teamList.php">Team List</a></li>
           <li><a href="addTeam.php">Add Team</a></li>
-			<li><a href="robot.php">Add Robot</a></li>
-			<li><a href="scoutTeam.php">Scout Team</a></li>
-          <li class="active"><a href="<?php echo "addMatch.php?num=".$numRows."&start=".$startMatchNum?>">Add Match Info</a></li>
+					<li><a href="robot.php">Add Robot</a></li>
+					<li><a href="scoutTeam.php">Scout Team</a></li>
+					<li class="active"><a href="<?php echo "addMatch.php?num=".$numRows."&start=".$startMatchNum?>">Enter Match</a></li>
+					<li><a href="viewMatchSetNumber.php">View Match</a></li>
+					<li><a href="viewTeamSetNumber.php">View Team</a></li>
 				</ul>
   	  </div>
 		</div>
@@ -115,8 +126,9 @@
 					<th>Red Team 3</th>
 				</tr>
 				<?php
-					for($num = 0;$num < $numRows;$num++) {
-						echo '<tr><td>'. ($num + 1). '</td>';
+					$num = 0;
+					for($num2 = $startMatchNum;$num2 < ($numRows + $startMatchNum);$num2++) {
+						echo '<tr><td>'. ($num2 + 1). '</td>';
 						$count = 0;
 						for($i = 0;$i < 6;$i++) {
 							$value = $values[$count].$num;
@@ -130,6 +142,7 @@
 							$count++;
 						}
 						echo '</tr>';
+						$num++;
 					}
 					echo '</table>';
 				?>
@@ -147,6 +160,7 @@
 						function postRefreshPage() {
 							var theForm, newInput1, newInput2, newInput3, newInput4, newInput5, newInput6;
 							var rows = <?php echo $numRows; ?>;
+							var start = <?php echo $startMatchNum; ?>;
 							//var nums1 = new Array(rows);
 							// Start by creating a <form>
 							theForm = document.createElement('form');

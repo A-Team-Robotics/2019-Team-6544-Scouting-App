@@ -8,6 +8,7 @@
 <?php
     if($_POST) {
         $teamNumber = $_POST['teamNumber'];
+        $matchNumber = $_POST['matchNumber'];
         $startLocation = $_POST['startLocation'];
 
         $autoHatchRocketsSuccess = explode("|", $_POST['autoHatchRocketsSuccess']);
@@ -34,45 +35,50 @@
         $climbFailLevel = $_POST['climbFailLevel'];
 
         $foul = $_POST['foul'];
+        $foul = addslashes($foul);
+        $defense = $_POST['defense'];
         $yellowCard = $_POST['yellowCard'];
+        $yellowCard = addslashes($yellowCard);
         $redCard = $_POST['redCard'];
+        $redCard = addslashes($redCard);
         $fallover = $_POST['fallover'];
         $falloverSave = $_POST['falloverSave'];
         $win = $_POST['win'];
         $extraInformation = $_POST['extraInformation'];
+        $extraInformation = addslashes($extraInformation);
 
-        $query = "INSERT INTO match_scout (teamNumber, startLocation, climb, climbLevel, climbFail, climbFailLevel, yellowCard, redCard, foul, fallover, falloverSave, win, extraInformation)
-                            VALUES ('$teamNumber','$startLocation','$climb','$climbLevel','$climbFail','$climbFailLevel','$yellowCard','$redCard','$foul','$fallover','$falloverSave','$win','$extraInformation')
+        $query = "INSERT INTO match_scout (teamNumber, matchNumber, startLocation, climb, climbLevel, climbFail, climbFailLevel, yellowCard, redCard, foul, defense, fallover, falloverSave, win, extraInformation)
+                            VALUES ('$teamNumber','$matchNumber','$startLocation','$climb','$climbLevel','$climbFail','$climbFailLevel','$yellowCard','$redCard','$foul','$defense','$fallover','$falloverSave','$win','$extraInformation')
                             ";
         $mysqli->query($query) or die($mysqli->error.__LINE__);
-        $query2 = "INSERT INTO match_scout_1 (teamNumber, autoHatchRocketsSuccess1, autoHatchRocketsSuccess2, autoHatchRocketsSuccess3, autoCargoRocketsSuccess1, autoCargoRocketsSuccess2,
+        $query2 = "INSERT INTO match_scout_1 (teamNumber, matchNumber, autoHatchRocketsSuccess1, autoHatchRocketsSuccess2, autoHatchRocketsSuccess3, autoCargoRocketsSuccess1, autoCargoRocketsSuccess2,
                                             autoCargoRocketsSuccess3, autoHatchRocketsFail1, autoHatchRocketsFail2, autoHatchRocketsFail3, autoCargoRocketsFail1, autoCargoRocketsFail2,
                                             autoCargoRocketsFail3)
-                            VALUES ('$teamNumber','$autoHatchRocketsSuccess[0]','$autoHatchRocketsSuccess[1]','$autoHatchRocketsSuccess[2]','$autoCargoRocketsSuccess[0]','$autoCargoRocketsSuccess[1]',
+                            VALUES ('$teamNumber','$matchNumber','$autoHatchRocketsSuccess[0]','$autoHatchRocketsSuccess[1]','$autoHatchRocketsSuccess[2]','$autoCargoRocketsSuccess[0]','$autoCargoRocketsSuccess[1]',
                                     '$autoCargoRocketsSuccess[2]','$autoHatchRocketsFail[0]','$autoHatchRocketsFail[1]','$autoHatchRocketsFail[2]','$autoCargoRocketsFail[0]','$autoCargoRocketsFail[1]',
                                     '$autoCargoRocketsFail[2]')
                                     ";
         $mysqli->query($query2) or die($mysqli->error.__LINE__);
-        $query3 = "INSERT INTO match_scout_2 (teamNumber, autoHatchShipSuccess1, autoHatchShipSuccess2, autoHatchShipSuccess3, autoCargoShipSuccess1, autoCargoShipSuccess2,
+        $query3 = "INSERT INTO match_scout_2 (teamNumber, matchNumber, autoHatchShipSuccess1, autoHatchShipSuccess2, autoHatchShipSuccess3, autoCargoShipSuccess1, autoCargoShipSuccess2,
                                             autoCargoShipSuccess3, autoHatchShipFail1, autoHatchShipFail2, autoHatchShipFail3, autoCargoShipFail1, autoCargoShipFail2,
                                             autoCargoShipFail3)
-                            VALUES ('$teamNumber','$autoHatchShipSuccess[0]','$autoHatchShipSuccess[1]','$autoHatchShipSuccess[2]','$autoCargoShipSuccess[0]','$autoCargoShipSuccess[1]',
+                            VALUES ('$teamNumber','$matchNumber','$autoHatchShipSuccess[0]','$autoHatchShipSuccess[1]','$autoHatchShipSuccess[2]','$autoCargoShipSuccess[0]','$autoCargoShipSuccess[1]',
                                     '$autoCargoShipSuccess[2]','$autoHatchShipFail[0]','$autoHatchShipFail[1]','$autoHatchShipFail[2]','$autoCargoShipFail[0]','$autoCargoShipFail[1]',
                                     '$autoCargoShipFail[2]')
                                     ";
         $mysqli->query($query3) or die($mysqli->error.__LINE__);
-        $query4 = "INSERT INTO match_scout_3 (teamNumber, teleopHatchRocketsSuccess1, teleopHatchRocketsSuccess2, teleopHatchRocketsSuccess3, teleopCargoRocketsSuccess1, teleopCargoRocketsSuccess2,
+        $query4 = "INSERT INTO match_scout_3 (teamNumber, matchNumber, teleopHatchRocketsSuccess1, teleopHatchRocketsSuccess2, teleopHatchRocketsSuccess3, teleopCargoRocketsSuccess1, teleopCargoRocketsSuccess2,
                                             teleopCargoRocketsSuccess3, teleopHatchRocketsFail1, teleopHatchRocketsFail2, teleopHatchRocketsFail3, teleopCargoRocketsFail1, teleopCargoRocketsFail2,
                                             teleopCargoRocketsFail3)
-                            VALUES ('$teamNumber','$teleopHatchRocketsSuccess[0]','$teleopHatchRocketsSuccess[1]','$teleopHatchRocketsSuccess[2]','$teleopCargoRocketsSuccess[0]','$teleopCargoRocketsSuccess[1]',
+                            VALUES ('$teamNumber','$matchNumber','$teleopHatchRocketsSuccess[0]','$teleopHatchRocketsSuccess[1]','$teleopHatchRocketsSuccess[2]','$teleopCargoRocketsSuccess[0]','$teleopCargoRocketsSuccess[1]',
                                     '$teleopCargoRocketsSuccess[2]','$teleopHatchRocketsFail[0]','$teleopHatchRocketsFail[1]','$teleopHatchRocketsFail[2]','$teleopCargoRocketsFail[0]','$teleopCargoRocketsFail[1]',
                                     '$teleopCargoRocketsFail[2]')
                                     ";
         $mysqli->query($query4) or die($mysqli->error.__LINE__);
-        $query5 = "INSERT INTO match_scout_4 (teamNumber, teleopHatchShipSuccess1, teleopHatchShipSuccess2, teleopHatchShipSuccess3, teleopCargoShipSuccess1, teleopCargoShipSuccess2,
+        $query5 = "INSERT INTO match_scout_4 (teamNumber, matchNumber, teleopHatchShipSuccess1, teleopHatchShipSuccess2, teleopHatchShipSuccess3, teleopCargoShipSuccess1, teleopCargoShipSuccess2,
                                             teleopCargoShipSuccess3, teleopHatchShipFail1, teleopHatchShipFail2, teleopHatchShipFail3, teleopCargoShipFail1, teleopCargoShipFail2,
                                             teleopCargoShipFail3)
-                            VALUES ('$teamNumber','$teleopHatchShipSuccess[0]','$teleopHatchShipSuccess[1]','$teleopHatchShipSuccess[2]','$teleopCargoShipSuccess[0]','$teleopCargoShipSuccess[1]',
+                            VALUES ('$teamNumber','$matchNumber','$teleopHatchShipSuccess[0]','$teleopHatchShipSuccess[1]','$teleopHatchShipSuccess[2]','$teleopCargoShipSuccess[0]','$teleopCargoShipSuccess[1]',
                                     '$teleopCargoShipSuccess[2]','$teleopHatchShipFail[0]','$teleopHatchShipFail[1]','$teleopHatchShipFail[2]','$teleopCargoShipFail[0]','$teleopCargoShipFail[1]',
                                     '$teleopCargoShipFail[2]')
                                     ";
@@ -130,6 +136,14 @@
 
             /* Change the background color of the dropdown button when the dropdown content is shown */
             .dropdown:hover .dropbtn {background-color: #3e8e41;}
+
+            #selections {
+                font-size: 200%;
+            }
+
+            #upper {
+                font-size: 125%;
+            }
         </style>
         <script type="text/javascript">
             var data = [
@@ -176,13 +190,15 @@
         <link href="css/custom.css" rel="stylesheet">
         <div class="container">
             <div class="header">
-                <ul class="nav nav-pills pull-right">
+                <ul class="nav nav-pills pull-right" id="upper">
                     <li><a href="homePage.php">Home Page</a></li>
                     <li><a href="teamList.php">Team List</a></li>
                     <li><a href="addTeam.php">Add Team</a></li>
                     <li><a href="robot.php">Robot Information</a></li>
                     <li class="active"><a href="scoutTeam.php">Scout Team</a></li>
-                    <li><a href="addMatchCount.php">Match Information</a></li>
+                    <li><a href="addMatchCount.php">Add Match</a></li>
+                    <li><a href="viewMatchSetNumber.php">View Match</a></li>
+                    <li><a href="viewTeamSetNumber.php">View Team</a></li>
                 </ul>
             </div>
         </div>
@@ -190,10 +206,10 @@
         <div id="theForm"></div>
         <script type="text/javascript">
             function postData() {
-                var form, fteamNumber, fstartLocation, fautoHatchRocketsSuccess, fautoCargoRocketsSuccess, fautoHatchRocketsFail, fautoCargoRocketsFail, fautoHatchShipSuccess,
+                var form, fteamNumber, fmatchNumber, fstartLocation, fautoHatchRocketsSuccess, fautoCargoRocketsSuccess, fautoHatchRocketsFail, fautoCargoRocketsFail, fautoHatchShipSuccess,
                     fautoCargoShipSuccess, fautoHatchShipFail, fautoCargoShipFail, fteleopHatchRocketsSuccess, fteleopCargoRocketsSuccess, fteleopHatchRocketsFail, fteleopCargoRocketsFail,
                     fteleopHatchShipSuccess, fteleopCargoShipSuccess, fteleopHatchShipFail, fteleopCargoShipFail, fclimb, fclimbLevel, fclimbFail, fclimbFailLevel,
-                    ffoul, fyellowCard, fredCard, ffallover, ffalloverSave, fwin, fextraInformation;
+                    ffoul, fdefense, fyellowCard, fredCard, ffallover, ffalloverSave, fwin, fextraInformation;
                 form = document.createElement('form');
                 form.action = 'scoutTeam.php';
                 form.method = 'post';
@@ -203,6 +219,12 @@
                 fteamNumber.name = 'teamNumber';
                 fteamNumber.id = 'teamNumber'; //new concept
                 fteamNumber.value = document.getElementById('teamNum').options[document.getElementById('teamNum').selectedIndex].value;
+
+                fmatchNumber = document.createElement('input');
+                fmatchNumber.type = 'hidden';
+                fmatchNumber.name = 'matchNumber';
+                fmatchNumber.id = 'matchNumber'; //new concept
+                fmatchNumber.value = document.getElementById('matchNum').options[document.getElementById('matchNum').selectedIndex].value;
 
                 fstartLocation = document.createElement('input');
                 fstartLocation.type = 'hidden';
@@ -342,6 +364,12 @@
                 ffoul.id = 'foul';
                 ffoul.value = foul;
 
+                fdefense = document.createElement('input');
+                fdefense.type = 'hidden';
+                fdefense.name = 'defense';
+                fdefense.id = 'defense';
+                fdefense.value = defense;
+
                 fyellowCard = document.createElement('input');
                 fyellowCard.type = 'hidden';
                 fyellowCard.name = 'yellowCard';
@@ -379,6 +407,7 @@
                 fextraInformation.value = extraInformation;
 
                 form.appendChild(fteamNumber);
+                form.appendChild(fmatchNumber);
                 form.appendChild(fstartLocation);
                 form.appendChild(fautoHatchRocketsSuccess);
                 form.appendChild(fautoCargoRocketsSuccess);
@@ -401,6 +430,7 @@
                 form.appendChild(fclimbFail);
                 form.appendChild(fclimbFailLevel);
                 form.appendChild(ffoul);
+                form.appendChild(fdefense);
                 form.appendChild(fyellowCard);
                 form.appendChild(fredCard);
                 form.appendChild(ffallover);

@@ -3,9 +3,8 @@
 	if($_POST){
 		//Get variables from post array
 		$numMatches = ($_POST['numMatches']);
-		$startMatchNum = ($_POST['startMatchNum']); 
-		$msg='num='. (string)$numMatches. '&start='.(string)$startMatchNum;
-		header('Location: addMatch.php?num='. $numMatches. '&start='. $startMatchNum. '');
+		$msg='num='. (string)$numMatches;
+		header('Location: addMatch.php?num='. $numMatches. '');
 		exit;
 	}
 ?>
@@ -32,23 +31,21 @@
           <li><a href="homePage.php">Home Page</a></li>
           <li><a href="teamList.php">Team List</a></li>
           <li><a href="addTeam.php">Add Team</a></li>
-			<li><a href="robot.php">Add Robot</a></li>
-			<li><a href="scoutTeam.php">Scout Team</a></li>
-          <li class="active"><a href="addMatchCount.php">Match Information</a></li>
+          <li><a href="robot.php">Add Robot</a></li>
+          <li><a href="scoutTeam.php">Scout Team</a></li>
+          <li class="active"><a href="addMatchCount.php">Add Match</a></li>
+          <li><a href="viewMatchSetNumber.php">View Match</a></li>
+           <li><a href="viewTeamSetNumber.php">View Team</a></li>
 				</ul>
   	  </div>
 		</div>
 		<br />
         <form role="form" method="post" action="addMatchCount.php">
-            <div class="form-group">
-				<label>Number of Matches to Input</label>
-				<input name="numMatches" type="text" class="form-control" placeholder="Recommended: set value to number of Qualification Matches">
-			</div>
-			<div class="form-group">
-				<label>Starting Match Number</label>
-				<input name="startMatchNum" type="text" class="form-control" placeholder="Recommended: set value to 1">
-			</div>
-            <br><input type="submit" class="btn btn-default" value="Go" /></br>
+          <div class="form-group">
+				    <label>Number of Matches to Input</label>
+				    <input name="numMatches" type="text" class="form-control" placeholder="Recommended: set value to number of Qualification Matches">
+			    </div>
+          <br><input type="submit" class="btn btn-default" value="Go" /></br>
         </form>
       <div class="footer">
 			<p style="color:purple;">&copy; A-Team Robotics 2018</p>
