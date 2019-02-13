@@ -12,6 +12,7 @@ var falloverSave = null;
 var win = null;
 var extraInformation = null;
 var defense = null;
+var score = null;
 //Rocket array (A is 0, B is 1)
 
 //AUTONOMOUS / SANDSTORM
@@ -270,17 +271,92 @@ function hideSVG(id) {
     //document.getElementById("mySvg").style.display = "none";
 }
 
+function setScore() {
+    score += autoCargoRocketsSuccess[0] * 3;
+    score += autoCargoRocketsSuccess[1] * 6;
+    score += autoCargoRocketsSuccess[2] * 10;
+    score += autoCargoShipSuccess[0] * 3;
+    score += autoCargoShipSuccess[1] * 3;
+    score += autoCargoShipSuccess[2] * 3;
+    score += autoHatchRocketsSuccess[0] * 2;
+    score += autoHatchRocketsSuccess[1] * 6;
+    score += autoHatchRocketsSuccess[2] * 10;
+    score += autoHatchShipSuccess[0] * 2;
+    score += autoHatchShipSuccess[1] * 2;
+    score += autoHatchShipSuccess[2] * 2;
+
+    score += teleopCargoRocketsSuccess[0] * 2;
+    score += teleopCargoRocketsSuccess[1] * 4;
+    score += teleopCargoRocketsSuccess[2] * 6;
+    score += teleopCargoShipSuccess[0] * 2;
+    score += teleopCargoShipSuccess[1] * 2;
+    score += teleopCargoShipSuccess[2] * 2;
+    score += teleopHatchRocketsSuccess[0] * 2;
+    score += teleopHatchRocketsSuccess[1] * 3;
+    score += teleopHatchRocketsSuccess[2] * 5;
+    score += teleopHatchShipSuccess[0] * 2;
+    score += teleopHatchShipSuccess[1] * 2;
+    score += teleopHatchShipSuccess[2] * 2;
+
+    if(startLocation === "L2") {
+        score += 1;
+    }
+    else if(startLocation === "L3") {
+        score += 4;
+    }
+    switch(climbLevel) {
+        case "L1":
+            score += 1;
+            break;
+        case "L2":
+            score += 5;
+            break;
+        case "L3":
+            score += 10;
+            break;
+    }
+    if(yellowCard !== "No Yellow Card.") {
+        score -= 5;
+    }
+    if(redCard !== "No Red Card.") {
+        score -= 20;
+    }
+    if(foul !== "No other fouls.") {
+        score -= 5;
+    }
+    switch(defense) {
+        case "Somewhat Defensive":
+            score += 1;
+            break;
+        case "Very Defensive":
+            score += 2;
+            break;
+    }
+    if(fallover === "Yes") {
+        if(falloverSave === "Yes") {
+            score += 1;
+        }
+        else {
+            score += -5;
+        }
+    }
+    if(win === "Yes") {
+        score += 5;
+    }
+}
+
 function incrementTime() {
     if(time != 0) {
         time -= 1;
         document.getElementById('startText').value = time;
         document.getElementById('startText').innerHTML = time;
-        setTimeout(incrementTime, 1000);
+        setTimeout(incrementTime, 50);
     }
     else {
         document.getElementById('startText').value = "C'est fini!";
         document.getElementById('startText').innerHTML = "C'est fini!";
         finalDetails();
+        setScore();
         postData();
     }
 }

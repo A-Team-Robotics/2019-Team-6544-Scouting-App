@@ -31,8 +31,19 @@
     <!-- Custom styles for this template -->
     <link href="css/custom.css" rel="stylesheet">
     <style>
-      tr, th, td {
+      tr, td {
         border: 1px solid #000000;
+        padding: 5px;
+      }
+      th {
+        border: 2px solid #000000;
+        padding: 3px;
+      }
+      tr:nth-child(even) {
+        background: #DDD
+      }
+      tr:nth-child(odd) {
+        background: #FFF
       }
       table {
         border: 1px solid #000000;
@@ -62,11 +73,12 @@
                 $output .= '"'.$row['fallover'].'",';
                 $output .= '"'.$row['falloverSave'].'",';
                 $output .= '"'.$row['win'].'",';
+                $output .= '"'.$row['extraInformation'].'",';
                 if($counter == $numResults) {
-                  $output .= '"'.$row['extraInformation'].'"]';
+                  $output .= ''.$row['score'].']';
                 }
                 else {
-                  $output .= '"'.$row['extraInformation'].'"],';
+                  $output .= ''.$row['score'].'],';
                 }
             }
             echo $output;
@@ -189,7 +201,6 @@
           mysqli_data_seek($result5, 0);
         ?>
       ];
-      var scores = setScores(mainScoutInformation, autoRockets, autoShip, teleopRockets, teleopShip);
     </script>
   </head>
   <body>
@@ -226,64 +237,202 @@
             <th>Fallover Saves</th>
             <th>Alliance Win</th>
             <th>Extra Information</th>
+            <th>Match Score</th>
           </tr>
           <script type="text/javascript">
             var table = document.getElementById("data");
 
             for(var i = 0;i < mainScoutInformation.length;i++) {
               var row = table.insertRow(i + 1);
-              for(var j = 0;j < 14;j++) {
+              for(var j = 0;j < 15;j++) {
                 var cell = row.insertCell(j);
-                cell.innerHTML = mainScoutInformation[i][j];
+                if(mainScoutInformation[i][j] === "L1") {
+                  cell.innerHTML = "Level 1";
+                }
+                else if(mainScoutInformation[i][j] === "L2") {
+                  cell.innerHTML = "Level 2";
+                }
+                else if(mainScoutInformation[i][j] === "L3") {
+                  cell.innerHTML = "Level 3";
+                }
+                else {
+                  cell.innerHTML = mainScoutInformation[i][j];
+                }
               }
             }
-          </script>
-          <script type="text/javascript">
-            /*
-            var table = document.getElementById('data');
-            var rows = new Array(mainScoutInformation.length + autoRockets.length + autoShip.length + teleopRockets.length + teleopShip.length);
-            var titles = ['Match Number','Start Position','Climb','Climb Fail','Yellow Cards','Red Cards','Other Fouls','Defense','Fallovers','Fallover Saves','Alliance Win','Extra Information'];
-            for(var i = 0;i < (mainScoutInformation.length + autoRockets.length + autoShip.length + teleopRockets.length + teleopShip.length);i++) {
-              rows[i] = table.insertRow(i);
-              var cells = rows[i].insertCell(0);
-              cells.style.border = "1px solid black;";
-              cells.innerHTML = titles[i];
-              for(var j = 0;j < mainScoutInformation.length;j++) {
-                var cells = rows[i].insertCell(j + 1);
-                cells.style.border = "1px solid black;";
-                cells.innerHTML = mainScoutInformation[j][i];
-              }
-            }
-           /*
-            var row1 = table.insertRow(0);
-            var cells = row1.insertCell(0);
-            cells.style.border = "1px solid black;";
-            cells.innerHTML = "Match Number";
-            for(var i = 0;i <= mainScoutInformation.length;i++) {
-              var cells = row1.insertCell(i);
-              cells.innerHTML = mainScoutInformation[i][0];
-            }
-
-            var row2 = table.insertRow(1);
-            var cells = row2.insertCell(0);
-            cells.style.border = "1px solid black;";
-            cells.innerHTML = "Start Position";
-            for(var i = 0;i <= mainScoutInformation.length;i++) {
-              var cells = row2.insertCell(i);
-              cells.innerHTML = mainScoutInformation[i][1];
-            }
-
-            var row3 = table.insertRow(2);
-            var cells = row3.insertCell(0);
-            cells.style.border = "1px solid black;";
-            cells.innerHTML = "Start Position";
-            for(var i = 0;i <= mainScoutInformation.length;i++) {
-              var cells = row3.insertCell(i);
-              cells.innerHTML = mainScoutInformation[i][2];
-            }
-            */
           </script>
         </table>
+        <h2>Auto Scouts</h2>
+        <table id="autoData" style="border: 1px solid black;">
+          <tr>
+            <th>Match Number</th>
+            <th>Hatch Level 1 Success</th>
+            <th>Hatch Level 2 Success</th>
+            <th>Hatch Level 3 Success</th>
+            <th>Hatch Level 1 Success</th>
+            <th>Hatch Level 2 Success</th>
+            <th>Hatch Level 3 Success</th>
+            <th>Cargo Level 1 Fail</th>
+            <th>Cargo Level 2 Fail</th>
+            <th>Cargo Level 3 Fail</th>
+            <th>Cargo Level 1 Fail</th>
+            <th>Cargo Level 2 Fail</th>
+            <th>Cargo Level 3 Fail</th>
+            <th>Hatch Ship Success</th>
+            <th>Cargo Ship Success</th>
+            <th>Hatch Ship Fail</th>
+            <th>Cargo Ship Fail</th>
+          </tr>
+          <script type="text/javascript">
+            var table = document.getElementById("autoData");
+
+            for(var i = 0;i < mainScoutInformation.length;i++) {
+              var row = table.insertRow(i + 1);
+
+              var cell = row.insertCell(0);
+              cell.innerHTML = mainScoutInformation[i][0];
+              
+              for(var j = 1;j < 13;j++) {
+                var cell = row.insertCell(j);
+                cell.innerHTML = autoRockets[i][j - 1];
+              }
+
+              for(var j = 0;j < 4;j++) {
+                var cell = row.insertCell(j + 13);
+                cell.innerHTML = autoShip[i][j] + autoShip[i][j + 1] + autoShip[i][j + 2];
+              }
+            }
+          </script>
+        </table>
+        <h2>Teleop Scouts</h2>
+        <table id="teleopData" style="border: 1px solid black;">
+          <tr>
+            <th>Match Number</th>
+            <th>Hatch Level 1 Success</th>
+            <th>Hatch Level 2 Success</th>
+            <th>Hatch Level 3 Success</th>
+            <th>Hatch Level 1 Success</th>
+            <th>Hatch Level 2 Success</th>
+            <th>Hatch Level 3 Success</th>
+            <th>Cargo Level 1 Fail</th>
+            <th>Cargo Level 2 Fail</th>
+            <th>Cargo Level 3 Fail</th>
+            <th>Cargo Level 1 Fail</th>
+            <th>Cargo Level 2 Fail</th>
+            <th>Cargo Level 3 Fail</th>
+            <th>Hatch Ship Success</th>
+            <th>Cargo Ship Success</th>
+            <th>Hatch Ship Fail</th>
+            <th>Cargo Ship Fail</th>
+          </tr>
+          <script type="text/javascript">
+            var table = document.getElementById("teleopData");
+
+            for(var i = 0;i < mainScoutInformation.length;i++) {
+              var row = table.insertRow(i + 1);
+
+              var cell = row.insertCell(0);
+              cell.innerHTML = mainScoutInformation[i][0];
+              
+              for(var j = 1;j < 13;j++) {
+                var cell = row.insertCell(j);
+                cell.innerHTML = teleopRockets[i][j - 1];
+              }
+
+              for(var j = 0;j < 4;j++) {
+                var cell = row.insertCell(j + 13);
+                cell.innerHTML = teleopShip[i][j] + teleopShip[i][j + 1] + teleopShip[i][j + 2];
+              }
+            }
+          </script>
+        </table>
+        <br />
+        <canvas id="linegraph" width="700" height="425">
+        </canvas>
+        <script type="text/javascript">
+          var canvas = document.getElementById("linegraph");
+          var yLine = canvas.getContext("2d");
+          yLine.moveTo(50, 50);
+          yLine.lineTo(50, 350);
+          yLine.lineWidth = 2;
+          yLine.stroke();
+
+          var xLine = canvas.getContext("2d");
+          xLine.moveTo(50, 350);
+          xLine.lineTo(700, 350);
+          xLine.lineWidth = 2;
+          xLine.stroke();
+
+          var text = canvas.getContext("2d");
+          text.font = "50px Times New Roman";
+          text.fillText("Points Per Match", 200, 50);
+          text.restore();
+
+          /*
+          var text = canvas.getContext("2d");
+          text.font = "30px Times New Roman";
+          text.rotate(Math.PI * 2);
+          text.fillText("Points", 0, 200);
+          text.restore();
+          */
+
+          var text = canvas.getContext("2d");
+          text.font = "30px Times New Roman";
+          text.fillText("Match Number", 300, 400);
+          text.restore();
+
+          for(var i = 0;i < 15;i++) {
+            var ym = canvas.getContext("2d");
+            ym.moveTo(45, 330 - (i * 20));
+            ym.lineTo(55, 330 - (i * 20));
+            ym.lineWidth = 1;
+            ym.stroke();
+
+            var text = canvas.getContext("2d");
+            text.font = "20px Times New Roman";
+            text.fillText((i + 1) * 5, 20, 335 - (i * 20));
+          }
+          
+          var xmdimensions = [];
+          var ymdimensions = [];
+          var xdifference = 650 / mainScoutInformation.length;
+
+          for(var i = 0;i < mainScoutInformation.length;i++) {
+            xmdimensions[i] = xdifference * (i + 1);
+            ymdimensions[i] = 350 - (mainScoutInformation[i][14] * 4);
+
+
+            var xm = canvas.getContext("2d");
+            xm.moveTo(xmdimensions[i], 355);
+            xm.lineTo(xmdimensions[i], 345);
+            xm.stroke();
+
+            var text = canvas.getContext("2d");
+            text.font = "20px Times New Roman";
+            text.fillText(i + 1, xmdimensions[i] - 5, 375);
+            
+            var dot = canvas.getContext("2d");
+            dot.beginPath();
+            dot.arc(xmdimensions[i], ymdimensions[i], 4, 0, 2 * Math.PI);
+            dot.stroke();
+            dot.fillStyle = "#000000";
+            dot.fill();
+          }
+
+          for(var i = 1;i < mainScoutInformation.length;i++) {
+            var connect = canvas.getContext("2d");
+            connect.moveTo(xmdimensions[i - 1], ymdimensions[i - 1]);
+            connect.lineTo(xmdimensions[i], ymdimensions[i]);
+            connect.lineWidth = 1;
+            connect.stroke();
+          }
+
+          var connect = canvas.getContext("2d");
+          connect.moveTo(xmdimensions[0], ymdimensions[0]);
+          connect.lineTo(50, 350);
+          connect.lineWidth = 1;
+          connect.stroke();
+        </script>
       </div>
       <div class="footer">
 			<p style="color:purple;">&copy; A-Team Robotics 2018</p>

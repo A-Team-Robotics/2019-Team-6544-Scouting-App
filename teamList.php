@@ -14,6 +14,9 @@
 			 ";
 	//Get results
 	$result = $mysqli->query($query) or die($mysqli->error.__LINE__);
+
+	$query2 = "SELECT * FROM match_scout ORDER BY teamNumber";
+	$result2 = $mysqli->query($query2) or die($mysqli->error.__LINE__);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -28,6 +31,49 @@
     <link href="css/main.css" rel="stylesheet">
     <!-- Custom styles for this template -->
     <link href="css/custom.css" rel="stylesheet">
+		<script type="text/javascript">
+			var teamScores = [<?php
+					$output = "";
+					$numResults = mysqli_num_rows($result2);
+					$counter = 0;
+					while($row2 = $result2->fetch_assoc()) {
+							$counter += 1;
+							$output .= '['.$row2['teamNumber'].',';
+							if($counter == $numResults) {
+								$output .= ''.$row2['score'].']';
+							}
+							else {
+								$output .= ''.$row2['score'].'],';
+							}
+					}
+					echo $output;
+					mysqli_data_seek($result2, 0);
+				?>];
+			var tempTeam = 0;
+			var tempScore = 0;
+			var tempTotal = 0;
+
+			for(var i = 0;i < teamScores.length;i++) {
+				if(i == 0) {
+					tempTeam = teamScores[i][0];
+					tempScore = teamScores[i][1];
+				}
+				else {
+					if(teamScores[i][0] == tempTeam) {
+						teamScores[i][1] += tempScore;
+						i -= 1;
+						teamScores.splice(i, 1);
+					}
+					tempTeam = teamScores[i][0];
+					tempScore = teamScores[i][1];
+				}
+			}
+
+			teamScores.sort(function(a, b){
+				return a[1] + b[1];
+			});
+			alert(teamScores);
+		</script>
   </head>
   <body>
     <div class="container">
