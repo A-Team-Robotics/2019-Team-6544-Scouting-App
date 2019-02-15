@@ -72,12 +72,12 @@
 			teamScores.sort(function(a, b){
 				return a[1] + b[1];
 			});
-			alert(teamScores);
 		</script>
   </head>
   <body>
     <div class="container">
       <div class="header">
+				<h3 style="color:purple; font:bold;">A-Team Scouting Page</h3>
         <ul class="nav nav-pills pull-right">
 				  <li><a href="homePage.php">Home Page</a></li>
           <li class="active"><a href="teamList.php">Team List</a></li>
@@ -89,7 +89,6 @@
           <li><a href="viewTeamSetNumber.php">View Team</a></li>
   		</div>
         </ul>
-        <h3 style="color:purple; font:bold;">A-Team Scouting Page</h3>
       <div class="row marketing">
         <div class="col-lg-12">
 

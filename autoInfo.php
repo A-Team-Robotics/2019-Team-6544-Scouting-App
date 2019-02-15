@@ -31,6 +31,7 @@
   <body>
     <div class="container">
       <div class="header">
+        <h3 style="color:purple; font:bold;">A-Team Scouting Page</h3>
         <ul class="nav nav-pills pull-right">
         <li class="active"><a></a>Auto Info</li>
 		    <li><a href="homePage.php">Home Page</a></li>
@@ -39,7 +40,6 @@
         <li><a href="autonomous.php">Autonomous</a></li>
         <li><a href="scoutTeam.php">Scout Team</a></li>
       </ul>
-      <h3 style="color:purple; font:bold;">A-Team Scouting Page</h3>
     </div>
     <div class="row marketing">
       <div class="col-lg-12">

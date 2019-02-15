@@ -39,6 +39,7 @@
   <body>
     <div class="container">
       <div class="header">
+				<h3 style="color:purple; font:bold;">A-Team Scouting Page</h3>
         <ul class="nav nav-pills pull-right">
 				  <li><a href="homePage.php">Home Page</a></li>
           <li ><a href="teamList.php">Team List</a></li>
@@ -49,7 +50,6 @@
 					<li><a href="viewMatchSetNumber.php">View Match</a></li>
           <li><a href="viewTeamSetNumber.php">View Team</a></li>
         </ul>
-        <h3 style="color:purple; font:bold;">A-Team Scouting Page</h3>
       </div>
 
       <div class="row marketing">

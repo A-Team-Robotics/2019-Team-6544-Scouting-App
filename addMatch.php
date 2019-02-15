@@ -256,6 +256,11 @@
 				</div>
 				<!-- <button type="button" onclick="alert(getSelectionValue(0, 1));">Do it.</button> -->
 				<button type="button" onclick="postRefreshPage();">Submit</button>
+				<?php
+					if($numRows < 0) {
+						echo "You are dumber than man.";
+					}
+				?>
 		</div>
       <div class="footer">
 			<p style="color:purple;">&copy; A-Team Robotics 2018</p>

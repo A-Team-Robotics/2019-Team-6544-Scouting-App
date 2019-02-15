@@ -4,6 +4,10 @@
                 FROM matches
                 ORDER BY matchNumber ASC";
     $result = $mysqli->query($query) or die($mysqli->error.__LINE__);
+
+    $rowSQL = mysqli_query($mysqli, "SELECT MAX(matchNumber) AS matchNum FROM match_scout"); 
+    $row = mysqli_fetch_assoc($rowSQL); 
+    $largestUID = $row['matchNum'];
 ?>
 <?php
     if($_POST) {
@@ -191,6 +195,7 @@
         <link href="css/custom.css" rel="stylesheet">
         <div class="container">
             <div class="header">
+                <h3 style="color:purple; font:bold;">A-Team Scouting Page</h3>
                 <ul class="nav nav-pills pull-right" id="upper">
                     <li><a href="homePage.php">Home Page</a></li>
                     <li><a href="teamList.php">Team List</a></li>
@@ -737,8 +742,11 @@
                 <text width="30" height="30" x="815" y="280" value="1" style="font-family:'Times New Roman';fill:rgb(0, 255, 203);font-size:50px;">3</text>
                 <text width="30" height="30" x="975" y="390" value="1" style="font-family:'Times New Roman';fill:rgb(0, 255, 203);font-size:50px;">2</text>
                 <text width="30" height="30" x="815" y="495" value="1" style="font-family:'Times New Roman';fill:rgb(0, 255, 203);font-size:50px;">1</text>
+                
+                <text id="warning" width="200" height="50" x="10" y="44" style="font-family:'Times New Roman';fill:rgb(255, 69, 0);font-size:50px;font-weight:bold;">SET STARTING LOCATION BY CLICKING ON L1, L2, OR L3.</text>
                 <script type="text/javascript">
                     setButtons();
+                    document.getElementById('matchNum').options[<?php echo $largestUID; ?>].selected = true;
                     refreshSelections();
                     document.getElementById('teamNum').options[1].selected = true;
                     document.getElementById('teamNum').options[0].selected = true;

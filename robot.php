@@ -66,33 +66,48 @@
 			<div class="form-group">
 				<label>Team Number</label>
 				<select>
-                    <?php
-                        // $teams->fetch_assoc()
-                        while ($row = mysqli_fetch_array($result)){
-                            echo "<option value=\"teamNumber\">" . $row['teamNumber'] . "</option>";
-                        }
-                    ?>
+					<?php
+							// $teams->fetch_assoc()
+							while ($row = mysqli_fetch_array($result)){
+									echo "<option value=\"teamNumber\">" . $row['teamNumber'] . "</option>";
+							}
+					?>
 				</select>
 			</div>
+			<!--
+				speedMPS
+				weightP
+				strength
+				numWheels
+				omniWheels
+				canPlaceHatch2
+				canPlaceHatch3
+				canPlaceCargo2
+				canPlaceCargo3
+				canPickUpHatch
+				speedPickUp
+				canClimb2
+				canClimb3
+			-->
 			<div class="form-group">
-				<label>Second Blue Team</label>
-				<input name="blueTeam2" type="text" class="form-control" placeholder="Enter Second Blue Team">
+				<label>Speed of Robot in Meters Per Second (if given feet per second, estimate the number by quickly dividing by three)</label>
+				<input name="blueTeam2" type="number" class="form-control" placeholder="Enter Second Blue Team">
 			</div>
 			<div class="form-group">
-				<label>Third Blue Team</label>
+				<label>Weight of Robot in Pounds</label>
 				<input name="blueTeam3" type="text" class="form-control" placeholder="Enter Third Blue Team">
 			</div>
 			<div class="form-group">
-				<label>First Red Team (order does not matter)</label>
+				<label>General Strength of Robot</label>
 				<input name="redTeam1" type="text" class="form-control" placeholder="Enter First Red Team">
 			</div>
 			<div class="form-group"> 
-				<label>Second Red Team</label> 
+				<label>Number of Wheels on the Robot</label> 
 				<input name="redTeam2" type="text" class="form-control" placeholder="Enter Second Red Team">
 			</div>
-			<div class="form-group"> 
-				<label>Third Red Team</label> 
-				<input name="redTeam3" type="text" class="form-control" placeholder="Enter Third Red Team">
+			<div class="form-group">
+				<input type="checkbox" class="form-check-input" id="deliverCube">
+				<label>Does the Robot Have Omni-Wheels?</label>
 			</div>
 			<br><input type="submit" class="btn btn-default" value="Add Match"/></br>
 		</form>

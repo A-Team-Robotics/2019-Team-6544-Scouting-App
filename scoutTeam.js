@@ -350,7 +350,7 @@ function incrementTime() {
         time -= 1;
         document.getElementById('startText').value = time;
         document.getElementById('startText').innerHTML = time;
-        setTimeout(incrementTime, 50);
+        setTimeout(incrementTime, 150);
     }
     else {
         document.getElementById('startText').value = "C'est fini!";
@@ -594,6 +594,7 @@ function climbSet(i) {
     if(time == 136) {
         startLocation = document.getElementById(climbIds[i] + "Text").value;
         alert("Start Location Set");
+        hideSVG("warning");
     }
     else {
         //climbLevel = document.getElementById(climbIds[i] + "Text").value;

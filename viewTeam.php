@@ -5,18 +5,20 @@
         $teamNumber = $_GET['num'];
     }
 
-    $query = "SELECT * FROM match_scout WHERE teamNumber = ".$teamNumber;
-    $query2 = "SELECT * FROM match_scout_1 WHERE teamNumber = ".$teamNumber;
-    $query3 = "SELECT * FROM match_scout_2 WHERE teamNumber = ".$teamNumber;
-    $query4 = "SELECT * FROM match_scout_3 WHERE teamNumber = ".$teamNumber;
-    $query5 = "SELECT * FROM match_scout_4 WHERE teamNumber = ".$teamNumber;
+    $query = "SELECT * FROM match_scout WHERE teamNumber = ".$teamNumber. " ORDER BY matchNumber";
+    $query2 = "SELECT * FROM match_scout_1 WHERE teamNumber = ".$teamNumber. " ORDER BY matchNumber";
+    $query3 = "SELECT * FROM match_scout_2 WHERE teamNumber = ".$teamNumber. " ORDER BY matchNumber";
+    $query4 = "SELECT * FROM match_scout_3 WHERE teamNumber = ".$teamNumber. " ORDER BY matchNumber";
+    $query5 = "SELECT * FROM match_scout_4 WHERE teamNumber = ".$teamNumber. " ORDER BY matchNumber";
     $query6 = "SELECT * FROM matches WHERE blueTeam1=".$teamNumber." OR blueTeam2=".$teamNumber." OR blueTeam3=".$teamNumber." OR redTeam1=".$teamNumber." OR redTeam2=".$teamNumber." OR redTeam3=".$teamNumber;
+    $query7 = "SELECT * FROM robot_info WHERE teamNumber = ".$teamNumber;
     $result = $mysqli->query($query) or die($mysqli->error.__LINE__);
     $result2 = $mysqli->query($query2) or die($mysqli->error.__LINE__);
     $result3 = $mysqli->query($query3) or die($mysqli->error.__LINE__);
     $result4 = $mysqli->query($query4) or die($mysqli->error.__LINE__);
     $result5 = $mysqli->query($query5) or die($mysqli->error.__LINE__);
     $result6 = $mysqli->query($query6) or die($mysqli->error.__LINE__);
+    $result7 = $mysqli->query($query7) or die($mysqli->error.__LINE__);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -201,11 +203,34 @@
           mysqli_data_seek($result5, 0);
         ?>
       ];
+      var robotInfo = [
+        <?php
+          $output = "";
+          while($row7 = $result7->fetch_assoc()) {
+            $output .= $row7['speedMPS'].',';
+            $output .= $row7['weightP'].',';
+            $output .= $row7['strength'].',';
+            $output .= $row7['numWheels'].',';
+            $output .= $row7['omniWheels'].',';
+            $output .= $row7['canPlaceHatch2'].',';
+            $output .= $row7['canPlaceHatch3'].',';
+            $output .= $row7['canPlaceCargo2'].',';
+            $output .= $row7['canPlaceCargo3'].',';
+            $output .= $row7['canPickUpHatch'].',';
+            $output .= $row7['speedPickUp'];
+            $output .= $row7['canClimb2'];
+            $output .= $row7['canClimb3'];
+          }
+          echo $output;
+          mysqli_data_seek($result5, 0);
+        ?>
+      ];
     </script>
   </head>
   <body>
     <div class="container">
       <div class="header">
+        <h3 style="color:purple; font:bold;">A-Team Scouting Page</h3>
         <ul class="nav nav-pills pull-right">
 				  <li><a href="homePage.php">Home Page</a></li>
           <li><a href="teamList.php">Team List</a></li>
@@ -216,11 +241,37 @@
 					<li><a href="viewMatchSetNumber.php">View Match</a></li>
           <li class="active"><a href="viewTeam.php?num=<?php echo $teamNumber; ?>">View Team</a></li>
         </ul>
-        <h3 style="color:purple; font:bold;">A-Team Scouting Page</h3>
       </div>
       <h2>Team <?php echo $teamNumber; ?></h2><br />
 
       <div id="matchHistory">
+        <table id="robotInfo" style="border: 1px solid black;">
+          <tr>
+            <th>Speed (m/s)</th>
+            <th>Weight (lb)</th>
+            <th>Strength</th>
+            <th>Number of Wheels</th>
+            <th>Omni-Wheels</th>
+            <th>Hatch 2?</th>
+            <th>Hatch 3?</th>
+            <th>Cargo 2?</th>
+            <th>Cargo 3?</th>
+            <th>Pick Up Hatch?</th>
+            <th>Speed of Pick-Up</th>
+            <th>Climb Level 2?</th>
+            <th>Climb Level 3?</th>
+          </tr>
+          <script type="text/javascript">
+            var table = document.getElementById("robotInfo");
+            var row = table.insertRow(1);
+
+            for(var i = 0;i < robotInfo.length;i++) {
+              var cell = row.insertCell(i);
+              cell.innerHTML = robotInfo[i];
+            }
+          </script>
+        </table><br />
+        <h2>Scouts</h2>
         <table id="data" style="border: 1px solid black;">
           <tr>
             <th>Match Number</th>
@@ -269,12 +320,12 @@
             <th>Hatch Level 1 Success</th>
             <th>Hatch Level 2 Success</th>
             <th>Hatch Level 3 Success</th>
-            <th>Hatch Level 1 Success</th>
-            <th>Hatch Level 2 Success</th>
-            <th>Hatch Level 3 Success</th>
-            <th>Cargo Level 1 Fail</th>
-            <th>Cargo Level 2 Fail</th>
-            <th>Cargo Level 3 Fail</th>
+            <th>Cargo Level 1 Success</th>
+            <th>Cargo Level 2 Success</th>
+            <th>Cargo Level 3 Success</th>
+            <th>Hatch Level 1 Fail</th>
+            <th>Hatch Level 2 Fail</th>
+            <th>Hatch Level 3 Fail</th>
             <th>Cargo Level 1 Fail</th>
             <th>Cargo Level 2 Fail</th>
             <th>Cargo Level 3 Fail</th>
@@ -295,11 +346,22 @@
               for(var j = 1;j < 13;j++) {
                 var cell = row.insertCell(j);
                 cell.innerHTML = autoRockets[i][j - 1];
+                
+                if(autoRockets[i][j - 1] != 0) {
+                  cell.style.fontSize = "16px";
+                  cell.style.fontWeight = 1000;
+                }
+                
               }
 
               for(var j = 0;j < 4;j++) {
                 var cell = row.insertCell(j + 13);
                 cell.innerHTML = autoShip[i][j] + autoShip[i][j + 1] + autoShip[i][j + 2];
+                
+                if((autoShip[i][j] + autoShip[i][j + 1] + autoShip[i][j + 2]) != 0) {
+                  cell.style.fontSize = "16px";
+                  cell.style.fontWeight = 1000;
+                }
               }
             }
           </script>
@@ -311,12 +373,12 @@
             <th>Hatch Level 1 Success</th>
             <th>Hatch Level 2 Success</th>
             <th>Hatch Level 3 Success</th>
-            <th>Hatch Level 1 Success</th>
-            <th>Hatch Level 2 Success</th>
-            <th>Hatch Level 3 Success</th>
-            <th>Cargo Level 1 Fail</th>
-            <th>Cargo Level 2 Fail</th>
-            <th>Cargo Level 3 Fail</th>
+            <th>Cargo Level 1 Success</th>
+            <th>Cargo Level 2 Success</th>
+            <th>Cargo Level 3 Success</th>
+            <th>Hatch Level 1 Fail</th>
+            <th>Hatch Level 2 Fail</th>
+            <th>Hatch Level 3 Fail</th>
             <th>Cargo Level 1 Fail</th>
             <th>Cargo Level 2 Fail</th>
             <th>Cargo Level 3 Fail</th>
@@ -337,11 +399,21 @@
               for(var j = 1;j < 13;j++) {
                 var cell = row.insertCell(j);
                 cell.innerHTML = teleopRockets[i][j - 1];
+
+                if(teleopRockets[i][j - 1] != 0) {
+                  cell.style.fontSize = "16px";
+                  cell.style.fontWeight = 1000;
+                }
               }
 
               for(var j = 0;j < 4;j++) {
                 var cell = row.insertCell(j + 13);
                 cell.innerHTML = teleopShip[i][j] + teleopShip[i][j + 1] + teleopShip[i][j + 2];
+
+                if((teleopShip[i][j] + teleopShip[i][j + 1] + teleopShip[i][j + 2]) != 0) {
+                  cell.style.fontSize = "16px";
+                  cell.style.fontWeight = 1000;
+                }
               }
             }
           </script>
@@ -398,7 +470,7 @@
           var xdifference = 650 / mainScoutInformation.length;
 
           for(var i = 0;i < mainScoutInformation.length;i++) {
-            xmdimensions[i] = xdifference * (i + 1);
+            xmdimensions[i] = xdifference * (i + 1) + 20;
             ymdimensions[i] = 350 - (mainScoutInformation[i][14] * 4);
 
 
@@ -409,7 +481,7 @@
 
             var text = canvas.getContext("2d");
             text.font = "20px Times New Roman";
-            text.fillText(i + 1, xmdimensions[i] - 5, 375);
+            text.fillText(mainScoutInformation[i][0], xmdimensions[i] - 5, 375);
             
             var dot = canvas.getContext("2d");
             dot.beginPath();
@@ -432,7 +504,67 @@
           connect.lineTo(50, 350);
           connect.lineWidth = 1;
           connect.stroke();
-        </script>
+        </script><br />
+        <h2>All Matches</h2>
+        <table id="matches" style="border: 1px solid black;">
+          <tr>
+            <th>Match Number</th>
+            <th>Blue Team 1</th>
+            <th>Blue Team 2</th>
+            <th>Blue Team 3</th>
+            <th>Red Team 1</th>
+            <th>Red Team 2</th>
+            <th>Red Team 3</th>
+          </tr>
+          <?php
+            //Loop through results
+            while($row6 = $result6->fetch_assoc()){
+              //Display customer info
+              $output ='<tr>';
+              $output .= '<td><a href="viewMatch.php?num='.$row6['matchNumber'].'"class="btn btn-default btn-sm" style="font-size: 14px;"><b>'.$row6['matchNumber'].'</b></td>';
+              if($row6['blueTeam1'] == $teamNumber) {
+                $output .= '<td><a href="viewTeam.php?num='.$row6['blueTeam1'].'"class="btn btn-default btn-sm" style="font-size: 16px; color: rgb(255, 102, 0)"><b>'.$row6['blueTeam1'].'</b></td>';
+              }
+              else {
+                $output .= '<td><a href="viewTeam.php?num='.$row6['blueTeam1'].'"class="btn btn-default btn-sm" style="font-size: 14px; color: rgb(8, 165, 0)"><b>'.$row6['blueTeam1'].'</b></td>';
+              }
+              if($row6['blueTeam2'] == $teamNumber) {
+                $output .= '<td><a href="viewTeam.php?num='.$row6['blueTeam2'].'"class="btn btn-default btn-sm" style="font-size: 16px; color: rgb(255, 102, 0)"><b>'.$row6['blueTeam2'].'</b></td>';
+              }
+              else {
+                $output .= '<td><a href="viewTeam.php?num='.$row6['blueTeam2'].'"class="btn btn-default btn-sm" style="font-size: 14px; color: rgb(8, 165, 0)"><b>'.$row6['blueTeam2'].'</b></td>';
+              }
+              if($row6['blueTeam3'] == $teamNumber) {
+                $output .= '<td><a href="viewTeam.php?num='.$row6['blueTeam3'].'"class="btn btn-default btn-sm" style="font-size: 16px; color: rgb(255, 102, 0)"><b>'.$row6['blueTeam3'].'</b></td>';
+              }
+              else {
+                $output .= '<td><a href="viewTeam.php?num='.$row6['blueTeam3'].'"class="btn btn-default btn-sm" style="font-size: 14px; color: rgb(8, 165, 0)"><b>'.$row6['blueTeam3'].'</b></td>';
+              }
+              if($row6['redTeam1'] == $teamNumber) {
+                $output .= '<td><a href="viewTeam.php?num='.$row6['redTeam1'].'"class="btn btn-default btn-sm" style="font-size: 16px; color: rgb(255, 102, 0)"><b>'.$row6['redTeam1'].'</b></td>';
+              }
+              else {
+                $output .= '<td><a href="viewTeam.php?num='.$row6['redTeam1'].'"class="btn btn-default btn-sm" style="font-size: 14px; color: rgb(8, 165, 0)"><b>'.$row6['redTeam1'].'</b></td>';
+              }
+              if($row6['redTeam2'] == $teamNumber) {
+                $output .= '<td><a href="viewTeam.php?num='.$row6['redTeam2'].'"class="btn btn-default btn-sm" style="font-size: 16px; color: rgb(255, 102, 0)"><b>'.$row6['redTeam2'].'</b></td>';
+              }
+              else {
+                $output .= '<td><a href="viewTeam.php?num='.$row6['redTeam2'].'"class="btn btn-default btn-sm" style="font-size: 14px; color: rgb(8, 165, 0)"><b>'.$row6['redTeam2'].'</b></td>';
+              }
+              if($row6['redTeam3'] == $teamNumber) {
+                $output .= '<td><a href="viewTeam.php?num='.$row6['redTeam3'].'"class="btn btn-default btn-sm" style="font-size: 16px; color: rgb(255, 102, 0)"><b>'.$row6['redTeam3'].'</b></td>';
+              }
+              else {
+                $output .= '<td><a href="viewTeam.php?num='.$row6['redTeam3'].'"class="btn btn-default btn-sm" style="font-size: 14px; color: rgb(8, 165, 0)"><b>'.$row6['redTeam3'].'</b></td>';
+              }
+              $output .='</tr>';
+              
+              //Echo output
+              echo $output;
+            }
+          ?>
+        </table>
       </div>
       <div class="footer">
 			<p style="color:purple;">&copy; A-Team Robotics 2018</p>

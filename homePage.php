@@ -16,6 +16,7 @@
   <body>
     <div class="container">
       <div class="header">
+        <h3 style="color:purple; font:bold;">A-Team Scouting Page</h3>
         <ul class="nav nav-pills pull-right">
           <li class="active"><a href="homePage.php">Home Page</a></li>
           <li><a href="teamList.php">Team List</a></li>
@@ -27,16 +28,15 @@
           <li><a href="viewTeamSetNumber.php">View Team</a></li>
         </ul>
   		</div>
-        <h3 style="color:purple; font:bold;">A-Team Scouting Page</h3>
       <div class="row marketing">
+        <img src="FIRSTicon_RGB_withTM.jpg" />
         <div class="col-lg-12">
 
-		<?php if(isset($_GET['msg'])){
-			echo '<div class="msg">'.$_GET['msg'].'</div>';
-		}
-		?>
+        <?php if(isset($_GET['msg'])){
+          echo '<div class="msg">'.$_GET['msg'].'</div>';
+        }
+        ?>
       </div>
-
       <div class="footer">
         <p style="color:purple;">&copy; A-Team Robotics 2018</p>
       </div>

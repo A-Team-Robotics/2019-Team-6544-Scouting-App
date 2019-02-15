@@ -67,11 +67,11 @@
   <body>
     <div class="container">
       <div class="header">
+				<h3 style="color:purple; font:bold;">A-Team Scouting Page</h3>
         <ul class="nav nav-pills pull-right">
-          <li ><a href="homepage.php">Team List</a></li>
-          <li class="active"><a href="editTeam.php">editTeam</a></li>
+          <li ><a href="teamList.php">Team List</a></li>
+          <li class="active"><a href="editTeam.php">Edit Team</a></li>
         </ul>
-        <h3 style="color:purple; font:bold;">A-Team Scouting Page</h3>
       </div>
 
       <div class="row marketing">
