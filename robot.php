@@ -2,28 +2,57 @@
 <?php
     $query = "SELECT DISTINCT teamNumber
                 FROM team_info
-                ORDER BY teamNumber DESC
+                ORDER BY teamNumber
                 ";
     //Get results
 	$result = $mysqli->query($query) or die($mysqli->error.__LINE__);
 ?>
 <?php
 	if($_POST){
-		//Get variables from post array
-		$teamNumber = ($_POST['matchNumber']);
-		$blueTeam1 = ($_POST['blueTeam1']); 
-		$blueTeam2 = ($_POST['blueTeam2']); 
-		$blueTeam3 = ($_POST['blueTeam3']);
-		$redTeam1 = ($_POST['redTeam1']);
-		$redTeam2 = ($_POST['redTeam2']);
-		$redTeam3 = ($_POST['redTeam3']);
+		$teamNumber = ($_POST['teamNumber']);
+		//Get robot information
+		$speedMPS = ($_POST['speedMPS']);
+		$weightP = ($_POST['weightP']);
+		$strength = ($_POST['strength']);
+		$numWheels = ($_POST['numWheels']);
+		$omniWheels = ($_POST['omniWheels']);
+		$canPlaceHatch2 = ($_POST['canPlaceHatch2']);
+		$canPlaceHatch3 = ($_POST['canPlaceHatch3']);
+		$canPlaceCargo2 = ($_POST['canPlaceCargo2']);
+		$canPlaceCargo3 = ($_POST['canPlaceCargo3']);
+		$canPickUpHatch = ($_POST['canPickUpHatch']);
+		$speedPickUp = ($_POST['speedPickUp']);
+		$canClimb2 = ($_POST['canClimb2']);
+		$canClimb3 = ($_POST['canClimb3']);
+		$extraInformation = ($_POST['extraInformation']);
+		$extraInformation = addslashes($extraInformation);
+		//Get auto information
+		$canCollectHatch = ($_POST['canCollectHatch']);
+		$canCollectCargo = ($_POST['canCollectCargo']);
+		$aextraInformation = ($_POST['aextraInformation']);
+		$aextraInformation = addslashes($aextraInformation);
+		//Get teleop information
+		$averageNumHatches = ($_POST['averageNumHatches']);
+		$averageNumCargo = ($_POST['averageNumCargo']);
+		$speedClimb2 = ($_POST['speedClimb2']);
+		$speedClimb3 = ($_POST['speedClimb3']);
+		$textraInformation = ($_POST['textraInformation']);
+		$textraInformation = addslashes($textraInformation);
 
-		$query = "INSERT INTO match_info (matchNumber, blueTeam1, blueTeam2, blueTeam3, redTeam1, redTeam2, redTeam3) 
-								VALUES ('$matchNumber','$blueTeam1','$blueTeam2','$blueTeam3','$redTeam1','$redTeam2','$redTeam3')";
+		$query = "INSERT INTO robot_info (teamNumber, speedMPS, weightP, strength, numWheels, omniWheels, canPlaceHatch2, canPlaceHatch3, canPlaceCargo2, canPlaceCargo3, canPickUpHatch, speedPickUp,
+																			canClimb2, canClimb3, extraInformation)
+								VALUES ('$teamNumber','$speedMPS','$weightP','$strength','$numWheels','$omniWheels','$canPlaceHatch2','$canPlaceHatch3','$canPlaceCargo2','$canPlaceCargo3','$canPickUpHatch',
+												'$speedPickUp','$canClimb2','$canClimb3','$extraInformation')";
+		$query2 = "INSERT INTO auto_info (teamNumber, canCollectHatch, canCollectCargo, extraInformation) 
+								VALUES ('$teamNumber','$canCollectHatch','$canCollectCargo','$aextraInformation')";
+		$query3 = "INSERT INTO teleop_info (teamNumber, averageNumHatches, averageNumCargo, speedClimb2, speedClimb3, extraInformation)
+								VALUES ('$teamNumber','$averageNumHatches','$averageNumCargo','$speedClimb2','$speedClimb3','$textraInformation')";
 
-		$mysqli->query($query);
-		$msg='Match Info Added';
-		header('Location: matchInfo.php?'.urlencode($msg).'');
+		$mysqli->query($query) or die($mysqli->error.__LINE__);
+		$mysqli->query($query2) or die($mysqli->error.__LINE__);
+		$mysqli->query($query3) or die($mysqli->error.__LINE__);
+		$msg='Robot Info Added';
+		header('Location: teamList.php?'.urlencode($msg).'');
 		exit;
 	}
 ?>
@@ -59,63 +88,171 @@
   	  </div>
     </div>
     <div class="row marketing">
-        <div class="col-lg-12">
-         <h2>Add Robot Information</h2>
-				 
-		 <form role="form" method="post" action="addMatch.php">
-			<div class="form-group">
-				<label>Team Number</label>
-				<select>
-					<?php
-							// $teams->fetch_assoc()
-							while ($row = mysqli_fetch_array($result)){
-									echo "<option value=\"teamNumber\">" . $row['teamNumber'] . "</option>";
-							}
-					?>
-				</select>
+			<div class="col-lg-12">
+				<form role="form" method="post" action="robot.php">
+					<div class="form-group">
+						<label style="font-size: 18px">Team Number</label>
+						<select name="teamNumber">
+							<?php
+									// $teams->fetch_assoc()
+									if ($result->num_rows > 0) {
+										// output data of each row
+										while($row = $result->fetch_assoc()) {
+											echo "<option>" . $row["teamNumber"]. "<br>" . "</option>";
+										}
+									} else {
+										echo "No results.";
+									}
+							?>
+						</select>
+					</div>
+					<!--
+						ROBOT TIME
+					-->
+					<h2>Add Robot Information</h2>
+					<div class="form-group">
+						<label>Speed of Robot in Meters Per Second (if given feet per second, estimate the number by quickly dividing by three)</label>
+						<input name="speedMPS" type="number" class="form-control" placeholder="Enter Meters Per Second Here">
+					</div>
+					<div class="form-group">
+						<label>Weight of Robot in Pounds</label>
+						<input name="weightP" type="number" class="form-control" placeholder="Enter Pounds Here">
+					</div>
+					<div class="form-group">
+						<label>General Strength of Robot</label>
+						<div>
+							<input type="radio" name="strength" class="form-check-input" id="strength" value="Very Weak"><b> Very Weak (can be pushed around very easily)</b><br />
+							<input type="radio" name="strength" class="form-check-input" id="strength" value="Weak"><b> Weak (can be pushed around with ease)</b><br />
+							<input type="radio" name="strength" class="form-check-input" id="strength" value="Strong"><b> Strong (can push around)</b><br />
+							<input type="radio" name="strength" class="form-check-input" id="strength" value="Very Strong"><b> Very Strong (like a tank)</b><br /><br />
+						</div>
+					</div>
+					<div class="form-group"> 
+						<label>Number of Wheels on the Robot</label> 
+						<input name="numWheels" type="number" class="form-control" placeholder="Enter Number of Wheels Here">
+					</div>
+					<div class="form-group">
+						<label>Does the Robot Have Omni-Wheels?</label>
+						<div>
+							<input type="radio" name="omniWheels" class="form-check-input" id="omniWheels" value="Yes"><b> Yes</b><br />
+							<input type="radio" name="omniWheels" class="form-check-input" id="omniWheels" value="No"><b> No</b><br />
+						</div>
+					</div>
+					<div class="form-group">
+						<label>Can they Place a Hatch on Rocket Level 2?</label>
+						<div>
+							<input type="radio" name="canPlaceHatch2" class="form-check-input" id="canPlaceHatch2" value="Yes"><b> Yes</b><br />
+							<input type="radio" name="canPlaceHatch2" class="form-check-input" id="canPlaceHatch2" value="No"><b> No</b><br />
+						</div>
+					</div>
+					<div class="form-group">
+						<label>Can they Place a Hatch on Rocket Level 3?</label>
+						<div>
+							<input type="radio" name="canPlaceHatch3" class="form-check-input" id="canPlaceHatch3" value="Yes"><b> Yes</b><br />
+							<input type="radio" name="canPlaceHatch3" class="form-check-input" id="canPlaceHatch3" value="No"><b> No</b><br />
+						</div>
+					</div>
+					<div class="form-group">
+						<label>Can they Place Cargo on Rocket Level 2?</label>
+						<div>
+							<input type="radio" name="canPlaceCargo2" class="form-check-input" id="canPlaceCargo2" value="Yes"><b> Yes</b><br />
+							<input type="radio" name="canPlaceCargo2" class="form-check-input" id="canPlaceCargo2" value="No"><b> No</b><br />
+						</div>
+					</div>
+					<div class="form-group">
+						<label>Can they Place Cargo on Rocket Level 3?</label>
+						<div>
+							<input type="radio" name="canPlaceCargo3" class="form-check-input" id="canPlaceCargo3" value="Yes"><b> Yes</b><br />
+							<input type="radio" name="canPlaceCargo3" class="form-check-input" id="canPlaceCargo3" value="No"><b> No</b><br />
+						</div>
+					</div>
+					<div class="form-group">
+						<label>Can they Pick up a Hatch Off the Ground?</label>
+						<div>
+							<input type="radio" name="canPickUpHatch" class="form-check-input" id="canPickUpHatch" value="Yes"><b> Yes</b><br />
+							<input type="radio" name="canPickUpHatch" class="form-check-input" id="canPickUpHatch" value="No"><b> No</b><br />
+						</div>
+					</div>
+					<div class="form-group">
+						<label>If So, How Fast Can They Pick One Up?</label>
+						<div>
+						<input type="radio" name="speedPickUp" class="form-check-input" id="speedPickUp" value="No"><b> They Can't</b><br />
+							<input type="radio" name="speedPickUp" class="form-check-input" id="speedPickUp" value="Very Slow"><b> More Than 8 Seconds</b><br />
+							<input type="radio" name="speedPickUp" class="form-check-input" id="speedPickUp" value="Slow"><b> 5 - 8 Seconds</b><br />
+							<input type="radio" name="speedPickUp" class="form-check-input" id="speedPickUp" value="Fast"><b> 3 - 4 Seconds</b><br />
+							<input type="radio" name="speedPickUp" class="form-check-input" id="speedPickUp" value="Very Fast"><b> Less Than 3 Seconds</b><br /><br />
+						</div>
+					</div>
+					<div class="form-group">
+						<label>Can They Climb Level 2?</label>
+						<div>
+							<input type="radio" name="canClimb2" class="form-check-input" id="canClimb2" value="Yes"><b> Yes</b><br />
+							<input type="radio" name="canClimb2" class="form-check-input" id="canClimb2" value="No"><b> No</b><br />
+						</div>
+					</div>
+					<div class="form-group">
+						<label>Can They Climb Level 3?</label>
+						<div>
+							<input type="radio" name="canClimb3" class="form-check-input" id="canClimb3" value="Yes"><b> Yes</b><br />
+							<input type="radio" name="canClimb3" class="form-check-input" id="canClimb3" value="No"><b> No</b><br />
+						</div>
+					</div>
+					<div class="form-group">
+						<label>Any Other Information about the robot's design?</label>
+						<input name="extraInformation" type="text" class="form-control" placeholder="Enter Any Extra Information Here">
+					</div>
+					<!--
+						AUTO TIME
+					-->
+					<h2>Add Auto Information</h2>
+					<div class="form-group">
+						<label>Can Place Hatch</label>
+						<div>
+							<input type="radio" name="canCollectHatch" class="form-check-input" id="canCollectHatch" value="Yes"><b> Yes</b><br />
+							<input type="radio" name="canCollectHatch" class="form-check-input" id="canCollectHatch" value="No"><b> No</b><br />
+						</div>
+					</div>
+					<div class="form-group">
+						<label>Can Place Cargo</label>
+						<div>
+							<input type="radio" name="canCollectCargo" class="form-check-input" id="canCollectCargo" value="Yes"><b> Yes</b><br />
+							<input type="radio" name="canCollectCargo" class="form-check-input" id="canCollectCargo" value="No"><b> No</b><br />
+						</div>
+					</div>
+					<div class="form-group">
+						<label>Any Other Information About Autonomous?</label>
+						<input name="aextraInformation" type="text" class="form-control" placeholder="Enter Any Extra Information Here">
+					</div><br/>
+					<!--
+						TELEOP TIME
+					-->
+					<div class="form-group">
+						<label>On Average, How Many Hatches Per Round?</label>
+						<input name="averageNumHatches" type="number" class="form-control" placeholder="Enter Average Number of Hatches Here">
+					</div>
+					<div class="form-group">
+						<label>On Average, How Much Cargo Per Round?</label>
+						<input name="averageNumCargo" type="number" class="form-control" placeholder="Enter Average Number of Cargo Here">
+					</div>
+					<div class="form-group">
+						<label>On Average, How Fast Can They Climb Level 2 In Seconds?</label>
+						<input name="speedClimb2" type="number" class="form-control" placeholder="Enter Average Level 2 Climb Speed in Seconds Here">
+					</div>
+					<div class="form-group">
+						<label>On Average, How Fast Can They Climb Level 3 In Seconds?</label>
+						<input name="speedClimb3" type="number" class="form-control" placeholder="Enter Average Level 3 Climb Speed in Seconds Here">
+					</div>
+					<div class="form-group">
+						<label>Any Other Information About Teleop?</label>
+						<input name="textraInformation" type="text" class="form-control" placeholder="Enter Any Extra Information Here">
+					</div><br/>
+					<br><input type="submit" class="btn btn-default" value="Add Robot Info"/></br>
+				</form>
 			</div>
-			<!--
-				speedMPS
-				weightP
-				strength
-				numWheels
-				omniWheels
-				canPlaceHatch2
-				canPlaceHatch3
-				canPlaceCargo2
-				canPlaceCargo3
-				canPickUpHatch
-				speedPickUp
-				canClimb2
-				canClimb3
-			-->
-			<div class="form-group">
-				<label>Speed of Robot in Meters Per Second (if given feet per second, estimate the number by quickly dividing by three)</label>
-				<input name="blueTeam2" type="number" class="form-control" placeholder="Enter Second Blue Team">
-			</div>
-			<div class="form-group">
-				<label>Weight of Robot in Pounds</label>
-				<input name="blueTeam3" type="text" class="form-control" placeholder="Enter Third Blue Team">
-			</div>
-			<div class="form-group">
-				<label>General Strength of Robot</label>
-				<input name="redTeam1" type="text" class="form-control" placeholder="Enter First Red Team">
-			</div>
-			<div class="form-group"> 
-				<label>Number of Wheels on the Robot</label> 
-				<input name="redTeam2" type="text" class="form-control" placeholder="Enter Second Red Team">
-			</div>
-			<div class="form-group">
-				<input type="checkbox" class="form-check-input" id="deliverCube">
-				<label>Does the Robot Have Omni-Wheels?</label>
-			</div>
-			<br><input type="submit" class="btn btn-default" value="Add Match"/></br>
-		</form>
-        </div>
-      </div>
-      <div class="footer">
+		</div>
+		<div class="footer">
 			<p style="color:purple;">&copy; A-Team Robotics 2018</p>
-      </div>
+		</div>
 	</div> <!-- /container -->
     <!-- Bootstrap core JavaScript
     ================================================== -->

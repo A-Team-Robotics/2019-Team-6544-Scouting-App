@@ -6,7 +6,7 @@
     $result = $mysqli->query($query) or die($mysqli->error.__LINE__);
 
     $rowSQL = mysqli_query($mysqli, "SELECT MAX(matchNumber) AS matchNum FROM match_scout"); 
-    $row = mysqli_fetch_assoc($rowSQL); 
+    $row = mysqli_fetch_assoc($rowSQL);
     $largestUID = $row['matchNum'];
 ?>
 <?php
@@ -177,15 +177,6 @@
         </script>
     </head>
 	<body>
-        <?php
-            /*     How to use javascript in PHP
-            $fight = "HI!";
-            echo '<script type="text/javascript">
-                        var text = "'. $fight. '";
-                        alert(text);
-                </script>';
-            */
-        ?>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">

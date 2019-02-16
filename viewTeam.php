@@ -12,6 +12,7 @@
     $query5 = "SELECT * FROM match_scout_4 WHERE teamNumber = ".$teamNumber. " ORDER BY matchNumber";
     $query6 = "SELECT * FROM matches WHERE blueTeam1=".$teamNumber." OR blueTeam2=".$teamNumber." OR blueTeam3=".$teamNumber." OR redTeam1=".$teamNumber." OR redTeam2=".$teamNumber." OR redTeam3=".$teamNumber;
     $query7 = "SELECT * FROM robot_info WHERE teamNumber = ".$teamNumber;
+    $query9 = "SELECT * FROM teleop_info WHERE teamNumber = ".$teamNumber;
     $result = $mysqli->query($query) or die($mysqli->error.__LINE__);
     $result2 = $mysqli->query($query2) or die($mysqli->error.__LINE__);
     $result3 = $mysqli->query($query3) or die($mysqli->error.__LINE__);
@@ -19,6 +20,26 @@
     $result5 = $mysqli->query($query5) or die($mysqli->error.__LINE__);
     $result6 = $mysqli->query($query6) or die($mysqli->error.__LINE__);
     $result7 = $mysqli->query($query7) or die($mysqli->error.__LINE__);
+    $result9 = $mysqli->query($query9) or die($mysqli->error.__LINE__);
+
+    $teamInfo = $mysqli->query("SELECT * FROM team_info WHERE teamNumber = ".$teamNumber)->fetch_object();
+    $teamName = $teamInfo->teamName;
+    $teamSchoolName = $teamInfo->teamSchoolName;
+    $teamEmail = $teamInfo->teamEmail;
+    $teamAge = $teamInfo->teamAge;
+    $teamLocation = $teamInfo->teamLocation;
+
+    $autoInfo = $mysqli->query("SELECT * FROM auto_info WHERE teamNumber = ".$teamNumber)->fetch_object();
+    $canCollectHatch = $autoInfo->canCollectHatch;
+    $canCollectCargo = $autoInfo->canCollectCargo;
+    $autoExtraInformation = $autoInfo->extraInformation;
+
+    $teleopInfo = $mysqli->query("SELECT * FROM teleop_info WHERE teamNumber = ".$teamNumber)->fetch_object();
+    $averageNumHatches = $teleopInfo->averageNumHatches;
+    $averageNumCargo = $teleopInfo->averageNumCargo;
+    $speedClimb2 = $teleopInfo->speedClimb2;
+    $speedClimb3 = $teleopInfo->speedClimb3;
+    $teleopExtraInformation = $teleopInfo->extraInformation;
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -200,7 +221,7 @@
             }
           }
           echo $output;
-          mysqli_data_seek($result5, 0);
+          mysqli_data_seek($result6, 0);
         ?>
       ];
       var robotInfo = [
@@ -209,20 +230,21 @@
           while($row7 = $result7->fetch_assoc()) {
             $output .= $row7['speedMPS'].',';
             $output .= $row7['weightP'].',';
-            $output .= $row7['strength'].',';
+            $output .= '"'.$row7['strength'].'",';
             $output .= $row7['numWheels'].',';
-            $output .= $row7['omniWheels'].',';
-            $output .= $row7['canPlaceHatch2'].',';
-            $output .= $row7['canPlaceHatch3'].',';
-            $output .= $row7['canPlaceCargo2'].',';
-            $output .= $row7['canPlaceCargo3'].',';
-            $output .= $row7['canPickUpHatch'].',';
-            $output .= $row7['speedPickUp'];
-            $output .= $row7['canClimb2'];
-            $output .= $row7['canClimb3'];
+            $output .= '"'.$row7['omniWheels'].'",';
+            $output .= '"'.$row7['canPlaceHatch2'].'",';
+            $output .= '"'.$row7['canPlaceHatch3'].'",';
+            $output .= '"'.$row7['canPlaceCargo2'].'",';
+            $output .= '"'.$row7['canPlaceCargo3'].'",';
+            $output .= '"'.$row7['canPickUpHatch'].'",';
+            $output .= '"'.$row7['speedPickUp'].'",';
+            $output .= '"'.$row7['canClimb2'].'",';
+            $output .= '"'.$row7['canClimb3'].'",';
+            $output .= '"'.$row7['extraInformation'].'"';
           }
           echo $output;
-          mysqli_data_seek($result5, 0);
+          mysqli_data_seek($result7, 0);
         ?>
       ];
     </script>
@@ -242,9 +264,26 @@
           <li class="active"><a href="viewTeam.php?num=<?php echo $teamNumber; ?>">View Team</a></li>
         </ul>
       </div>
-      <h2>Team <?php echo $teamNumber; ?></h2><br />
+      <h2>Team <?php echo $teamNumber; ?>: <?php echo $teamName; ?></h2><br />
 
-      <div id="matchHistory">
+      <div id="teamInformation">
+        <table id="teamInfo">
+          <tr>
+            <th>School</th>
+            <th>Email</th>
+            <th>Age</th>
+            <th>Location</th>
+          </tr>
+          <tr>
+            <?php
+              echo '<td>'.$teamSchoolName.'</td>';
+              echo '<td>'.$teamEmail.'</td>';
+              echo '<td>'.$teamAge.' Years</td>';
+              echo '<td>'.$teamLocation.'</td>';
+            ?>
+          </tr>
+        </table><br />
+        <h2>Robot Info</h2>
         <table id="robotInfo" style="border: 1px solid black;">
           <tr>
             <th>Speed (m/s)</th>
@@ -260,17 +299,137 @@
             <th>Speed of Pick-Up</th>
             <th>Climb Level 2?</th>
             <th>Climb Level 3?</th>
+            <th>Extra Information</th>
           </tr>
-          <script type="text/javascript">
-            var table = document.getElementById("robotInfo");
-            var row = table.insertRow(1);
-
-            for(var i = 0;i < robotInfo.length;i++) {
-              var cell = row.insertCell(i);
-              cell.innerHTML = robotInfo[i];
+          <?php
+            if($result7->num_rows > 0) {
+              while($row7 = $result7->fetch_assoc()) {
+                echo '<tr>';
+                echo '<td>'.$row7['speedMPS'].'</td>';
+                echo '<td>'.$row7['weightP'].'</td>';
+                echo '<td>'.$row7['strength'].'</td>';
+                echo '<td>'.$row7['numWheels'].'</td>';
+                echo '<td>'.$row7['omniWheels'].'</td>';
+                echo '<td>'.$row7['canPlaceHatch2'].'</td>';
+                echo '<td>'.$row7['canPlaceHatch3'].'</td>';
+                echo '<td>'.$row7['canPlaceCargo2'].'</td>';
+                echo '<td>'.$row7['canPlaceCargo3'].'</td>';
+                echo '<td>'.$row7['canPickUpHatch'].'</td>';
+                echo '<td>'.$row7['speedPickUp'].'</td>';
+                echo '<td>'.$row7['canClimb2'].'</td>';
+                echo '<td>'.$row7['canClimb3'].'</td>';
+                echo '<td>'.$row7['extraInformation'].'</td>';
+                echo '</tr>';
+              }
             }
-          </script>
-        </table><br />
+            else {
+              echo '<tr>No results found.';
+            }
+          ?>
+        </table>
+        <h3>Auto Info</h3>
+        <table id="autoInfo">
+          <tr>
+            <th>Can Place Hatch</th>
+            <th>Can Place Cargo</th>
+            <th>Extra Information</th>
+          </tr>
+          <tr>
+            <?php
+              echo '<td>'.$canCollectHatch.'</td>';
+              echo '<td>'.$canCollectCargo.'</td>';
+              echo '<td>'.$autoExtraInformation.'</td>';
+            ?>
+          </tr>
+        </table>
+        <h3>Teleop Info</h3>
+        <table id="teleopInfo">
+          <tr>
+            <th>Average Number of Hatches Per Round</th>
+            <th>Average Cargo Per Round</th>
+            <th>Average Climb Level 2 Speed in Seconds</th>
+            <th>Average Climb Level 2 Speed in Seconds</th>
+            <th>Extra Information</th>
+          </tr>
+          <tr>
+            <?php
+              if($result4->num_rows > 0) {
+                $numResults = mysqli_num_rows($result4);
+                $hatchSum = 0;
+                $cargoSum = 0;
+
+                while($row4 = $result4->fetch_assoc()) {
+                  $hatchSum += $row4['teleopHatchRocketsSuccess1'];
+                  $hatchSum += $row4['teleopHatchRocketsSuccess2'];
+                  $hatchSum += $row4['teleopHatchRocketsSuccess3'];
+
+                  $cargoSum += $row4['teleopCargoRocketsSuccess1'];
+                  $cargoSum += $row4['teleopCargoRocketsSuccess2'];
+                  $cargoSum += $row4['teleopCargoRocketsSuccess3'];
+                }
+
+                while($row5 = $result5->fetch_assoc()) {
+                  $hatchSum += $row5['teleopHatchShipSuccess1'];
+                  $hatchSum += $row5['teleopHatchShipSuccess2'];
+                  $hatchSum += $row5['teleopHatchShipSuccess3'];
+
+                  $cargoSum += $row5['teleopCargoShipSuccess1'];
+                  $cargoSum += $row5['teleopCargoShipSuccess2'];
+                  $cargoSum += $row5['teleopCargoShipSuccess3'];
+                }
+
+                $hatchAverage = (int) $hatchSum / $numResults;
+                $cargoAverage = (int) $hatchSum / $numResults;
+
+                echo '<td>'.$hatchAverage;
+                if($hatchAverage > $averageNumHatches) {
+                  $difference = $hatchAverage - $averageNumHatches;
+                  echo '('.$difference.' more than the team said they\'d get)</td>';
+                }
+                else if($hatchAverage < $averageNumHatches) {
+                  $difference = $averageNumHatches - $hatchAverage;
+                  echo '('.$difference.' less than the team said they\'d get)</td>';
+                }
+                else {
+                  echo '</td>';
+                }
+
+                echo '<td>'.$cargoAverage;
+                if($cargoAverage > $averageNumCargo) {
+                  $difference = $cargoAverage - $averageNumCargo;
+                  echo '('.$difference.' More Than the Team Said They\'d Get)</td>';
+                }
+                else if($cargoAverage < $averageNumCargo) {
+                  $difference = $averageNumCargo - $cargoAverage;
+                  echo '('.$difference.' Less Than the Team Said They\'d Get)</td>';
+                }
+                else {
+                  echo '</td>';
+                }
+              }
+              else {
+                echo '<td>Estimated '.$averageNumHatches.' Seconds</td>';
+                echo '<td>Estimated '.$averageNumCargo.' Seconds</td>';
+              }
+
+              if($speedClimb2 == 0) {
+                echo '<td>They Can\'t Climb Level 2</td>';
+              }
+              else {
+                echo '<td>Estimated '.$speedClimb2.' Seconds</td>';
+              }
+
+              if($speedClimb3 == 0) {
+                echo '<td>They Can\'t Climb Level 3</td>';
+              }
+              else {
+                echo '<td>Estimated '.$speedClimb3.' Seconds</td>';
+              }
+
+              echo '<td>'.$teleopExtraInformation.'</td>';
+            ?>
+          </tr>
+        </table>
         <h2>Scouts</h2>
         <table id="data" style="border: 1px solid black;">
           <tr>
