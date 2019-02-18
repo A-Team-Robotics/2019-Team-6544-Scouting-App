@@ -539,10 +539,10 @@
                 <rect width="40" height="15" x="443" y="55" style="fill: rgb(255, 208, 0);stroke: rgb(0, 0, 0)" />
                 <rect width="40" height="15" x="558" y="55" style="fill: rgb(255, 208, 0);stroke: rgb(0, 0, 0)" />
                 <rect width="40" height="15" x="673" y="55" style="fill: rgb(255, 208, 0);stroke: rgb(0, 0, 0)" />
-                <rect width="40" height="15" x="788" y="55" style="fill: rgb(255, 208, 0);stroke: rgb(0, 0, 0)" onclick="consoleLog('This is enough.', 1000000);" />
-                <rect width="40" height="15" x="903" y="55" style="fill: rgb(255, 208, 0);stroke: rgb(0, 0, 0)" onclick="consoleLog('Start taking this seriously.', 10000);" />
+                <rect width="40" height="15" x="788" y="55" style="fill: rgb(255, 208, 0);stroke: rgb(0, 0, 0)" onclick="consoleLog('This is enough.', 10);" />
+                <rect width="40" height="15" x="903" y="55" style="fill: rgb(255, 208, 0);stroke: rgb(0, 0, 0)" onclick="consoleLog('Start taking this seriously.', 10);" />
                 <rect width="40" height="15" x="1018" y="55" style="fill: rgb(255, 208, 0);stroke: rgb(0, 0, 0)" onclick="console.log('Your using me for scouting is repellent.');" />
-                <rect width="40" height="15" x="1133" y="55" style="fill: rgb(255, 208, 0);stroke: rgb(0, 0, 0)" onclick="consoleLog('Your scouting skills are lacking.', 1000);" />
+                <rect width="40" height="15" x="1133" y="55" style="fill: rgb(255, 208, 0);stroke: rgb(0, 0, 0)" onclick="consoleLog('Your scouting skills are lacking.', 10);" />
                 <rect width="40" height="15" x="328" y="680" style="fill: rgb(255, 208, 0);stroke: rgb(0, 0, 0)" />
                 <rect width="40" height="15" x="443" y="680" style="fill: rgb(255, 208, 0);stroke: rgb(0, 0, 0)" />
                 <rect width="40" height="15" x="558" y="680" style="fill: rgb(255, 208, 0);stroke: rgb(0, 0, 0)" />
@@ -580,10 +580,6 @@
                     <rect id="climbB2Button" onclick="climbSet(1);" />
                     <text id="climbB2Text" onclick="climbSet(1);"></text>
                     <text id="climbB2Text2" onclick="climbSet(1);"></text>
-                    
-                    <rect id="climbR2Button" onclick="climbSet(1);" />
-                    <text id="climbR2Text" onclick="climbSet(1);"></text>
-                    <text id="climbR2Text2" onclick="climbSet(1);"></text>
 
                     <line x1="200" y1="250" x2="375" y2="250" style="stroke: rgb(30, 30, 30);stroke-width:1" />
                     <line x1="375" y1="250" x2="400" y2="225" style="stroke: rgb(30, 30, 30);stroke-width:1" />
@@ -600,6 +596,10 @@
                 <ellipse cx="255" cy="525" rx="55" ry="25" style="fill:rgb(255, 94, 0);stroke:rgb(30, 30, 30);stroke-width:1" />
 
                 <rect width="200" height="300" x="1100" y="225" style="fill: rgb(255, 0, 0);stroke: rgb(30, 30, 30)" />
+                    <rect id="climbR2Button" onclick="climbSet(1);" />
+                    <text id="climbR2Text" onclick="climbSet(1);"></text>
+                    <text id="climbR2Text2" onclick="climbSet(1);"></text>
+
                     <line x1="1300" y1="250" x2="1125" y2="250" style="stroke: rgb(30, 30, 30);stroke-width:1" />
                     <line x1="1125" y1="250" x2="1100" y2="225" style="stroke: rgb(30, 30, 30);stroke-width:1" />
                     <line x1="1300" y1="500" x2="1125" y2="500" style="stroke: rgb(30, 30, 30);stroke-width:1" />
@@ -751,16 +751,22 @@
                 <rect id="climbNoButton" style="display: none;" />
                 <text id="climbNoText" style="display: none;"></text>
 
+                <rect id="climbYes2Button" style="display: none;" />
+                <text id="climbYes2Text" style="display: none;"></text>
+
+                <rect id="climbNo2Button" style="display: none;" />
+                <text id="climbNo2Text" style="display: none;"></text>
+
                 <!-- Set Number Indicators for Ship -->
 
                 <text width="30" height="30" x="660" y="280" value="1" style="font-family:'Times New Roman';fill:rgb(0, 255, 203);font-size:50px;">1</text>
-                <text width="30" height="30" x="500" y="390" value="1" style="font-family:'Times New Roman';fill:rgb(0, 255, 203);font-size:50px;">2</text>
-                <text width="30" height="30" x="660" y="495" value="1" style="font-family:'Times New Roman';fill:rgb(0, 255, 203);font-size:50px;">3</text>
-                <text width="30" height="30" x="815" y="280" value="1" style="font-family:'Times New Roman';fill:rgb(0, 255, 203);font-size:50px;">3</text>
-                <text width="30" height="30" x="975" y="390" value="1" style="font-family:'Times New Roman';fill:rgb(0, 255, 203);font-size:50px;">2</text>
+                <text width="30" height="30" x="500" y="390" value="2" style="font-family:'Times New Roman';fill:rgb(0, 255, 203);font-size:50px;">2</text>
+                <text width="30" height="30" x="660" y="495" value="3" style="font-family:'Times New Roman';fill:rgb(0, 255, 203);font-size:50px;">3</text>
+                <text width="30" height="30" x="815" y="280" value="3" style="font-family:'Times New Roman';fill:rgb(0, 255, 203);font-size:50px;">3</text>
+                <text width="30" height="30" x="975" y="390" value="2" style="font-family:'Times New Roman';fill:rgb(0, 255, 203);font-size:50px;">2</text>
                 <text width="30" height="30" x="815" y="495" value="1" style="font-family:'Times New Roman';fill:rgb(0, 255, 203);font-size:50px;">1</text>
                 
-                <text id="warning" width="200" height="50" x="10" y="44" style="font-family:'Times New Roman';fill:rgb(255, 69, 0);font-size:50px;font-weight:bold;">SET STARTING LOCATION BY CLICKING ON L1, L2, OR L3.</text>
+                <text id="warning" width="200" height="50" x="10" y="42" style="font-family:'Times New Roman';fill:rgb(255, 69, 0);font-size:50px;font-weight:bold;">SET STARTING LOCATION BY CLICKING ON L1, L2, OR L3.</text>
             </svg>
             <script type="text/javascript">
                 setButtons();

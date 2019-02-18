@@ -50,7 +50,7 @@ var climbFailLevel = null;
 var attributes = ['width', 'height', 'x', 'y'];
 var texts = ['width', 'height','x', 'y', 'font-family', 'font-size', 'value'];
 
-var ids = ['start','lRC','lRH','rRC','rRH','sC', 'sH','lRC2','lRH2','rRC2','rRH2','sC2', 'sH2', 'climbYes', 'climbNo'];
+var ids = ['start','lRC','lRH','rRC','rRH','sC', 'sH','lRC2','lRH2','rRC2','rRH2','sC2', 'sH2', 'climbYes', 'climbNo', 'climbYes2', 'climbNo2'];
 var setsDimensions = [ //The first dimension indexes match the indexes for the array ids.
                     [150, 30, 675, 10],
                     [50, 50, 575, 575],
@@ -67,7 +67,9 @@ var setsDimensions = [ //The first dimension indexes match the indexes for the a
                     [45, 45, 825, 352],
                     [45, 45, 778, 352],
                     [100, 50, 375, 324],
-                    [100, 50, 375, 376]
+                    [100, 50, 375, 376],
+                    [100, 50, 1025, 324],
+                    [100, 50, 1025, 376]
                     ];
 var setsColors = [ //The first dimension indexes match the indexes for the array ids.
                 [150, 150, 150],
@@ -84,9 +86,13 @@ var setsColors = [ //The first dimension indexes match the indexes for the array
                 [235, 184, 0],
                 [235, 184, 0],
                 [0, 255, 0],
+                [255, 0, 0],
+                [0, 255, 0],
                 [255, 0, 0]
                 ];
 var textColor = [
+                [255, 255, 255],
+                [255, 255, 255],
                 [255, 255, 255],
                 [255, 255, 255],
                 [255, 255, 255],
@@ -117,7 +123,9 @@ var textAttributes = [[150, 30, setsDimensions[0][2], setsDimensions[0][3] + 20,
                     [setsDimensions[11][0], setsDimensions[11][1], setsDimensions[11][2] + 5, setsDimensions[11][3] + 38, 'Times New Roman', 45, "C"],
                     [setsDimensions[12][0], setsDimensions[12][1], setsDimensions[12][2] + 5, setsDimensions[12][3] + 38, 'Times New Roman', 45, "H"],
                     [setsDimensions[13][0], setsDimensions[13][1], setsDimensions[13][2] + 5, setsDimensions[13][3] + 38, 'Times New Roman', 30, "Success"],
-                    [setsDimensions[14][0], setsDimensions[14][1], setsDimensions[14][2] + 5, setsDimensions[14][3] + 38, 'Times New Roman', 30, "Failure"]
+                    [setsDimensions[14][0], setsDimensions[14][1], setsDimensions[14][2] + 5, setsDimensions[14][3] + 38, 'Times New Roman', 30, "Failure"],
+                    [setsDimensions[15][0], setsDimensions[15][1], setsDimensions[15][2] + 5, setsDimensions[15][3] + 38, 'Times New Roman', 30, "Success"],
+                    [setsDimensions[16][0], setsDimensions[16][1], setsDimensions[16][2] + 5, setsDimensions[16][3] + 38, 'Times New Roman', 30, "Failure"]
                     ];
 
 var tempDimensions = [
@@ -161,11 +169,11 @@ var climbText = [
     [50, 50, climbDimensions[1][2], climbDimensions[1][3] + 40, 'Times New Roman', 45, 'L2'],
     [50, 50, climbDimensions[2][2], climbDimensions[2][3] + 40, 'Times New Roman', 45, 'L3'],
     [50, 50, climbDimensions[3][2], climbDimensions[3][3] + 40, 'Times New Roman', 45, 'L1'],
-    [50, 50, climbDimensions[4][2], climbDimensions[4][3] + 40, 'Times New Roman', 45, 'L2'],
-    [50, 50, climbDimensions[5][2], climbDimensions[5][3] + 40, 'Times New Roman', 45, 'L3']
+    [50, 50, climbDimensions[4][2] + 50, climbDimensions[4][3] + 40, 'Times New Roman', 45, 'L2'],
+    [50, 50, climbDimensions[5][2] + 50, climbDimensions[5][3] + 40, 'Times New Roman', 45, 'L3']
 ];
 var climbText2 = [50, 50, climbDimensions[1][2], 475, 'Times New Roman', 45, 'L2'];
-var climbText3 = [50, 50, climbDimensions[4][2], 475, 'Times New Roman', 45, 'L2'];
+var climbText3 = [50, 50, climbDimensions[4][2] + 50, 475, 'Times New Roman', 45, 'L2'];
 var climbColor = [
     [0, 0, 255],
     [0, 0, 255],
@@ -606,6 +614,10 @@ function climbSet(i) {
         document.getElementById('climbYesText').style.display = 'block';
         document.getElementById('climbNoButton').style.display = 'block';
         document.getElementById('climbNoText').style.display = 'block';
+        document.getElementById('climbYes2Button').style.display = 'block';
+        document.getElementById('climbYes2Text').style.display = 'block';
+        document.getElementById('climbNo2Button').style.display = 'block';
+        document.getElementById('climbNo2Text').style.display = 'block';
 
         document.getElementById('climbYesButton').onclick = function() {
             climb = "Yes";
@@ -623,6 +635,10 @@ function climbSet(i) {
             document.getElementById('climbYesText').style.display = 'none';
             document.getElementById('climbNoButton').style.display = 'none';
             document.getElementById('climbNoText').style.display = 'none';
+            document.getElementById('climbYes2Button').style.display = 'none';
+            document.getElementById('climbYes2Text').style.display = 'none';
+            document.getElementById('climbNo2Button').style.display = 'none';
+            document.getElementById('climbNo2Text').style.display = 'none';
         }
 
         document.getElementById('climbYesText').onclick = function() {
@@ -641,6 +657,10 @@ function climbSet(i) {
             document.getElementById('climbYesText').style.display = 'none';
             document.getElementById('climbNoButton').style.display = 'none';
             document.getElementById('climbNoText').style.display = 'none';
+            document.getElementById('climbYes2Button').style.display = 'none';
+            document.getElementById('climbYes2Text').style.display = 'none';
+            document.getElementById('climbNo2Button').style.display = 'none';
+            document.getElementById('climbNo2Text').style.display = 'none';
         }
 
         document.getElementById('climbNoButton').onclick = function() {
@@ -659,6 +679,10 @@ function climbSet(i) {
             document.getElementById('climbYesText').style.display = 'none';
             document.getElementById('climbNoButton').style.display = 'none';
             document.getElementById('climbNoText').style.display = 'none';
+            document.getElementById('climbYes2Button').style.display = 'none';
+            document.getElementById('climbYes2Text').style.display = 'none';
+            document.getElementById('climbNo2Button').style.display = 'none';
+            document.getElementById('climbNo2Text').style.display = 'none';
         }
 
         document.getElementById('climbNoText').onclick = function() {
@@ -677,6 +701,98 @@ function climbSet(i) {
             document.getElementById('climbYesText').style.display = 'none';
             document.getElementById('climbNoButton').style.display = 'none';
             document.getElementById('climbNoText').style.display = 'none';
+            document.getElementById('climbYes2Button').style.display = 'none';
+            document.getElementById('climbYes2Text').style.display = 'none';
+            document.getElementById('climbNo2Button').style.display = 'none';
+            document.getElementById('climbNo2Text').style.display = 'none';
+        }
+
+        document.getElementById('climbYes2Button').onclick = function() {
+            climb = "Yes";
+            if(i == 0) {
+                climbLevel = 'L1';
+            }
+            else if(i == 1) {
+                climbLevel = 'L2';
+            }
+            else if(i == 2) {
+                climbLevel = 'L3';
+            }
+            
+            document.getElementById('climbYesButton').style.display = 'none';
+            document.getElementById('climbYesText').style.display = 'none';
+            document.getElementById('climbNoButton').style.display = 'none';
+            document.getElementById('climbNoText').style.display = 'none';
+            document.getElementById('climbYes2Button').style.display = 'none';
+            document.getElementById('climbYes2Text').style.display = 'none';
+            document.getElementById('climbNo2Button').style.display = 'none';
+            document.getElementById('climbNo2Text').style.display = 'none';
+        }
+
+        document.getElementById('climbYes2Text').onclick = function() {
+            climb = "Yes";
+            if(i == 0) {
+                climbLevel = 'L1';
+            }
+            else if(i == 1) {
+                climbLevel = 'L2';
+            }
+            else if(i == 2) {
+                climbLevel = 'L3';
+            }
+            
+            document.getElementById('climbYesButton').style.display = 'none';
+            document.getElementById('climbYesText').style.display = 'none';
+            document.getElementById('climbNoButton').style.display = 'none';
+            document.getElementById('climbNoText').style.display = 'none';
+            document.getElementById('climbYes2Button').style.display = 'none';
+            document.getElementById('climbYes2Text').style.display = 'none';
+            document.getElementById('climbNo2Button').style.display = 'none';
+            document.getElementById('climbNo2Text').style.display = 'none';
+        }
+
+        document.getElementById('climbNo2Button').onclick = function() {
+            climbFail = "Yes";
+            if(i == 0) {
+                climbFailLevel = 'L1';
+            }
+            else if(i == 1) {
+                climbFailLevel = 'L2';
+            }
+            else if(i == 2) {
+                climbFailLevel = 'L3';
+            }
+            
+            document.getElementById('climbYesButton').style.display = 'none';
+            document.getElementById('climbYesText').style.display = 'none';
+            document.getElementById('climbNoButton').style.display = 'none';
+            document.getElementById('climbNoText').style.display = 'none';
+            document.getElementById('climbYes2Button').style.display = 'none';
+            document.getElementById('climbYes2Text').style.display = 'none';
+            document.getElementById('climbNo2Button').style.display = 'none';
+            document.getElementById('climbNo2Text').style.display = 'none';
+        }
+
+        document.getElementById('climbNo2Text').onclick = function() {
+            climbFail = "Yes";
+            if(i == 0) {
+                climbFailLevel = 'L1';
+            }
+            else if(i == 1) {
+                climbFailLevel = 'L2';
+            }
+            else if(i == 2) {
+                climbFailLevel = 'L3';
+            }
+            
+            document.getElementById('climbYesButton').style.display = 'none';
+            document.getElementById('climbYesText').style.display = 'none';
+            document.getElementById('climbNoButton').style.display = 'none';
+            document.getElementById('climbNoText').style.display = 'none';
+            document.getElementById('climbYes2Button').style.display = 'none';
+            document.getElementById('climbYes2Text').style.display = 'none';
+            document.getElementById('climbNo2Button').style.display = 'none';
+            document.getElementById('climbNo2Text').style.display = 'none';
         }
     }
     //alert(document.getElementById(climbIds[i] + "Text").value);
