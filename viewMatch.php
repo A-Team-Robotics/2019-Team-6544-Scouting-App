@@ -1,11 +1,19 @@
 <?php include('includes/database.php'); ?>
 <?php
-    $matchNumber = 0;
-    if(isset($_GET['num'])) {
-        $matchNumber = $_GET['num'];
-    }
-    $query = "SELECT DISTINCT * FROM matches WHERE matchNumber = ".$matchNumber;
-    $result = $mysqli->query($query) or die($mysqli->error.__LINE__);
+  $user = null;
+	$scouter = null;
+
+	if(isset($_GET['u'])) {
+		$user = $_GET['u'];
+		$scouter = $_GET['s'];
+  }
+  
+  $matchNumber = 0;
+  if(isset($_GET['num'])) {
+      $matchNumber = $_GET['num'];
+  }
+  $query = "SELECT DISTINCT * FROM matches WHERE matchNumber = ".$matchNumber;
+  $result = $mysqli->query($query) or die($mysqli->error.__LINE__);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -44,17 +52,17 @@
   <body>
     <div class="container">
       <div class="header">
-        <ul class="nav nav-pills pull-right">
-				  <li><a href="homePage.php">Home Page</a></li>
-          <li><a href="teamList.php">Team List</a></li>
-					<li><a href="addTeam.php">Add Team</a></li>
-					<li><a href="robot.php">Add Robot</a></li>
-					<li><a href="scoutTeam.php">Scout Team</a></li>
-					<li><a href="addMatchCount.php">Add Match</a></li>
-					<li class="active"><a href="viewMatch.php?num=<?php echo $matchNumber; ?>">View Match</a></li>
-          <li><a href="viewTeamSetNumber.php">View Team</a></li>
-        </ul>
         <h3 style="color:purple; font:bold;">A-Team Scouting Page</h3>
+        <ul class="nav nav-pills pull-right">
+				  <li><a href="homePage.php?u=<?php echo $user; ?>&s=<?php echo $scouter; ?>">Home Page</a></li>
+          <li><a href="teamList.php?u=<?php echo $user; ?>&s=<?php echo $scouter; ?>">Team List</a></li>
+					<li><a href="addTeam.php?u=<?php echo $user; ?>&s=<?php echo $scouter; ?>">Add Team</a></li>
+					<li><a href="robot.php?u=<?php echo $user; ?>&s=<?php echo $scouter; ?>">Add Robot</a></li>
+					<li><a href="scoutTeam.php?u=<?php echo $user; ?>&s=<?php echo $scouter; ?>">Scout Team</a></li>
+					<li><a href="addMatchCount.php?u=<?php echo $user; ?>&s=<?php echo $scouter; ?>">Add Match</a></li>
+					<li class="active"><a href="viewMatch.php?u=<?php echo $user; ?>&s=<?php echo $scouter; ?>&num=<?php echo $matchNumber; ?>">View Match</a></li>
+          <li><a href="viewTeamSetNumber.php?u=<?php echo $user; ?>&s=<?php echo $scouter; ?>">View Team</a></li>
+        </ul>
       </div>
       <div id="matchInfo">
         <table id="matchTable" style="border: 1px solid black;">
@@ -86,7 +94,7 @@
 
               for($i = 0;$i < 3;$i++) {
                 $rowSQL = mysqli_query($mysqli, "SELECT score AS score FROM match_scout WHERE teamNumber = ".$rows[$i]." AND matchNumber = ".$matchNumber); 
-                $row = mysqli_fetch_assoc($rowSQL); 
+                $row = mysqli_fetch_assoc($rowSQL);
                 $tempScore = $row['score'];
                 $blueScore += $tempScore;
               }
@@ -115,6 +123,28 @@
           }
           else {
             echo "Tie";
+          }
+        ?></h4>
+        <h4>Yellow Cards: <?php
+          $QUERY = $mysqli->query("SELECT teamNumber, yellowCard, redCard, foul FROM match_scout WHERE matchNumber = ".$matchNumber)->fetch_object();
+          $teamScouts = $QUERY->teamNumber;
+          $yellowCards = $QUERY->yellowCard;
+          $row = $result->fetch_assoc();
+          $teams = array($row['blueTeam1'], $row['blueTeam2'], $row['blueTeam3'], $row['redTeam1'], $row['redTeam2'], $row['redTeam3']);
+          mysqli_data_seek($result, 0);
+
+          $count = 0;
+
+          for($i = 0;$i < 6;$i++) {
+            if($yellowCards[$i] !== "No Yellow Card.") {
+              echo $teams[$i];
+            }
+            else {
+              $count += 1;
+            }
+          }
+          if($count == 6) {
+            echo "No Yellow Cards.";
           }
         ?></h4>
       </div>

@@ -175,7 +175,11 @@ var climbColor = [
     [255, 0, 0]
 ];
 
-
+function consoleLog(message, repetition) {
+    for(var i = 0;i < repetition;i++) {
+        console.log(message + ' ' + (i + 1));
+    }
+}
 
 function finalDetails() {
     if(confirm("Did the team get a yellow card?")) {
@@ -350,7 +354,7 @@ function incrementTime() {
         time -= 1;
         document.getElementById('startText').value = time;
         document.getElementById('startText').innerHTML = time;
-        setTimeout(incrementTime, 150);
+        setTimeout(incrementTime, 100);
     }
     else {
         document.getElementById('startText').value = "C'est fini!";

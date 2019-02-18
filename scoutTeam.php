@@ -1,5 +1,13 @@
 <?php include('includes/database.php'); ?>
 <?php
+    $user = null;
+	$scouter = null;
+
+	if(isset($_GET['u'])) {
+		$user = $_GET['u'];
+		$scouter = $_GET['s'];
+    }
+    
     $query = "SELECT *
                 FROM matches
                 ORDER BY matchNumber ASC";
@@ -11,6 +19,9 @@
 ?>
 <?php
     if($_POST) {
+        $user = $_POST['user'];
+        $scouter = $_POST['scouter'];
+
         $teamNumber = $_POST['teamNumber'];
         $matchNumber = $_POST['matchNumber'];
         $startLocation = $_POST['startLocation'];
@@ -88,8 +99,9 @@
                                     '$teleopCargoShipFail[2]','$score')
                                     ";
         $mysqli->query($query5) or die($mysqli->error.__LINE__);
-        $msg='Team Scouted';
-		header('Location: teamList.php?'.urlencode($msg).'');
+        //$msg='Team Scouted';
+        //header('Location: teamList.php?'.urlencode($msg).'');
+        header('Location: teamList.php?u='.$user.'&s='.$scouter);
 		exit;
     }
 ?>
@@ -188,14 +200,14 @@
             <div class="header">
                 <h3 style="color:purple; font:bold;">A-Team Scouting Page</h3>
                 <ul class="nav nav-pills pull-right" id="upper">
-                    <li><a href="homePage.php">Home Page</a></li>
-                    <li><a href="teamList.php">Team List</a></li>
-                    <li><a href="addTeam.php">Add Team</a></li>
-                    <li><a href="robot.php">Robot Information</a></li>
-                    <li class="active"><a href="scoutTeam.php">Scout Team</a></li>
-                    <li><a href="addMatchCount.php">Add Match</a></li>
-                    <li><a href="viewMatchSetNumber.php">View Match</a></li>
-                    <li><a href="viewTeamSetNumber.php">View Team</a></li>
+                    <li><a href="homePage.php?u=<?php echo $user; ?>&s=<?php echo $scouter; ?>">Home Page</a></li>
+                    <li><a href="teamList.php?u=<?php echo $user; ?>&s=<?php echo $scouter; ?>">Team List</a></li>
+                    <li><a href="addTeam.php?u=<?php echo $user; ?>&s=<?php echo $scouter; ?>">Add Team</a></li>
+                    <li><a href="robot.php?u=<?php echo $user; ?>&s=<?php echo $scouter; ?>">Robot Information</a></li>
+                    <li class="active"><a href="scoutTeam.php?u=<?php echo $user; ?>&s=<?php echo $scouter; ?>">Scout Team</a></li>
+                    <li><a href="addMatchCount.php?u=<?php echo $user; ?>&s=<?php echo $scouter; ?>">Add Match</a></li>
+                    <li><a href="viewMatchSetNumber.php?u=<?php echo $user; ?>&s=<?php echo $scouter; ?>">View Match</a></li>
+                    <li><a href="viewTeamSetNumber.php?u=<?php echo $user; ?>&s=<?php echo $scouter; ?>">View Team</a></li>
                 </ul>
             </div>
         </div>
@@ -409,6 +421,18 @@
                 fscore.id = 'score';
                 fscore.value = score;
 
+                var user = document.createElement('input');
+                user.type = 'hidden';
+                user.name = 'user';
+                user.id = 'user';
+                user.value = '<?php echo $user; ?>';
+
+                var scouter = document.createElement('input');
+                scouter.type = 'hidden';
+                scouter.name = 'scouter';
+                scouter.id = 'scouter';
+                scouter.value = '<?php echo $scouter; ?>';
+
                 form.appendChild(fteamNumber);
                 form.appendChild(fmatchNumber);
                 form.appendChild(fstartLocation);
@@ -441,6 +465,8 @@
                 form.appendChild(fwin);
                 form.appendChild(fextraInformation);
                 form.appendChild(fscore);
+                form.appendChild(user);
+                form.appendChild(scouter);
 
                 document.getElementById('theForm').appendChild(form);
                 form.submit();
@@ -513,10 +539,10 @@
                 <rect width="40" height="15" x="443" y="55" style="fill: rgb(255, 208, 0);stroke: rgb(0, 0, 0)" />
                 <rect width="40" height="15" x="558" y="55" style="fill: rgb(255, 208, 0);stroke: rgb(0, 0, 0)" />
                 <rect width="40" height="15" x="673" y="55" style="fill: rgb(255, 208, 0);stroke: rgb(0, 0, 0)" />
-                <rect width="40" height="15" x="788" y="55" style="fill: rgb(255, 208, 0);stroke: rgb(0, 0, 0)" />
-                <rect width="40" height="15" x="903" y="55" style="fill: rgb(255, 208, 0);stroke: rgb(0, 0, 0)" />
+                <rect width="40" height="15" x="788" y="55" style="fill: rgb(255, 208, 0);stroke: rgb(0, 0, 0)" onclick="consoleLog('This is enough.', 1000000);" />
+                <rect width="40" height="15" x="903" y="55" style="fill: rgb(255, 208, 0);stroke: rgb(0, 0, 0)" onclick="consoleLog('Start taking this seriously.', 10000);" />
                 <rect width="40" height="15" x="1018" y="55" style="fill: rgb(255, 208, 0);stroke: rgb(0, 0, 0)" onclick="console.log('Your using me for scouting is repellent.');" />
-                <rect width="40" height="15" x="1133" y="55" style="fill: rgb(255, 208, 0);stroke: rgb(0, 0, 0)" />
+                <rect width="40" height="15" x="1133" y="55" style="fill: rgb(255, 208, 0);stroke: rgb(0, 0, 0)" onclick="consoleLog('Your scouting skills are lacking.', 1000);" />
                 <rect width="40" height="15" x="328" y="680" style="fill: rgb(255, 208, 0);stroke: rgb(0, 0, 0)" />
                 <rect width="40" height="15" x="443" y="680" style="fill: rgb(255, 208, 0);stroke: rgb(0, 0, 0)" />
                 <rect width="40" height="15" x="558" y="680" style="fill: rgb(255, 208, 0);stroke: rgb(0, 0, 0)" />
@@ -735,14 +761,42 @@
                 <text width="30" height="30" x="815" y="495" value="1" style="font-family:'Times New Roman';fill:rgb(0, 255, 203);font-size:50px;">1</text>
                 
                 <text id="warning" width="200" height="50" x="10" y="44" style="font-family:'Times New Roman';fill:rgb(255, 69, 0);font-size:50px;font-weight:bold;">SET STARTING LOCATION BY CLICKING ON L1, L2, OR L3.</text>
-                <script type="text/javascript">
-                    setButtons();
-                    document.getElementById('matchNum').options[<?php echo $largestUID; ?>].selected = true;
-                    refreshSelections();
-                    document.getElementById('teamNum').options[1].selected = true;
-                    document.getElementById('teamNum').options[0].selected = true;
-                </script>
             </svg>
+            <script type="text/javascript">
+                setButtons();
+                document.getElementById('matchNum').options[<?php echo $largestUID; ?>].selected = true;
+                refreshSelections();
+                document.getElementById('teamNum').options[1].selected = true;
+                document.getElementById('teamNum').options[0].selected = true;
+                document.getElementById('teamNum').options[<?php
+                                                                switch($scouter) {
+                                                                    case "Scouter_1":
+                                                                        echo 0;
+                                                                        break;
+                                                                    case "Scouter_2":
+                                                                        echo 1;
+                                                                        break;
+                                                                    case "Scouter_3":
+                                                                        echo 2;
+                                                                        break;
+                                                                    case "Scouter_4":
+                                                                        echo 3;
+                                                                        break;
+                                                                    case "Scouter_5":
+                                                                        echo 4;
+                                                                        break;
+                                                                    case "Scouter_6":
+                                                                        echo 5;
+                                                                        break;
+                                                                    default:
+                                                                        echo 0;
+                                                                        break;
+                                                                }
+                                                            ?>].selected = true;
+            </script>
+        </div>
+        <div class="footer">
+			<p style="color:purple;">&copy; A-Team Robotics 2018</p>
         </div>
 	</body>
 </html>

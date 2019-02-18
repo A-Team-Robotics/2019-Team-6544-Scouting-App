@@ -1,7 +1,15 @@
 <?php include('includes/database.php'); ?>
 <?php
-    $query = "SELECT DISTINCT teamNumber FROM team_info ORDER BY teamNumber ASC";
-    $result = $mysqli->query($query) or die($mysqli->error.__LINE__);
+  $user = null;
+	$scouter = null;
+
+	if(isset($_GET['u'])) {
+		$user = $_GET['u'];
+		$scouter = $_GET['s'];
+  }
+  
+  $query = "SELECT DISTINCT teamNumber FROM team_info ORDER BY teamNumber ASC";
+  $result = $mysqli->query($query) or die($mysqli->error.__LINE__);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -22,24 +30,24 @@
             teamNumber = selection[selection.selectedIndex].value;
         }
         function go() {
-            window.open('viewTeam.php?num=' + teamNumber,'_self');
+            window.open('viewTeam.php?u=<?php echo $user; ?>&s=<?php echo $scouter; ?>&num=' + teamNumber,'_self');
         }
     </script>
   </head>
   <body>
     <div class="container">
       <div class="header">
-        <ul class="nav nav-pills pull-right">
-            <li><a href="homePage.php">Home Page</a></li>
-            <li><a href="teamList.php">Team List</a></li>
-            <li><a href="addTeam.php">Add Team</a></li>
-            <li><a href="robot.php">Add Robot</a></li>
-            <li><a href="scoutTeam.php">Scout Team</a></li>
-            <li><a href="addMatchCount.php">Add Match</a></li>
-            <li><a href="viewMatchSetNumber.php">View Match</a></li>
-            <li class="active"><a href="viewTeamSetNumber.php">View Team</a></li>
-        </ul>
         <h3 style="color:purple; font:bold;">A-Team Scouting Page</h3>
+        <ul class="nav nav-pills pull-right">
+            <li><a href="homePage.php?u=<?php echo $user; ?>&s=<?php echo $scouter; ?>">Home Page</a></li>
+            <li><a href="teamList.php?u=<?php echo $user; ?>&s=<?php echo $scouter; ?>">Team List</a></li>
+            <li><a href="addTeam.php?u=<?php echo $user; ?>&s=<?php echo $scouter; ?>">Add Team</a></li>
+            <li><a href="robot.php?u=<?php echo $user; ?>&s=<?php echo $scouter; ?>">Add Robot</a></li>
+            <li><a href="scoutTeam.php?u=<?php echo $user; ?>&s=<?php echo $scouter; ?>">Scout Team</a></li>
+            <li><a href="addMatchCount.php?u=<?php echo $user; ?>&s=<?php echo $scouter; ?>">Add Match</a></li>
+            <li><a href="viewMatchSetNumber.php?u=<?php echo $user; ?>&s=<?php echo $scouter; ?>">View Match</a></li>
+            <li class="active"><a href="viewTeamSetNumber.php?u=<?php echo $user; ?>&s=<?php echo $scouter; ?>">View Team</a></li>
+        </ul>
       </div>
 
       </select>

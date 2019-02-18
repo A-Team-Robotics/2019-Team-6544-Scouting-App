@@ -1,5 +1,12 @@
 <?php include('includes/database.php'); ?>
 <?php
+	$user = null;
+	$scouter = null;
+
+	if(isset($_GET['u'])) {
+		$user = $_GET['u'];
+		$scouter = $_GET['s'];
+	}
 	$numRows = 1;
 	if(isset($_GET['num'])) {
 		$numRows = $_GET["num"];
@@ -29,6 +36,8 @@
 <?php
 	if($_POST){
 		//Get variables from post array
+		$user = $_POST['user'];
+		$scouter = $_POST['scouter'];
 		if($numRows > 1) {
 			$blueTeam1 = explode ("|", $_POST['blue1Team']);
 			$blueTeam2 = explode ("|", $_POST['blue2Team']);
@@ -36,6 +45,7 @@
 			$redTeam1 = explode ("|", $_POST['red1Team']);
 			$redTeam2 = explode ("|", $_POST['red2Team']);
 			$redTeam3 = explode ("|", $_POST['red3Team']);
+
 			for($i = 0;$i < $numRows;$i++) {
 				$matchNumber = $i + $startMatchNum + 1;
 				$query = "INSERT INTO matches(matchNumber, blueTeam1, blueTeam2, blueTeam3, redTeam1, redTeam2, redTeam3)
@@ -44,20 +54,21 @@
 			}
 		}
 		else {
-			$matchNumber = $startMatchNum;
-			$blueTeam1 = ($_POST['blue1Team']).($startMatchNum - 1);
-			$blueTeam2 = ($_POST['blue2Team']).($startMatchNum - 1);
-			$blueTeam3 = ($_POST['blue3Team']).($startMatchNum - 1);
-			$redTeam1 = ($_POST['red1Team']).($startMatchNum - 1);
-			$redTeam2 = ($_POST['red2Team']).($startMatchNum - 1);
-			$redTeam3 = ($_POST['red3Team']).($startMatchNum - 1);
+			$matchNumber = $startMatchNum + 1;
+			$blueTeam1 = ($_POST['blue1Team']);
+			$blueTeam2 = ($_POST['blue2Team']);
+			$blueTeam3 = ($_POST['blue3Team']);
+			$redTeam1 = ($_POST['red1Team']);
+			$redTeam2 = ($_POST['red2Team']);
+			$redTeam3 = ($_POST['red3Team']);
 			$query = "INSERT INTO matches (matchNumber, blueTeam1, blueTeam2, blueTeam3, redTeam1, redTeam2, redTeam3) 
 								VALUES ('$matchNumber','$blueTeam1','$blueTeam2','$blueTeam3','$redTeam1','$redTeam2','$redTeam3')";
 			$mysqli->query($query) or die($mysqli->error.__LINE__);
 		}
 
-		$msg='Match Info Added'.$numRows;
-		header('Location: teamList.php?'.urlencode($msg).'');
+		//$msg='Match Info Added'.$numRows;
+		//header('Location: teamList.php?'.urlencode($msg).'');
+		header('Location: teamList.php?u='.$user.'&s='.$scouter);
 		exit;
 	}
 ?>
@@ -102,14 +113,14 @@
       <div class="header">
         <h3 style="color:purple; font:bold;">A-Team Scouting Page</h3>
         <ul class="nav nav-pills pull-right">
-          <li><a href="homePage.php">Home Page</a></li>
-          <li><a href="teamList.php">Team List</a></li>
-          <li><a href="addTeam.php">Add Team</a></li>
-					<li><a href="robot.php">Add Robot</a></li>
-					<li><a href="scoutTeam.php">Scout Team</a></li>
-					<li class="active"><a href="<?php echo "addMatch.php?num=".$numRows."&start=".$startMatchNum?>">Enter Match</a></li>
-					<li><a href="viewMatchSetNumber.php">View Match</a></li>
-					<li><a href="viewTeamSetNumber.php">View Team</a></li>
+          <li><a href="homePage.php?u=<?php echo $user; ?>&s=<?php echo $scouter; ?>">Home Page</a></li>
+          <li><a href="teamList.php?u=<?php echo $user; ?>&s=<?php echo $scouter; ?>">Team List</a></li>
+          <li><a href="addTeam.php?u=<?php echo $user; ?>&s=<?php echo $scouter; ?>">Add Team</a></li>
+					<li><a href="robot.php?u=<?php echo $user; ?>&s=<?php echo $scouter; ?>">Add Robot</a></li>
+					<li><a href="scoutTeam.php?u=<?php echo $user; ?>&s=<?php echo $scouter; ?>">Scout Team</a></li>
+					<li class="active"><a href="<?php echo "addMatch.php?u=".$user."&s=".$scouter."&num=".$numRows; ?>">Enter Match</a></li>
+					<li><a href="viewMatchSetNumber.php?u=<?php echo $user; ?>&s=<?php echo $scouter; ?>">View Match</a></li>
+					<li><a href="viewTeamSetNumber.php?u=<?php echo $user; ?>&s=<?php echo $scouter; ?>">View Team</a></li>
 				</ul>
   	  </div>
 		</div>
@@ -172,71 +183,66 @@
 							newInput1.name = 'blue1Team';
 							newInput1.id = 'blue1Team'; //new concept
 							newInput1.value = "";
-							for(var i = 0;i < rows;i++) {
-								newInput1.value += getSelectionValue(i, 0);
-								if((i + 1) != rows) {
-									newInput1.value += "|";
-								}
-							}
+
 							newInput2 = document.createElement('input');
 							newInput2.type = 'hidden';
 							newInput2.name = 'blue2Team';
 							newInput2.id = 'blue2Team';
 							newInput2.value = "";
-							for(var i = 0;i < rows;i++) {
-								newInput2.value += getSelectionValue(i, 1);
-								if((i + 1) != rows) {
-									newInput2.value += "|";
-								}
-							}
 							
 							newInput3 = document.createElement('input');
 							newInput3.type = 'hidden';
 							newInput3.name = 'blue3Team';
 							newInput3.id = 'blue3Team';
 							newInput3.value = "";
-							for(var i = 0;i < rows;i++) {
-								newInput3.value += getSelectionValue(i, 2);
-								if((i + 1) != rows) {
-									newInput3.value += "|";
-								}
-							}
 							
 							newInput4 = document.createElement('input');
 							newInput4.type = 'hidden';
 							newInput4.name = 'red1Team';
 							newInput4.id = 'red1Team';
 							newInput4.value = "";
-							for(var i = 0;i < rows;i++) {
-								newInput4.value += getSelectionValue(i, 3);
-								if((i + 1) != rows) {
-									newInput4.value += "|";
-								}
-							}
 							
 							newInput5 = document.createElement('input');
 							newInput5.type = 'hidden';
 							newInput5.name = 'red2Team';
 							newInput5.id = 'red2Team';
 							newInput5.value = "";
-							for(var i = 0;i < rows;i++) {
-								newInput5.value += getSelectionValue(i, 4);
-								if((i + 1) != rows) {
-									newInput5.value += "|";
-								}
-							}
 							
 							newInput6 = document.createElement('input');
 							newInput6.type = 'hidden';
 							newInput6.name = 'red3Team';
 							newInput6.id = 'red3Team';
 							newInput6.value = "";
+
 							for(var i = 0;i < rows;i++) {
+								newInput1.value += getSelectionValue(i, 0);
+								newInput2.value += getSelectionValue(i, 1);
+								newInput3.value += getSelectionValue(i, 2);
+								newInput4.value += getSelectionValue(i, 3);
+								newInput5.value += getSelectionValue(i, 4);
 								newInput6.value += getSelectionValue(i, 5);
 								if((i + 1) != rows) {
+									newInput1.value += "|";
+									newInput2.value += "|";
+									newInput3.value += "|";
+									newInput4.value += "|";
+									newInput5.value += "|";
 									newInput6.value += "|";
 								}
 							}
+
+							var user = document.createElement('input');
+							user.type = 'hidden';
+							user.name = 'user';
+							user.id = 'user';
+							user.value = '<?php echo $user; ?>';
+
+							var scouter = document.createElement('input');
+							scouter.type = 'hidden';
+							scouter.name = 'scouter';
+							scouter.id = 'scouter';
+							scouter.value = '<?php echo $scouter; ?>';
+
 							// Now put everything together...
 							theForm.appendChild(newInput1);
 							theForm.appendChild(newInput2);
@@ -244,6 +250,8 @@
 							theForm.appendChild(newInput4);
 							theForm.appendChild(newInput5);
 							theForm.appendChild(newInput6);
+							theForm.appendChild(user);
+							theForm.appendChild(scouter);
 							// ...and it to the DOM...
 							//document.body.appendChild(theForm);
 							document.getElementById('hidden_form_container').appendChild(theForm);

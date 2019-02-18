@@ -1,5 +1,12 @@
 <?php include('includes/database.php'); ?>
 <?php
+	$user = null;
+	$scouter = null;
+
+	if(isset($_GET['u'])) {
+		$user = $_GET['u'];
+		$scouter = $_GET['s'];
+	}
 	//Create the select query
 	$query ="SELECT 
 			 team_info.id,
@@ -79,24 +86,25 @@
       <div class="header">
 				<h3 style="color:purple; font:bold;">A-Team Scouting Page</h3>
         <ul class="nav nav-pills pull-right">
-				  <li><a href="homePage.php">Home Page</a></li>
-          <li class="active"><a href="teamList.php">Team List</a></li>
-          <li><a href="addTeam.php">Add Team</a></li>
-					<li><a href="robot.php">Add Robot</a></li>
-					<li><a href="scoutTeam.php">Scout Team</a></li>
-					<li><a href="addMatchCount.php">Add Match</a></li>
-					<li><a href="viewMatchSetNumber.php">View Match</a></li>
-          <li><a href="viewTeamSetNumber.php">View Team</a></li>
+				  <li><a href="homePage.php?u=<?php echo $user; ?>&s=<?php echo $scouter; ?>">Home Page</a></li>
+          <li class="active"><a href="teamList.php?u=<?php echo $user; ?>&s=<?php echo $scouter; ?>">Team List</a></li>
+          <li><a href="addTeam.php?u=<?php echo $user; ?>&s=<?php echo $scouter; ?>">Add Team</a></li>
+					<li><a href="robot.php?u=<?php echo $user; ?>&s=<?php echo $scouter; ?>">Add Robot</a></li>
+					<li><a href="scoutTeam.php?u=<?php echo $user; ?>&s=<?php echo $scouter; ?>">Scout Team</a></li>
+					<li><a href="addMatchCount.php?u=<?php echo $user; ?>&s=<?php echo $scouter; ?>">Add Match</a></li>
+					<li><a href="viewMatchSetNumber.php?u=<?php echo $user; ?>&s=<?php echo $scouter; ?>">View Match</a></li>
+          <li><a href="viewTeamSetNumber.php?u=<?php echo $user; ?>&s=<?php echo $scouter; ?>">View Team</a></li>
   		</div>
         </ul>
       <div class="row marketing">
         <div class="col-lg-12">
 
-		<?php if(isset($_GET['msg'])){
-			echo '<div class="msg">'.$_GET['msg'].'</div>';
-		}
+		<?php
+			if(isset($_GET['msg'])){
+				echo '<div class="msg">'.$_GET['msg'].'</div>';
+			}
 		?>
-         <h2>Team Info</h2>
+    <h2>Team Info</h2>
 		 <table class="table table-striped">
 			<tr>
 				<th>Team Name/Number</th>
@@ -105,7 +113,6 @@
 				<th>Age</th>
 				<th>Location</th>
 				<th>Edit</th>
-				<th>Auto</th>
 			</tr>
 			<?php 
 				//Check if at least one row is found
@@ -120,7 +127,6 @@
 					$output .='<td>'.$row['teamAge'].'</td>';
 					$output .='<td>'.$row['teamLocation'].'</td>';
 					$output .='<td><a href="editTeam.php?id='.$row['id'].'"class="btn btn-default btn-sm">Edit</a></td>';
-					$output .='<td><a href="autoInfo.php?id='.$row['id'].'"class="btn btn-default btn-sm">Auto</a></td>';
 					$output .='</tr>';
 					
 					//Echo output

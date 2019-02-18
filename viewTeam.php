@@ -5,6 +5,14 @@
         $teamNumber = $_GET['num'];
     }
 
+    $user = null;
+    $scouter = null;
+
+    if(isset($_GET['u'])) {
+      $user = $_GET['u'];
+      $scouter = $_GET['s'];
+    }
+
     $query = "SELECT * FROM match_scout WHERE teamNumber = ".$teamNumber. " ORDER BY matchNumber";
     $query2 = "SELECT * FROM match_scout_1 WHERE teamNumber = ".$teamNumber. " ORDER BY matchNumber";
     $query3 = "SELECT * FROM match_scout_2 WHERE teamNumber = ".$teamNumber. " ORDER BY matchNumber";
@@ -30,16 +38,40 @@
     $teamLocation = $teamInfo->teamLocation;
 
     $autoInfo = $mysqli->query("SELECT * FROM auto_info WHERE teamNumber = ".$teamNumber)->fetch_object();
-    $canCollectHatch = $autoInfo->canCollectHatch;
-    $canCollectCargo = $autoInfo->canCollectCargo;
-    $autoExtraInformation = $autoInfo->extraInformation;
+    if(isset($autoInfo->canCollectHatch)) {
+      $canCollectHatch = $autoInfo->canCollectHatch;
+      $canCollectCargo = $autoInfo->canCollectCargo;
+      $autoExtraInformation = $autoInfo->extraInformation;
+    }
+    else {
+      $canCollectHatch = null;
+      $canCollectCargo = null;
+      $autoExtraInformation = null;
+    }
 
     $teleopInfo = $mysqli->query("SELECT * FROM teleop_info WHERE teamNumber = ".$teamNumber)->fetch_object();
-    $averageNumHatches = $teleopInfo->averageNumHatches;
-    $averageNumCargo = $teleopInfo->averageNumCargo;
-    $speedClimb2 = $teleopInfo->speedClimb2;
-    $speedClimb3 = $teleopInfo->speedClimb3;
-    $teleopExtraInformation = $teleopInfo->extraInformation;
+    if(isset($teleopInfo->averageNumCargo)) {
+      $averageNumHatches = $teleopInfo->averageNumHatches;
+      $averageNumCargo = $teleopInfo->averageNumCargo;
+      $speedClimb2 = $teleopInfo->speedClimb2;
+      $speedClimb3 = $teleopInfo->speedClimb3;
+      $teleopExtraInformation = $teleopInfo->extraInformation;
+    }
+    else {
+      $averageNumHatches = null;
+      $averageNumCargo =  null;
+      $speedClimb2 = null;
+      $speedClimb3 = null;
+      $teleopExtraInformation = null;
+    }
+    
+
+    /*
+      $sidemenus = array();
+      while ($sidemenu = mysql_fetch_object($autoInfo)) {
+        $sidemenus[] = $sidemenu;
+      }
+    */
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -254,14 +286,14 @@
       <div class="header">
         <h3 style="color:purple; font:bold;">A-Team Scouting Page</h3>
         <ul class="nav nav-pills pull-right">
-				  <li><a href="homePage.php">Home Page</a></li>
-          <li><a href="teamList.php">Team List</a></li>
-					<li><a href="addTeam.php">Add Team</a></li>
-					<li><a href="robot.php">Add Robot</a></li>
-					<li><a href="scoutTeam.php">Scout Team</a></li>
-					<li><a href="addMatchCount.php">Add Match</a></li>
-					<li><a href="viewMatchSetNumber.php">View Match</a></li>
-          <li class="active"><a href="viewTeam.php?num=<?php echo $teamNumber; ?>">View Team</a></li>
+				  <li><a href="homePage.php?u=<?php echo $user; ?>&s=<?php echo $scouter; ?>">Home Page</a></li>
+          <li><a href="teamList.php?u=<?php echo $user; ?>&s=<?php echo $scouter; ?>">Team List</a></li>
+					<li><a href="addTeam.php?u=<?php echo $user; ?>&s=<?php echo $scouter; ?>">Add Team</a></li>
+					<li><a href="robot.php?u=<?php echo $user; ?>&s=<?php echo $scouter; ?>">Add Robot</a></li>
+					<li><a href="scoutTeam.php?u=<?php echo $user; ?>&s=<?php echo $scouter; ?>">Scout Team</a></li>
+					<li><a href="addMatchCount.php?u=<?php echo $user; ?>&s=<?php echo $scouter; ?>">Add Match</a></li>
+					<li><a href="viewMatchSetNumber.php?u=<?php echo $user; ?>&s=<?php echo $scouter; ?>">View Match</a></li>
+          <li class="active"><a href="viewTeam.php?u=<?php echo $user; ?>&s=<?php echo $scouter; ?>&num=<?php echo $teamNumber; ?>">View Team</a></li>
         </ul>
       </div>
       <h2>Team <?php echo $teamNumber; ?>: <?php echo $teamName; ?></h2><br />
@@ -323,7 +355,7 @@
               }
             }
             else {
-              echo '<tr>No results found.';
+              echo '<tr><b>No results found.</b></tr>';
             }
           ?>
         </table>
@@ -336,9 +368,16 @@
           </tr>
           <tr>
             <?php
-              echo '<td>'.$canCollectHatch.'</td>';
-              echo '<td>'.$canCollectCargo.'</td>';
-              echo '<td>'.$autoExtraInformation.'</td>';
+              if(isset($canCollectHatch)) {
+                echo '<td>'.$canCollectHatch.'</td>';
+                echo '<td>'.$canCollectCargo.'</td>';
+                echo '<td>'.$autoExtraInformation.'</td>';
+              }
+              else {
+                for($i = 0;$i < 3;$i++) {
+                  echo '<td>No Information Available</td>';
+                }
+              }
             ?>
           </tr>
         </table>
@@ -353,80 +392,87 @@
           </tr>
           <tr>
             <?php
-              if($result4->num_rows > 0) {
-                $numResults = mysqli_num_rows($result4);
-                $hatchSum = 0;
-                $cargoSum = 0;
+              if(isset($averageNumHatches)) {
+                if($result4->num_rows > 0) {
+                  $numResults = mysqli_num_rows($result4);
+                  $hatchSum = 0;
+                  $cargoSum = 0;
 
-                while($row4 = $result4->fetch_assoc()) {
-                  $hatchSum += $row4['teleopHatchRocketsSuccess1'];
-                  $hatchSum += $row4['teleopHatchRocketsSuccess2'];
-                  $hatchSum += $row4['teleopHatchRocketsSuccess3'];
+                  while($row4 = $result4->fetch_assoc()) {
+                    $hatchSum += $row4['teleopHatchRocketsSuccess1'];
+                    $hatchSum += $row4['teleopHatchRocketsSuccess2'];
+                    $hatchSum += $row4['teleopHatchRocketsSuccess3'];
 
-                  $cargoSum += $row4['teleopCargoRocketsSuccess1'];
-                  $cargoSum += $row4['teleopCargoRocketsSuccess2'];
-                  $cargoSum += $row4['teleopCargoRocketsSuccess3'];
-                }
+                    $cargoSum += $row4['teleopCargoRocketsSuccess1'];
+                    $cargoSum += $row4['teleopCargoRocketsSuccess2'];
+                    $cargoSum += $row4['teleopCargoRocketsSuccess3'];
+                  }
 
-                while($row5 = $result5->fetch_assoc()) {
-                  $hatchSum += $row5['teleopHatchShipSuccess1'];
-                  $hatchSum += $row5['teleopHatchShipSuccess2'];
-                  $hatchSum += $row5['teleopHatchShipSuccess3'];
+                  while($row5 = $result5->fetch_assoc()) {
+                    $hatchSum += $row5['teleopHatchShipSuccess1'];
+                    $hatchSum += $row5['teleopHatchShipSuccess2'];
+                    $hatchSum += $row5['teleopHatchShipSuccess3'];
 
-                  $cargoSum += $row5['teleopCargoShipSuccess1'];
-                  $cargoSum += $row5['teleopCargoShipSuccess2'];
-                  $cargoSum += $row5['teleopCargoShipSuccess3'];
-                }
+                    $cargoSum += $row5['teleopCargoShipSuccess1'];
+                    $cargoSum += $row5['teleopCargoShipSuccess2'];
+                    $cargoSum += $row5['teleopCargoShipSuccess3'];
+                  }
 
-                $hatchAverage = (int) $hatchSum / $numResults;
-                $cargoAverage = (int) $hatchSum / $numResults;
+                  $hatchAverage = (int) $hatchSum / $numResults;
+                  $cargoAverage = (int) $hatchSum / $numResults;
 
-                echo '<td>'.$hatchAverage;
-                if($hatchAverage > $averageNumHatches) {
-                  $difference = $hatchAverage - $averageNumHatches;
-                  echo '('.$difference.' more than the team said they\'d get)</td>';
-                }
-                else if($hatchAverage < $averageNumHatches) {
-                  $difference = $averageNumHatches - $hatchAverage;
-                  echo '('.$difference.' less than the team said they\'d get)</td>';
+                  echo '<td>'.$hatchAverage;
+                  if($hatchAverage > $averageNumHatches) {
+                    $difference = $hatchAverage - $averageNumHatches;
+                    echo '('.$difference.' more than the team said they\'d get)</td>';
+                  }
+                  else if($hatchAverage < $averageNumHatches) {
+                    $difference = $averageNumHatches - $hatchAverage;
+                    echo '('.$difference.' less than the team said they\'d get)</td>';
+                  }
+                  else {
+                    echo '</td>';
+                  }
+
+                  echo '<td>'.$cargoAverage;
+                  if($cargoAverage > $averageNumCargo) {
+                    $difference = $cargoAverage - $averageNumCargo;
+                    echo '('.$difference.' More Than the Team Said They\'d Get)</td>';
+                  }
+                  else if($cargoAverage < $averageNumCargo) {
+                    $difference = $averageNumCargo - $cargoAverage;
+                    echo '('.$difference.' Less Than the Team Said They\'d Get)</td>';
+                  }
+                  else {
+                    echo '</td>';
+                  }
                 }
                 else {
-                  echo '</td>';
+                  echo '<td>Estimated '.$averageNumHatches.' Seconds</td>';
+                  echo '<td>Estimated '.$averageNumCargo.' Seconds</td>';
                 }
 
-                echo '<td>'.$cargoAverage;
-                if($cargoAverage > $averageNumCargo) {
-                  $difference = $cargoAverage - $averageNumCargo;
-                  echo '('.$difference.' More Than the Team Said They\'d Get)</td>';
-                }
-                else if($cargoAverage < $averageNumCargo) {
-                  $difference = $averageNumCargo - $cargoAverage;
-                  echo '('.$difference.' Less Than the Team Said They\'d Get)</td>';
+                if($speedClimb2 == 0) {
+                  echo '<td>They Can\'t Climb Level 2</td>';
                 }
                 else {
-                  echo '</td>';
+                  echo '<td>Estimated '.$speedClimb2.' Seconds</td>';
+                }
+
+                if($speedClimb3 == 0) {
+                  echo '<td>They Can\'t Climb Level 3</td>';
+                }
+                else {
+                  echo '<td>Estimated '.$speedClimb3.' Seconds</td>';
+                }
+
+                echo '<td>'.$teleopExtraInformation.'</td>';
+              }
+              else {
+                for($i = 0;$i < 5;$i++) {
+                  echo '<td>No Information Available</td>';
                 }
               }
-              else {
-                echo '<td>Estimated '.$averageNumHatches.' Seconds</td>';
-                echo '<td>Estimated '.$averageNumCargo.' Seconds</td>';
-              }
-
-              if($speedClimb2 == 0) {
-                echo '<td>They Can\'t Climb Level 2</td>';
-              }
-              else {
-                echo '<td>Estimated '.$speedClimb2.' Seconds</td>';
-              }
-
-              if($speedClimb3 == 0) {
-                echo '<td>They Can\'t Climb Level 3</td>';
-              }
-              else {
-                echo '<td>Estimated '.$speedClimb3.' Seconds</td>';
-              }
-
-              echo '<td>'.$teleopExtraInformation.'</td>';
             ?>
           </tr>
         </table>
