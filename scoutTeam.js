@@ -165,12 +165,12 @@ var climbDimensions = [
     [108, 88, 1191, 331]
 ];
 var climbText = [
-    [50, 50, climbDimensions[0][2], climbDimensions[0][3] + 40, 'Times New Roman', 45, 'L1'],
-    [50, 50, climbDimensions[1][2], climbDimensions[1][3] + 40, 'Times New Roman', 45, 'L2'],
-    [50, 50, climbDimensions[2][2], climbDimensions[2][3] + 40, 'Times New Roman', 45, 'L3'],
-    [50, 50, climbDimensions[3][2], climbDimensions[3][3] + 40, 'Times New Roman', 45, 'L1'],
-    [50, 50, climbDimensions[4][2] + 50, climbDimensions[4][3] + 40, 'Times New Roman', 45, 'L2'],
-    [50, 50, climbDimensions[5][2] + 50, climbDimensions[5][3] + 40, 'Times New Roman', 45, 'L3']
+    [50, 50, climbDimensions[0][2] + 10, climbDimensions[0][3] + 137, 'Times New Roman', 45, 'L1'],
+    [50, 50, climbDimensions[1][2], climbDimensions[1][3] + 50, 'Times New Roman', 45, 'L2'],
+    [50, 50, climbDimensions[2][2], climbDimensions[2][3] + 57, 'Times New Roman', 45, 'L3'],
+    [50, 50, climbDimensions[3][2] + 10, climbDimensions[3][3] + 137, 'Times New Roman', 45, 'L1'],
+    [50, 50, climbDimensions[4][2] + 50, climbDimensions[4][3] + 50, 'Times New Roman', 45, 'L2'],
+    [50, 50, climbDimensions[5][2] + 50, climbDimensions[5][3] + 57, 'Times New Roman', 45, 'L3']
 ];
 var climbText2 = [50, 50, climbDimensions[1][2], 475, 'Times New Roman', 45, 'L2'];
 var climbText3 = [50, 50, climbDimensions[4][2] + 50, 475, 'Times New Roman', 45, 'L2'];
@@ -355,6 +355,10 @@ function setScore() {
     if(win === "Yes") {
         score += 5;
     }
+
+    if(score < 0) {
+        score = 0;
+    }
 }
 
 function incrementTime() {
@@ -362,7 +366,7 @@ function incrementTime() {
         time -= 1;
         document.getElementById('startText').value = time;
         document.getElementById('startText').innerHTML = time;
-        setTimeout(incrementTime, 100);
+        setTimeout(incrementTime, 1000);
     }
     else {
         document.getElementById('startText').value = "C'est fini!";

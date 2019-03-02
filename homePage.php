@@ -32,6 +32,7 @@
           <li><a href="addTeam.php?u=<?php echo $user; ?>&s=<?php echo $scouter; ?>">Add Team</a></li>
           <li><a href="robot.php?u=<?php echo $user; ?>&s=<?php echo $scouter; ?>">Add Robot</a></li>
           <li><a href="scoutTeam.php?u=<?php echo $user; ?>&s=<?php echo $scouter; ?>">Scout Team</a></li>
+          <li><a href="importPaper.php?u=<?php echo $user; ?>&s=<?php echo $scouter; ?>">Paper Scout</a></li>
           <li><a href="addMatchCount.php?u=<?php echo $user; ?>&s=<?php echo $scouter; ?>">Add Match</a></li>
           <li><a href="viewMatchSetNumber.php?u=<?php echo $user; ?>&s=<?php echo $scouter; ?>">View Match</a></li>
           <li><a href="viewTeamSetNumber.php?u=<?php echo $user; ?>&s=<?php echo $scouter; ?>">View Team</a></li>
@@ -70,6 +71,7 @@
         <option value="Sun_Jason">Sun, Jason</option>
         <option value="Tronchin_Adam">Tronchin, Adam</option>
         <option value="Tronchin_Sebastien">Tronchin, Sebastien</option>
+        <option value="Parent_or_Mentor">Parent or Mentor</option>
       </select><br /><br />
       <b>What Scouter Are You?</b>
       <select name="scouter" id="scouter">

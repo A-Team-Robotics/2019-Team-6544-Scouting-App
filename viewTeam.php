@@ -37,6 +37,16 @@
     $teamAge = $teamInfo->teamAge;
     $teamLocation = $teamInfo->teamLocation;
 
+    $robotInfo = $mysqli->query("SELECT canClimb2, canClimb3 FROM robot_info WHERE teamNumber = ".$teamNumber)->fetch_object();
+    if(isset($robotInfo->canClimb2)) {
+      $canClimb2 = $robotInfo->canClimb2;
+      $canClimb3 = $robotInfo->canClimb3;
+    }
+    else {
+      $canClimb2 = null;
+      $canClimb3 = null;
+    }
+
     $autoInfo = $mysqli->query("SELECT * FROM auto_info WHERE teamNumber = ".$teamNumber)->fetch_object();
     if(isset($autoInfo->canCollectHatch)) {
       $canCollectHatch = $autoInfo->canCollectHatch;
@@ -291,6 +301,7 @@
 					<li><a href="addTeam.php?u=<?php echo $user; ?>&s=<?php echo $scouter; ?>">Add Team</a></li>
 					<li><a href="robot.php?u=<?php echo $user; ?>&s=<?php echo $scouter; ?>">Add Robot</a></li>
 					<li><a href="scoutTeam.php?u=<?php echo $user; ?>&s=<?php echo $scouter; ?>">Scout Team</a></li>
+          <li><a href="importPaper.php?u=<?php echo $user; ?>&s=<?php echo $scouter; ?>">Paper Scout</a></li>
 					<li><a href="addMatchCount.php?u=<?php echo $user; ?>&s=<?php echo $scouter; ?>">Add Match</a></li>
 					<li><a href="viewMatchSetNumber.php?u=<?php echo $user; ?>&s=<?php echo $scouter; ?>">View Match</a></li>
           <li class="active"><a href="viewTeam.php?u=<?php echo $user; ?>&s=<?php echo $scouter; ?>&num=<?php echo $teamNumber; ?>">View Team</a></li>
@@ -424,11 +435,11 @@
                   echo '<td>'.$hatchAverage;
                   if($hatchAverage > $averageNumHatches) {
                     $difference = $hatchAverage - $averageNumHatches;
-                    echo '('.$difference.' more than the team said they\'d get)</td>';
+                    echo ' ('.$difference.' more than the team said they\'d get)</td>';
                   }
                   else if($hatchAverage < $averageNumHatches) {
                     $difference = $averageNumHatches - $hatchAverage;
-                    echo '('.$difference.' less than the team said they\'d get)</td>';
+                    echo ' ('.$difference.' less than the team said they\'d get)</td>';
                   }
                   else {
                     echo '</td>';
@@ -437,11 +448,11 @@
                   echo '<td>'.$cargoAverage;
                   if($cargoAverage > $averageNumCargo) {
                     $difference = $cargoAverage - $averageNumCargo;
-                    echo '('.$difference.' More Than the Team Said They\'d Get)</td>';
+                    echo ' ('.$difference.' More Than the Team Said They\'d Get)</td>';
                   }
                   else if($cargoAverage < $averageNumCargo) {
                     $difference = $averageNumCargo - $cargoAverage;
-                    echo '('.$difference.' Less Than the Team Said They\'d Get)</td>';
+                    echo ' ('.$difference.' Less Than the Team Said They\'d Get)</td>';
                   }
                   else {
                     echo '</td>';

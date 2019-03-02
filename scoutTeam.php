@@ -205,6 +205,7 @@
                     <li><a href="addTeam.php?u=<?php echo $user; ?>&s=<?php echo $scouter; ?>">Add Team</a></li>
                     <li><a href="robot.php?u=<?php echo $user; ?>&s=<?php echo $scouter; ?>">Robot Information</a></li>
                     <li class="active"><a href="scoutTeam.php?u=<?php echo $user; ?>&s=<?php echo $scouter; ?>">Scout Team</a></li>
+                    <li><a href="importPaper.php?u=<?php echo $user; ?>&s=<?php echo $scouter; ?>">Paper Scout</a></li>
                     <li><a href="addMatchCount.php?u=<?php echo $user; ?>&s=<?php echo $scouter; ?>">Add Match</a></li>
                     <li><a href="viewMatchSetNumber.php?u=<?php echo $user; ?>&s=<?php echo $scouter; ?>">View Match</a></li>
                     <li><a href="viewTeamSetNumber.php?u=<?php echo $user; ?>&s=<?php echo $scouter; ?>">View Team</a></li>
@@ -355,11 +356,13 @@
                 fclimbFail.id = 'climbFail';
                 fclimbFail.value = climbFail;
 
-                fclimbLevelFail = document.createElement('input');
-                fclimbLevelFail.type = 'hidden';
-                fclimbLevelFail.name = 'climbLevelFail';
-                fclimbLevelFail.id = 'climbLevelFail';
-                fclimbLevelFail.value = climbFailLevel;
+                /*
+                    fclimbLevelFail = document.createElement('input');
+                    fclimbLevelFail.type = 'hidden';
+                    fclimbLevelFail.name = 'climbLevelFail';
+                    fclimbLevelFail.id = 'climbLevelFail';
+                    fclimbLevelFail.value = climbLevelFail;
+                */
 
                 fclimbFailLevel = document.createElement('input');
                 fclimbFailLevel.type = 'hidden';
