@@ -1,4 +1,4 @@
-var time = 136;
+var time = 151;
 var teamNumber = 0;
 var matchNumber = 0;
 var color = 0; //0 is blue, 1 is red
@@ -475,7 +475,7 @@ function setTempButtons(values, a1, a2, t1, t2) {
         }
         
         document.getElementById(tempIds[0] + "Button").onclick = function() {
-            if(time >= 120) {
+            if(time >= 135) {
                 a1[0] += 1;
             }
             else {
@@ -484,7 +484,7 @@ function setTempButtons(values, a1, a2, t1, t2) {
             unsetTempButtons();
         };
         document.getElementById(tempIds[0] + "Text").onclick = function() {
-            if(time >= 120) {
+            if(time >= 135) {
                 a1[0] += 1;
             }
             else {
@@ -493,7 +493,7 @@ function setTempButtons(values, a1, a2, t1, t2) {
             unsetTempButtons();
         };
         document.getElementById(tempIds[1] + "Button").onclick = function() {
-            if(time >= 120) {
+            if(time >= 135) {
                 a1[1] += 1;
             }
             else {
@@ -502,7 +502,7 @@ function setTempButtons(values, a1, a2, t1, t2) {
             unsetTempButtons();
         };
         document.getElementById(tempIds[1] + "Text").onclick = function() {
-            if(time >= 120) {
+            if(time >= 135) {
                 a1[1] += 1;
             }
             else {
@@ -511,7 +511,7 @@ function setTempButtons(values, a1, a2, t1, t2) {
             unsetTempButtons();
         };
         document.getElementById(tempIds[2] + "Button").onclick = function() {
-            if(time >= 120) {
+            if(time >= 135) {
                 a1[2] += 1;
             }
             else {
@@ -520,7 +520,7 @@ function setTempButtons(values, a1, a2, t1, t2) {
             unsetTempButtons();
         };
         document.getElementById(tempIds[2] + "Text").onclick = function() {
-            if(time >= 120) {
+            if(time >= 135) {
                 a1[2] += 1;
             }
             else {
@@ -529,7 +529,7 @@ function setTempButtons(values, a1, a2, t1, t2) {
             unsetTempButtons();
         };
         document.getElementById(tempIds[3] + "Button").onclick = function() {
-            if(time >= 120) {
+            if(time >= 135) {
                 a2[0] += 1;
             }
             else {
@@ -538,7 +538,7 @@ function setTempButtons(values, a1, a2, t1, t2) {
             unsetTempButtons();
         };
         document.getElementById(tempIds[3] + "Text").onclick = function() {
-            if(time >= 120) {
+            if(time >= 135) {
                 a2[0] += 1;
             }
             else {
@@ -547,7 +547,7 @@ function setTempButtons(values, a1, a2, t1, t2) {
             unsetTempButtons();
         };
         document.getElementById(tempIds[4] + "Button").onclick = function() {
-            if(time >= 120) {
+            if(time >= 135) {
                 a2[1] += 1;
             }
             else {
@@ -556,7 +556,7 @@ function setTempButtons(values, a1, a2, t1, t2) {
             unsetTempButtons();
         };
         document.getElementById(tempIds[4] + "Text").onclick = function() {
-            if(time >= 120) {
+            if(time >= 135) {
                 a2[1] += 1;
             }
             else {
@@ -565,7 +565,7 @@ function setTempButtons(values, a1, a2, t1, t2) {
             unsetTempButtons();
         };
         document.getElementById(tempIds[5] + "Button").onclick = function() {
-            if(time >= 120) {
+            if(time >= 135) {
                 a2[2] += 1;
             }
             else {
@@ -574,7 +574,7 @@ function setTempButtons(values, a1, a2, t1, t2) {
             unsetTempButtons();
         };
         document.getElementById(tempIds[5] + "Text").onclick = function() {
-            if(time >= 120) {
+            if(time >= 135) {
                 a2[2] += 1;
             }
             else {
