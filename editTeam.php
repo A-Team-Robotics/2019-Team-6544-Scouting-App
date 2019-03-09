@@ -1,6 +1,14 @@
 <?php include('includes/database.php'); ?>
 <?php
 	//Assign get variable
+	$user = null;
+	$scouter = null;
+
+	if(isset($_GET['u'])) {
+		$user = $_GET['u'];
+		$scouter = $_GET['s'];
+	}
+
 	$id = $_GET['id'];
 	
 	//Create customer select query
@@ -67,11 +75,11 @@
   <body>
     <div class="container">
       <div class="header">
+				<h3 style="color:purple; font:bold;">A-Team Scouting Page</h3>
         <ul class="nav nav-pills pull-right">
-          <li ><a href="homepage.php">Team List</a></li>
-          <li class="active"><a href="editTeam.php">editTeam</a></li>
+          <li ><a href="teamList.php?u=<?php echo $user; ?>&s=<?php echo $scouter; ?>">Team List</a></li>
+          <li class="active"><a href="editTeam.php?u=<?php echo $user; ?>&s=<?php echo $scouter; ?>">Edit Team</a></li>
         </ul>
-        <h3 style="color:purple; font:bold;">A-Team Scouting Page</h3>
       </div>
 
       <div class="row marketing">
@@ -80,27 +88,27 @@
 	 <form role="form" method="post" action="editTeam.php?id=<?php echo $id; ?>">
 		<div class="form-group">
 			<label>Team Name</label>
-			<input name="teamName" type="text" class="form-control" value="<?php echo $teamName; ?>"placeholder="Enter Team Name">
+			<input name="teamName" type="text" class="form-control" value="<?php echo $teamName; ?>"placeholder="Enter Team Name" required>
 		</div>
 		<div class="form-group">
 			<label>Team Number</label>
-			<input name="teamNumber" type="text" class="form-control" value="<?php echo $teamNumber; ?>"placeholder="Enter Last Name">
+			<input name="teamNumber" type="text" class="form-control" value="<?php echo $teamNumber; ?>"placeholder="Enter Last Name" required>
 		</div>
 		<div class="form-group">
 			<label>Team School Name</label>
-			<input name="teamSchoolName" type="text" class="form-control" value="<?php echo $teamSchoolName ?>"placeholder="Enter School Name">
+			<input name="teamSchoolName" type="text" class="form-control" value="<?php echo $teamSchoolName ?>"placeholder="Enter School Name" required>
 		</div>
 		<div class="form-group">
 			<label>Team Email</label>
-			<input name="teamEmail" type="email" class="form-control" value="<?php echo $teamEmail ?>"placeholder="Enter Email">
+			<input name="teamEmail" type="email" class="form-control" value="<?php echo $teamEmail ?>"placeholder="Enter Email" required>
 		</div>
 		<div class="form-group">
 			<label>Team Age</label>
-			<input name="teamAge" type="text" class="form-control" value="<?php echo $teamAge ?>"placeholder="Enter Age">
+			<input name="teamAge" type="text" class="form-control" value="<?php echo $teamAge ?>"placeholder="Enter Age" required>
 		</div>
 		<div class="form-group"> 
 		<label>Team Location</label> 
-		<input name="teamLocation" type="text" class="form-control" value="<?php echo $teamLocation ?>"placeholder="Enter Team Location">
+		<input name="teamLocation" type="text" class="form-control" value="<?php echo $teamLocation ?>"placeholder="Enter Team Location" required>
 		</div>
 		<br><input type="submit" class="btn btn-default" value="Submit Changes" /></br>
 	</form>

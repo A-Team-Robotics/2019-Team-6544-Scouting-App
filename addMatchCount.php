@@ -1,11 +1,19 @@
 <?php include('includes/database.php'); ?>
 <?php
+  $user = null;
+	$scouter = null;
+
+	if(isset($_GET['u'])) {
+		$user = $_GET['u'];
+		$scouter = $_GET['s'];
+	}
+?>
+<?php
 	if($_POST){
-		//Get variables from post array
+    //Get variables from post array
 		$numMatches = ($_POST['numMatches']);
-		$startMatchNum = ($_POST['startMatchNum']); 
-		$msg='num='. (string)$numMatches. '&start='.(string)$startMatchNum;
-		header('Location: addMatch.php?num='. $numMatches. '&start='. $startMatchNum. '');
+		$msg='num='. (string)$numMatches;
+		header('Location: addMatch.php?u='. $user. '&s='. $scouter. '&num='. $numMatches. '');
 		exit;
 	}
 ?>
@@ -29,26 +37,25 @@
       <div class="header">
         <h3 style="color:purple; font:bold;">A-Team Scouting Page</h3>
         <ul class="nav nav-pills pull-right">
-          <li><a href="homePage.php">Home Page</a></li>
-          <li><a href="teamList.php">Team List</a></li>
-          <li><a href="addTeam.php">Add Team</a></li>
-			<li><a href="robot.php">Add Robot</a></li>
-			<li><a href="scoutTeam.php">Scout Team</a></li>
-          <li class="active"><a href="addMatchCount.php">Match Information</a></li>
+          <li><a href="homePage.php?u=<?php echo $user; ?>&s=<?php echo $scouter; ?>">Home Page</a></li>
+          <li><a href="teamList.php?u=<?php echo $user; ?>&s=<?php echo $scouter; ?>">Team List</a></li>
+          <li><a href="addTeam.php?u=<?php echo $user; ?>&s=<?php echo $scouter; ?>">Add Team</a></li>
+          <li><a href="robot.php?u=<?php echo $user; ?>&s=<?php echo $scouter; ?>">Add Robot</a></li>
+          <li><a href="scoutTeam.php?u=<?php echo $user; ?>&s=<?php echo $scouter; ?>">Scout Team</a></li>
+          <li><a href="importPaper.php?u=<?php echo $user; ?>&s=<?php echo $scouter; ?>">Paper Scout</a></li>
+          <li class="active"><a href="addMatchCount.php?u=<?php echo $user; ?>&s=<?php echo $scouter; ?>">Add Match</a></li>
+          <li><a href="viewMatchSetNumber.php?u=<?php echo $user; ?>&s=<?php echo $scouter; ?>">View Match</a></li>
+           <li><a href="viewTeamSetNumber.php?u=<?php echo $user; ?>&s=<?php echo $scouter; ?>">View Team</a></li>
 				</ul>
   	  </div>
 		</div>
 		<br />
-        <form role="form" method="post" action="addMatchCount.php">
-            <div class="form-group">
-				<label>Number of Matches to Input</label>
-				<input name="numMatches" type="text" class="form-control" placeholder="Recommended: set value to number of Qualification Matches">
-			</div>
-			<div class="form-group">
-				<label>Starting Match Number</label>
-				<input name="startMatchNum" type="text" class="form-control" placeholder="Recommended: set value to 1">
-			</div>
-            <br><input type="submit" class="btn btn-default" value="Go" /></br>
+        <form role="form" method="post" action="addMatchCount.php?u=<?php echo $user; ?>&s=<?php echo $scouter; ?>">
+          <div class="form-group">
+				    <label>Number of Matches to Input</label>
+				    <input name="numMatches" type="text" class="form-control" placeholder="Recommended: set value to number of Qualification Matches">
+			    </div>
+          <br><input type="submit" class="btn btn-default" value="Go" /></br>
         </form>
       <div class="footer">
 			<p style="color:purple;">&copy; A-Team Robotics 2018</p>
