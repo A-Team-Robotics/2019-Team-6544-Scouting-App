@@ -607,7 +607,7 @@ function unclick(id, i) {
 }
 
 function climbSet(i) {
-    if(time == 136) {
+    if(time == 151) {
         startLocation = document.getElementById(climbIds[i] + "Text").value;
         alert("Start Location Set");
         hideSVG("warning");

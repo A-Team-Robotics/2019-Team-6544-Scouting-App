@@ -96,19 +96,19 @@
 		</div>
 		<div class="form-group">
 			<label>Team School Name</label>
-			<input name="teamSchoolName" type="text" class="form-control" value="<?php echo $teamSchoolName ?>"placeholder="Enter School Name" required>
+			<input name="teamSchoolName" type="text" class="form-control" value="<?php echo $teamSchoolName ?>"placeholder="Enter School Name">
 		</div>
 		<div class="form-group">
 			<label>Team Email</label>
-			<input name="teamEmail" type="email" class="form-control" value="<?php echo $teamEmail ?>"placeholder="Enter Email" required>
+			<input name="teamEmail" type="email" class="form-control" value="<?php echo $teamEmail ?>"placeholder="Enter Email">
 		</div>
 		<div class="form-group">
 			<label>Team Age</label>
-			<input name="teamAge" type="text" class="form-control" value="<?php echo $teamAge ?>"placeholder="Enter Age" required>
+			<input name="teamAge" type="text" class="form-control" value="<?php echo $teamAge ?>"placeholder="Enter Age">
 		</div>
 		<div class="form-group"> 
 		<label>Team Location</label> 
-		<input name="teamLocation" type="text" class="form-control" value="<?php echo $teamLocation ?>"placeholder="Enter Team Location" required>
+		<input name="teamLocation" type="text" class="form-control" value="<?php echo $teamLocation ?>"placeholder="Enter Team Location">
 		</div>
 		<br><input type="submit" class="btn btn-default" value="Submit Changes" /></br>
 	</form>

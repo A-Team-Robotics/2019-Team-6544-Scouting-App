@@ -11,7 +11,7 @@
 	if(isset($_GET['num'])) {
 		$numRows = $_GET["num"];
 	}
-    $query = "SELECT DISTINCT teamNumber
+  $query = "SELECT DISTINCT teamNumber
                 FROM team_info
                 ORDER BY teamNumber
 				";
@@ -19,6 +19,7 @@
 				FROM matches"; */
 	$result = $mysqli->query($query) or die($mysqli->error.__LINE__);
 
+	/*
 	$query2 = "SELECT DISTINCT matchNumber FROM matches ORDER BY matchNumber ASC";
 	$result2 = $mysqli->query($query2) or die($mysqli->error.__LINE__);
 
@@ -30,6 +31,13 @@
 	}
 
 	$startMatchNum = $matchNums[sizeof($matchNums) - 1]; //I may be able to get rid of this '-1' and all the successive '+1's, but I don't want to risk messing up the program.
+	*/
+
+	$query2 = mysqli_query($mysqli, "SELECT COUNT(matchNumber) AS num FROM matches");
+	$row2 = mysqli_fetch_array($query2);
+	$num = $row2['num'];
+	$startMatchNum = $num; // no +1 to account for the ones later on in the program.
+
 	$doc = new DomDocument;
 	$values = array('blue1Team','blue2Team','blue3Team','red1Team','red2Team','red3Team');
 ?>

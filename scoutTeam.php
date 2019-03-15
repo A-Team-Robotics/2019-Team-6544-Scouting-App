@@ -13,9 +13,18 @@
                 ORDER BY matchNumber ASC";
     $result = $mysqli->query($query) or die($mysqli->error.__LINE__);
 
-    $rowSQL = mysqli_query($mysqli, "SELECT MAX(matchNumber) AS matchNum FROM match_scout"); 
-    $row = mysqli_fetch_assoc($rowSQL);
-    $largestUID = $row['matchNum'];
+    $rowSQL = mysqli_query($mysqli, "SELECT MAX(matchNumber) AS matchNum FROM match_scout");
+    $rowSQL2 = mysqli_query($mysqli, "SELECT COUNT(matchNumber) AS num FROM match_scout");
+    $largestUID = 0;
+    $row2 = mysqli_fetch_array($rowSQL2);
+    $num = $row2['num'];
+    if(mysqli_num_rows($rowSQL) == 0) {
+        $largestUID = 0;
+    }
+    else {
+        $row = mysqli_fetch_assoc($rowSQL);
+        $largestUID = $row['matchNum'];
+    }
 ?>
 <?php
     if($_POST) {
@@ -773,8 +782,9 @@
             </svg>
             <script type="text/javascript">
                 setButtons();
-                document.getElementById('matchNum').options[<?php echo $largestUID; ?>].selected = true;
+                document.getElementById('matchNum').options[<?php if($num == 0) { echo "0"; } else { echo $largestUID; } ?>].selected = true;
                 refreshSelections();
+                console.log(<?php echo $largestUID; ?>);
                 document.getElementById('teamNum').options[1].selected = true;
                 document.getElementById('teamNum').options[0].selected = true;
                 document.getElementById('teamNum').options[<?php

@@ -97,15 +97,15 @@
 			</div>
 			<div class="form-group">
 				<label>Team School Name</label>
-				<input name="teamSchoolName" type="text" class="form-control" placeholder="Enter School Name" required>
+				<input name="teamSchoolName" type="text" class="form-control" placeholder="Enter School Name">
 			</div>
 			<div class="form-group">
 				<label>Team Email</label>
-				<input name="teamEmail" type="email" class="form-control" placeholder="Enter Email" required>
+				<input name="teamEmail" type="email" class="form-control" placeholder="Enter Email">
 			</div>
 			<div class="form-group">
 				<label>Team Years Old</label>
-				<input name="teamAge" type="number" class="form-control" placeholder="Enter Age" required>
+				<input name="teamAge" type="number" class="form-control" placeholder="Enter Age">
 			</div>
 			<div class="form-group"> 
 			<label>Team Location</label> 
